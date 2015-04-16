@@ -236,6 +236,7 @@ alias jq='jq -r'
 alias crm_mon='crm_mon -rAf'
 alias which='which -a'
 alias fdate='date "+%Y-%m-%d-%H:%M:%S"'
+alias free='free -m'
 alias pkill='pkill -f'
 \pgrep -a init |& grep -q init
 [[ $? != 0 ]] && alias pgrep='pgrep -lf' || alias pgrep='pgrep -af'
@@ -379,6 +380,7 @@ typeset -U path cdpath fpath manpath
 mkdir -p $HOME/{,sandbox}/Trash
 which dircolors  >/dev/null 2>&1  && eval `dircolors`
 [[ -e $HOME/.zprompt ]] && source $HOME/.zprompt
+[[ -e $HOME/.localrc ]] && source $HOME/.localrc
 
 # for emacs
 if [[ $EMACS = t ]] ;then
