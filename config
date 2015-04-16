@@ -1,0 +1,24 @@
+IdentityFile=~/.ssh/ikushin.id_rsa
+StrictHostKeyChecking=no
+UserKnownHostsFile=/dev/null
+Compression=yes
+#LogLevel=QUIET
+LogLevel=ERROR
+ConnectTimeout=5
+
+Host host01
+        ProxyCommand ssh proxy@proxy nc %h %p
+        Hostname 10.0.0.1
+        User ikushin
+
+Host host02
+        ProxyCommand ssh proxy@proxy -W %h:%p
+        Hostname 10.0.0.2
+        User root
+        IdentityFile=~/.ssh/id_dsa
+
+Host host03_web
+        GatewayPorts no
+        LocalForward 10080 host03:80
+        Hostname proxy
+        User proxy

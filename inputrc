@@ -1,0 +1,8 @@
+
+$if mysql
+"\C-xd": "SHOW DATABASES;\n"
+"\C-xt": "SHOW FULL TABLES;\n"
+"\C-xg": "SHOW GRANTS;\n"
+"\C-xv": "SHOW VARIABLES;\n"
+"\C-xu": "SELECT * FROM "
+$endif
