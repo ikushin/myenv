@@ -14,6 +14,7 @@ date:
 
 package_cent:
 	sudo yum install -y zsh make gcc ncurses-devel zlib-devel
+	git clone https://github.com/dagwieers/dstat.git $HOME
 
 git:
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-2.3.5.tar.gz -O /tmp/git-2.3.5.tar.gz
