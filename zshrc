@@ -408,3 +408,5 @@ fi
 #proxy=
 #export {HTTP{,S}_PROXY,http{,s}_proxy}=$proxy
 
+[[ -e ~/.localrc ]] && source ~/.localrc
+
