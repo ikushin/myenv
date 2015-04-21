@@ -1,6 +1,7 @@
 
 cp:
 	for i in zshrc emacs inputrc screenrc vimrc zprompt; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
+	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config
 
 apt:
 	sudo /bin/sed -ri.org 's@http://[^ ]+ubuntu@http://ftp.jaist.ac.jp/ubuntu@' /etc/apt/sources.list
