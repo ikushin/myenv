@@ -1,6 +1,8 @@
 
 cp:
 	for i in zshrc emacs inputrc screenrc vimrc zprompt; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
+
+ssh:
 	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config
 
 apt:
@@ -21,4 +23,7 @@ git:
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-2.3.5.tar.gz -O /tmp/git-2.3.5.tar.gz
 	tar zxf /tmp/git-2.3.5.tar.gz -C /tmp
 	cd /tmp/git-2.3.5; ./configure && make && sudo make install
+
+zsh:
+	sudo usermod -s /bin/zsh ikushin
 
