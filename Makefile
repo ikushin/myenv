@@ -16,14 +16,13 @@ date:
 	sudo ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 dstat:
-	git clone https://github.com/dagwieers/dstat.git ~/$$HOME
+	git clone https://github.com/dagwieers/dstat.git $$HOME/dstat
 
 git:
 	sudo yum install -y zsh make gcc ncurses-devel zlib-devel curl-devel expat-devel gettext-devel openssl-devel
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-2.3.5.tar.gz -O /tmp/git-2.3.5.tar.gz
 	tar zxf /tmp/git-2.3.5.tar.gz -C /tmp
 	cd /tmp/git-2.3.5; ./configure && make && sudo make install
-	git clone https://github.com/dagwieers/dstat.git ~/$$HOME
 
 zsh:
 	sudo usermod -s /bin/zsh ikushin
