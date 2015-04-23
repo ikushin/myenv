@@ -28,3 +28,6 @@ git:
 zsh:
 	sudo usermod -s /bin/zsh ikushin
 
+epel:
+	yum install -y epel-release
+
