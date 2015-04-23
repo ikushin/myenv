@@ -383,6 +383,7 @@ mkdir -p $HOME/{,sandbox}/Trash
 which dircolors  >/dev/null 2>&1  && eval `dircolors`
 [[ -e $HOME/.zprompt ]] && source $HOME/.zprompt
 [[ -e $HOME/.localrc ]] && source $HOME/.localrc
+source="source"
 
 # for emacs
 if [[ $EMACS = t ]] ;then
@@ -393,6 +394,7 @@ if [[ $EMACS = t ]] ;then
   alias emacs='ls'
   alias git='git --no-pager'
   PROMPT='[(zsh)%~]%(#.#.$) '
+  source=true
 fi
 
 # for cygwin
@@ -410,5 +412,4 @@ fi
 #proxy=
 #export {HTTP{,S}_PROXY,http{,s}_proxy}=$proxy
 
-[[ -e ~/.localrc ]] && source ~/.localrc
-
+[[ -e ~/.localrc ]] && $source ~/.localrc
