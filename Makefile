@@ -1,7 +1,7 @@
 
 cp:
 	for i in zshrc emacs inputrc screenrc vimrc; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
-	[[ -f ~/.localrc ]] || cp zprompt ~/.localrc
+	[ -f ~/.localrc ] || cp zprompt ~/.localrc
 
 ssh:
 	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config
