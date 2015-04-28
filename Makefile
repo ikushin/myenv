@@ -31,3 +31,25 @@ zsh:
 epel:
 	rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 
+apt_proxy:
+	echo 'Acquire::ftp::proxy   "ftp://example.com:8080/"  ;' >>/etc/apt/apt.conf
+	echo 'Acquire::http::proxy  "http://example.com:8080/" ;' >>/etc/apt/apt.conf
+	echo 'Acquire::https::proxy "https://example.com:8080/";' >>/etc/apt/apt.conf
+
+
+wget_proxy:
+	echo 'http_proxy = http://example.com:8080/' >>/etc/wgetrc
+
+yum_proxy:
+	echo 'proxy=http://example.com:8080/' >>/etc/yum.conf
+
+git_proxy:
+	git config --global http.proxy  http://example.com:8080
+	git config --global https.proxy http://example.com:8080
+
+
+
+
+
+
+
