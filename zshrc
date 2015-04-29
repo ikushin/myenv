@@ -218,6 +218,8 @@ alias watch='watch -d'
 alias pstree='pstree -p'
 alias emacs='LANG=ja_JP.UTF8 emacs -nw -f shell'
 alias femacs='emacs $(mktemp --tmpdir=~/sandbox emacs.XXXXXXXXXX)'
+alias em='emacs'
+alias fe='femacs'
 alias svndiff='svn diff --diff-cmd /usr/bin/diff -x "-Nurb"'
 alias dstat='dstat --nocolor --load --cpu --disk --net --tcp --page --sys --proc --mem --swap'
 alias sed='sed --regexp-extended --follow-symlinks'
@@ -238,7 +240,7 @@ alias which='which -a'
 alias fdate='date "+%Y-%m-%d-%H:%M:%S"'
 alias free='free -m'
 alias pkill='pkill -f'
-\pgrep -a init |& grep -q init
+\pgrep -af init |& grep -q init
 [[ $? != 0 ]] && alias pgrep='pgrep -lf' || alias pgrep='pgrep -af'
 
 # end-alias
@@ -381,6 +383,7 @@ mkdir -p $HOME/{,sandbox}/Trash
 which dircolors  >/dev/null 2>&1  && eval `dircolors`
 [[ -e $HOME/.zprompt ]] && source $HOME/.zprompt
 [[ -e $HOME/.localrc ]] && source $HOME/.localrc
+source="source"
 
 # for emacs
 if [[ $EMACS = t ]] ;then
@@ -391,6 +394,7 @@ if [[ $EMACS = t ]] ;then
   alias emacs='ls'
   alias git='git --no-pager'
   PROMPT='[(zsh)%~]%(#.#.$) '
+  source=true
 fi
 
 # for cygwin
@@ -408,3 +412,4 @@ fi
 #proxy=
 #export {HTTP{,S}_PROXY,http{,s}_proxy}=$proxy
 
+[[ -e ~/.localrc ]] && $source ~/.localrc
