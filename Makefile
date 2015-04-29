@@ -46,10 +46,3 @@ yum_proxy:
 git_proxy:
 	git config --global http.proxy  http://example.com:8080
 	git config --global https.proxy http://example.com:8080
-
-
-
-
-
-
-
