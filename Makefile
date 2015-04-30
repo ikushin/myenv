@@ -51,3 +51,6 @@ parallel:
 	wget --no-check-certificate http://ftp.gnu.org/gnu/parallel/parallel-20150422.tar.bz2 -O /tmp/parallel-20150422.tar.bz2
 	tar jxf /tmp/parallel-20150422.tar.bz2 -C /tmp
 	cd /tmp/parallel-20150422/; ./configure && make && make install
+
+pssh:
+	sudo aptitude install -y pssh
