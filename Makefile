@@ -2,6 +2,7 @@
 cp:
 	for i in zshrc emacs inputrc screenrc vimrc; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
 	[ -f ~/.localrc ] || cp zprompt ~/.localrc
+	mkdir -p ~/bin/; [ -f ~/bin/puttylog_archive.sh ] || cp puttylog_archive.sh ~/bin/puttylog_archive.sh
 
 ssh:
 	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config

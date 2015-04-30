@@ -407,7 +407,7 @@ if [[ $OSTYPE == "cygwin" ]]; then
     #mv -f *~Makefile~localrc(L0,a+7.)~user* ~/Trash 2>/dev/null
     mv -f instances.*(L0,a+1.) ~/Trash 2>/dev/null
     #find ~/sandbox -type f -atime +7 | xargs mv -t ~/sandbox/trash
-    [[ -x ~/bin/puttylog_archive.sh ]] && ~/bin/puttylog_archive.sh
+    [[ -e ~/bin/puttylog_archive.sh ]] && bash ~/bin/puttylog_archive.sh
     [ `pwd` = "/usr/bin" ] && cd $HOME
 fi
 
