@@ -251,6 +251,7 @@ alias euc='LANG=ja_JP.eucJP'
 alias utf='LANG=ja_JP.UTF-8'
 alias jap='LANG=C LANGUAGE=C LC_ALL=ja_JP.UTF8'
 alias sjis='LANG=ja_JP.UTF-8 LC_ALL=ja_JP.sjis'
+alias fuck='eval $(thefuck $(fc -ln -1))'
 
 # RPM
 alias rpmqa='rpm -qa'

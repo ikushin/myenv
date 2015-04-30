@@ -55,3 +55,6 @@ parallel:
 apt:
 	sudo apt-get install -y pssh jq aptitude
 
+fuck_dpkg:
+	sudo aptitude install -y python-pip python2.7-dev && sudo pip install thefuck
+
