@@ -6,7 +6,7 @@ cp:
 ssh:
 	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config
 
-apt:
+apt_conf:
 	sudo /bin/sed -ri.org 's@http://[^ ]+ubuntu@http://ftp.jaist.ac.jp/ubuntu@' /etc/apt/sources.list
 
 sudo:
@@ -52,5 +52,6 @@ parallel:
 	tar jxf /tmp/parallel-20150422.tar.bz2 -C /tmp
 	cd /tmp/parallel-20150422/; ./configure && make && make install
 
-pssh:
-	sudo aptitude install -y pssh
+apt:
+	sudo apt-get install -y pssh jq aptitude
+
