@@ -46,3 +46,8 @@ yum_proxy:
 git_proxy:
 	git config --global http.proxy  http://example.com:8080
 	git config --global https.proxy http://example.com:8080
+
+parallel:
+	wget --no-check-certificate http://ftp.gnu.org/gnu/parallel/parallel-20150422.tar.bz2 -O /tmp/parallel-20150422.tar.bz2
+	tar jxf /tmp/parallel-latest.tar.bz2 -C /tmp
+	cd /tmp/parallel-20150422/; ./configure && make && make install

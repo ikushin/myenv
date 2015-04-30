@@ -343,6 +343,7 @@ case $OSTYPE in
       alias exp='explorer . &'
       alias open='/usr/bin/cygstart'
       alias ifconfig='/cygdrive/c/WINDOWS/system32/ipconfig'
+      alias sudo=''
       #alias ping='ping -t'
       #alias ping='/cygdrive/c/Windows/System32/ping -t'
       alias -g CLIP='>/dev/clipboard 2>&1'
