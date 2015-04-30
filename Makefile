@@ -54,3 +54,6 @@ parallel:
 
 pssh:
 	sudo aptitude install -y pssh
+
+fuck_dpkg:
+	sudo aptitude install -y python-pip python2.7-dev && sudo pip install thefuck
