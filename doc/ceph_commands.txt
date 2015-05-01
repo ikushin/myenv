@@ -1,0 +1,46 @@
+
+
+■rbd
+rbd create block-device --size 10240
+rdb ls --pool rbd
+rbd --image block-device info --pool rbd
+modprobe rbd && sudo rbd map rbd/block-device
+modprobe rbd && sudo rbd map --image block-device
+rbd showmapped
+
+■rados
+rados lspools
+rados --pool=rbd ls
+rados df
+
+■osd
+ceph osd ls
+ceph osd stat
+ceph osd tree
+ceph osd getcrushmap | crushtool -d - -o crushmap.txt
+ceph osd poll create new-pool 128(pg) 128(pgp)
+ceph osd dump | grep pool
+
+■map
+ceph {mon|osd|pg|osd} crush dump
+
+■monitor
+ceph mon_status J
+ceph {status|-s}
+
+
+■Monitoring
+ceph health
+ceph status [detail]
+ceph df
+ceph auth list
+
+ceph mon stat
+ceph mon dump
+ceph quorum_status ←重要！
+
+ceph daemon {daemon-type}.{id} config show | less
+※daemonが起動しているnodeで実施
+
+
+

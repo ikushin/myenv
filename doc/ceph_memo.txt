@@ -1,0 +1,44 @@
+
+Btrfs:
+・最高パフォーマンス
+・XFSと比較して実績が少ない(RHEL7でTechnology Preview)
+・XFSの短所と裏返し
+
+
+XFS:
+・if your journal disk that hosts multiple OSDs running on XFS or ext4 filesystems fails, you will lose your OSD and its data.
+ → 複数のOSDをhostしているjournal diskがfailしたら、OSDとdataが失われる。
+・Cephに加えてXFS自体もjournalするので、冗長
+
+
+
+・Using SSDs as journals
+you should not exceed OSD to journal ratio of 4 to 5 OSDs per journal disk
+ → SSD１つにつき4-5のOSDと言っている？
+
+
+OSD一つにつき2GBのメモリ
+ → メモリと比較してOSDが多い時はRAIDINGは有効。
+
+cluster map:
+The cluster map includes the monitor, OSD, PG, CRUSH, and MDS maps.
+
+
+PG:
+PlacementGroup
+http://blog.bit-isle.jp/bird/wp-content/uploads/sites/5/2014/06/obj_pool_osd.png
+
+CRUAH:
+RADOS は CRUSH(Controlled Replication Under Scalable Hashing) と呼ぶアルゴリズム
+でこれを解決している。 CRUSH は階層化された consistent hash であり、同時にクラス
+タのネットワークトポロジーやディスクの性質によりユーザがルールセット(rule set)を
+設定することで目的に応じた構成を可能にしている。
+
+
+
+パフォーマンスの観点から、ジャーナルディスクを分離することを考慮する必要がある
+一つのSSDジャーナルディスク
+
+
+
+容量制限について調べる
