@@ -56,7 +56,7 @@ parallel:
 	cd /tmp/parallel-20150422/; ./configure && make && make install
 
 apt:
-	sudo apt-get install -y pssh jq aptitude
+	sudo apt-get install -y pssh jq aptitude ncdu
 
 fuck_dpkg:
 	sudo aptitude install -y python-pip python2.7-dev && sudo pip install thefuck
