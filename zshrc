@@ -170,7 +170,9 @@ function pcflow() {
         | sed -e 's/\({   0} +-\([^ ]*\).*\)/\n\n\2\n\1/'
 }
 
-
+function pdf() {
+	sudo du -d 1 | perl -nle 'my %a;($a{u},$a{d})=split(/\s/);push(@a,\%a);END{map{printf "%.2f %16d %s\n",$_->{u}/$a[-1]->{u},$_->{u},$_->{d}}@a}'
+}
 
 # PATH
 path=( $HOME/*bin(N-/) /usr{/local,}/bin(N-/) /opt/*/*bin(N-/) /opt/*/*/*bin(N-/) \
@@ -198,7 +200,6 @@ alias locate='locate -r'
 alias df='df -PTh'
 alias df.='df .'
 alias dfx='df -x tmpfs -x devtmpfs'
-alias pdf="du -d 1 | perl -nle 'my %a;($a{u},$a{d})=split(/\s/);push(@a,\%a);END{map{printf "%.2f %16d %s\n",$_->{u}/$a[-1]->{u},$_->{u},$_->{d}}@a}'"
 alias view='vi -R'
 alias grep='egrep --color=auto'
 alias igrep='grep -i'
