@@ -26,7 +26,10 @@ git:
 	cd /tmp/git-2.3.5; ./configure && make && sudo make install
 
 zsh:
-	sudo usermod -s /bin/zsh ikushin
+	sudo yum install -y zsh make gcc ncurses-devel zlib-devel curl-devel expat-devel gettext-devel openssl-devel autoconf
+	git clone git://git.code.sf.net/p/zsh/code /tmp/zsh
+	cd /tmp/zsh && ./Util/preconfig && ./configure && make && sudo make install.bin
+	sudo usermod -s /usr/local//bin/zsh ikushin
 
 epel:
 	rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
