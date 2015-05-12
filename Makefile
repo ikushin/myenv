@@ -29,7 +29,8 @@ git:
 	cd /tmp/git-2.3.5; ./configure && make && sudo make install
 
 zsh:
-	sudo usermod -s /bin/zsh ikushin
+	sudo yum install -y zsh make gcc ncurses-devel zlib-devel curl-devel expat-devel gettext-devel openssl-devel
+	git clone git://git.code.sf.net/p/zsh/code zsh
 
 epel:
 	rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
@@ -60,4 +61,7 @@ apt:
 
 fuck_dpkg:
 	sudo aptitude install -y python-pip python2.7-dev && sudo pip install thefuck
+
+ansible:
+	sudo aptitude install -y ansible
 
