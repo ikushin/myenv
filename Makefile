@@ -3,10 +3,13 @@ cp:
 	for i in zshrc emacs inputrc screenrc vimrc; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
 	[ -f ~/.localrc ] || cp zprompt ~/.localrc
 
+cygwin:
+	mkdir -p ~/bin/; [ -f ~/bin/puttylog_archive.sh ] || cp puttylog_archive.sh ~/bin/puttylog_archive.sh
+
 ssh:
 	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config
 
-apt:
+apt_conf:
 	sudo /bin/sed -ri.org 's@http://[^ ]+ubuntu@http://ftp.jaist.ac.jp/ubuntu@' /etc/apt/sources.list
 
 sudo:
@@ -55,8 +58,9 @@ parallel:
 	tar jxf /tmp/parallel-20150422.tar.bz2 -C /tmp
 	cd /tmp/parallel-20150422/; ./configure && make && make install
 
-pssh:
-	sudo aptitude install -y pssh
+apt:
+	sudo apt-get install -y pssh jq aptitude ncdu
 
 fuck_dpkg:
 	sudo aptitude install -y python-pip python2.7-dev && sudo pip install thefuck
+

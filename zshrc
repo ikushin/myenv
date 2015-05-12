@@ -170,7 +170,9 @@ function pcflow() {
         | sed -e 's/\({   0} +-\([^ ]*\).*\)/\n\n\2\n\1/'
 }
 
-
+function pdf() {
+	sudo du -d 1 | perl -nle 'my %a;($a{u},$a{d})=split(/\s/);push(@a,\%a);END{map{printf "%.2f %16d %s\n",$_->{u}/$a[-1]->{u},$_->{u},$_->{d}}@a}'
+}
 
 # PATH
 path=( $HOME/*bin(N-/) /usr{/local,}/bin(N-/) /opt/*/*bin(N-/) /opt/*/*/*bin(N-/) \
@@ -218,7 +220,7 @@ alias watch='watch -d'
 alias pstree='pstree -p'
 alias emacs='LANG=ja_JP.UTF8 emacs -nw -f shell'
 alias femacs='emacs $(mktemp --tmpdir=~/sandbox emacs.XXXXXXXXXX)'
-alias em='emacs'
+alias ema='emacs'
 alias fe='femacs'
 alias svndiff='svn diff --diff-cmd /usr/bin/diff -x "-Nurb"'
 alias dstat='dstat --nocolor --load --cpu --disk --net --tcp --page --sys --proc --mem --swap'
@@ -407,7 +409,7 @@ if [[ $OSTYPE == "cygwin" ]]; then
     #mv -f *~Makefile~localrc(L0,a+7.)~user* ~/Trash 2>/dev/null
     mv -f instances.*(L0,a+1.) ~/Trash 2>/dev/null
     #find ~/sandbox -type f -atime +7 | xargs mv -t ~/sandbox/trash
-    [[ -x ~/bin/puttylog_archive.sh ]] && ~/bin/puttylog_archive.sh
+    [[ -e ~/bin/puttylog_archive.sh ]] && bash ~/bin/puttylog_archive.sh
     [ `pwd` = "/usr/bin" ] && cd $HOME
 fi
 
