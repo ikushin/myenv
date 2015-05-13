@@ -20,7 +20,8 @@ date:
 	sudo ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 dstat:
-	git clone https://github.com/dagwieers/dstat.git $$HOME/dstat
+	mkdir $$HOME/bin
+	git clone https://github.com/dagwieers/dstat.git $$HOME/bin/dstat
 
 git:
 	sudo yum install -y zsh make gcc ncurses-devel zlib-devel curl-devel expat-devel gettext-devel openssl-devel
