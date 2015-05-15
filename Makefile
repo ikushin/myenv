@@ -1,6 +1,10 @@
 # 1. apt_proxy or yum_proxy
-# 2. apt_conf and update and upgrade
-# 3. git
+# 2. install make && make apt_conf && make wget_proxy && make git_apt
+# 3. adduser
+# 4. ssh-copy-id
+# 5. scp ~/.ssh/ikushin.id_rsa ubuntu:~/.ssh
+# 6. make git_clone
+# 7. make git_proxy
 
 cp:
 	for i in zshrc emacs inputrc screenrc vimrc; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
@@ -14,7 +18,8 @@ ssh:
 
 apt_conf:
 	sudo /bin/sed -ri.org 's@http://[^ ]+ubuntu@http://ftp.jaist.ac.jp/ubuntu@' /etc/apt/sources.list
-
+	aptitude update && aptitude upgrade
+	
 sudo:
 	echo 'Defaults:ikushin !requiretty' > /etc/sudoers.d/ikushin
 	echo 'ikushin ALL = (root) NOPASSWD:ALL' >>/etc/sudoers.d/ikushin
@@ -30,8 +35,14 @@ git:
 	sudo yum install -y zsh make gcc ncurses-devel zlib-devel curl-devel expat-devel gettext-devel openssl-devel
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-2.3.5.tar.gz -O /tmp/git-2.3.5.tar.gz
 	tar zxf /tmp/git-2.3.5.tar.gz -C /tmp
-	cd /tmp/git-2.3.5; ./configure && make && sudo make install
+	cd /tmp/git-2.3.5; ./configure --without-tcltk && make && sudo make install
 
+git_apt:
+	aptitude install -y zsh make gcc ncurses-dev zlib-dev curl-dev expat-dev gettext-dev openssl-dev zlib1g-dev gettext 
+	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-2.3.5.tar.gz -O /tmp/git-2.3.5.tar.gz
+	tar zxf /tmp/git-2.3.5.tar.gz -C /tmp
+	cd /tmp/git-2.3.5; ./configure && make && sudo make install
+	
 zsh:
 	sudo yum install -y zsh make gcc ncurses-devel zlib-devel curl-devel expat-devel gettext-devel openssl-devel autoconf
 	git clone git://git.code.sf.net/p/zsh/code /tmp/zsh
@@ -40,15 +51,15 @@ zsh:
 
 epel:
 	rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-
+	
 apt_proxy:
 	echo 'Acquire::ftp::proxy   "ftp://example.com:8080/"  ;' >>/etc/apt/apt.conf
 	echo 'Acquire::http::proxy  "http://example.com:8080/" ;' >>/etc/apt/apt.conf
 	echo 'Acquire::https::proxy "https://example.com:8080/";' >>/etc/apt/apt.conf
 
-
 wget_proxy:
 	echo 'http_proxy = http://example.com:8080/' >>/etc/wgetrc
+	echo 'https_proxy = https://example.com:8080/' >>/etc/wgetrc
 
 yum_proxy:
 	echo 'proxy=http://example.com:8080/' >>/etc/yum.conf
@@ -70,4 +81,12 @@ fuck_dpkg:
 
 ansible:
 	sudo aptitude install -y ansible
+	
+adduser:
+	useradd -m -s /bin/zsh -p '$6$XYCe4cG6$T/Is4TiopXaf8E06g6AKStbze2ENmhEsmOkC0mVacSWxHHLdff1kNF1EfSsKQpuvaniVwrdzZAOaKrgXagbjC1' ikushin
 
+git_clone:
+	echo 'IdentityFile=~/.ssh/ikushin.id_rsa' >.ssh/config
+	git clone git@github.com:ikushin/myenv.git ~/.myenv
+	rm -f ~/.ssh/config
+	cd ~/.myenv && git config --global push.default simple
