@@ -1,3 +1,6 @@
+# 1. apt_proxy or yum_proxy
+# 2. apt_conf and update and upgrade
+# 3. git
 
 cp:
 	for i in zshrc emacs inputrc screenrc vimrc; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
