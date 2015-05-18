@@ -5,6 +5,7 @@
 # 5. scp ~/.ssh/ikushin.id_rsa ubuntu:~/.ssh
 # 6. make git_clone
 # 7. make git_proxy
+# 8. make sudo
 
 cp:
 	for i in zshrc emacs inputrc screenrc vimrc; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
@@ -23,6 +24,7 @@ apt_conf:
 sudo:
 	echo 'Defaults:ikushin !requiretty' > /etc/sudoers.d/ikushin
 	echo 'ikushin ALL = (root) NOPASSWD:ALL' >>/etc/sudoers.d/ikushin
+	chmod 0440 /etc/sudoers.d/ikushin
 
 date:
 	sudo ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
