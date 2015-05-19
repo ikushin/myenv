@@ -1,5 +1,5 @@
 # 1. apt_proxy or yum_proxy
-# 2. apt-get install -y aptigude make && make apt_conf && make wget_proxy && make git_apt
+# 2. apt-get install -y aptigude make && make apt_conf && make wget_proxy && make package && make git_apt
 # 3. make adduser && make sudo
 # 4. ssh-copy-id
 # 5. scp ~/.ssh/ikushin.id_rsa ubuntu:~/.ssh
@@ -18,10 +18,14 @@ cygwin:
 ssh:
 	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config
 
+package:
+	[ $(grep -q "Ubuntu" /etc/lsb-release) ] || aptitude install -y zsh make gcc ncurses-dev zlib-dev curl-dev expat-dev gettext-dev openssl-dev zlib1g-dev gettext jq ncdu pssh
+	[ $(grep -q "CentOS" /etc/lsb-release) ] || yum install -y zsh make gcc ncurses-devel zlib-devel curl-devel expat-devel gettext-devel openssl-devel autoconf
+
 apt_conf:
 	sudo /bin/sed -ri.org 's@http://[^ ]+ubuntu@http://ftp.jaist.ac.jp/ubuntu@' /etc/apt/sources.list
-	aptitude update && aptitude -y upgrade
-	
+	apt-get update && apt-get -y upgrade
+
 sudo:
 	echo 'Defaults:ikushin !requiretty' > /etc/sudoers.d/ikushin
 	echo 'ikushin ALL = (root) NOPASSWD:ALL' >>/etc/sudoers.d/ikushin
@@ -35,26 +39,23 @@ dstat:
 	git clone https://github.com/dagwieers/dstat.git $$HOME/bin/dstat
 
 git:
-	sudo yum install -y zsh make gcc ncurses-devel zlib-devel curl-devel expat-devel gettext-devel openssl-devel
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-2.3.5.tar.gz -O /tmp/git-2.3.5.tar.gz
 	tar zxf /tmp/git-2.3.5.tar.gz -C /tmp
 	cd /tmp/git-2.3.5; ./configure --without-tcltk && make && sudo make install
 
 git_apt:
-	aptitude install -y zsh make gcc ncurses-dev zlib-dev curl-dev expat-dev gettext-dev openssl-dev zlib1g-dev gettext 
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-2.3.5.tar.gz -O /tmp/git-2.3.5.tar.gz
 	tar zxf /tmp/git-2.3.5.tar.gz -C /tmp
 	cd /tmp/git-2.3.5; ./configure && make && sudo make install
-	
+
 zsh:
-	sudo yum install -y zsh make gcc ncurses-devel zlib-devel curl-devel expat-devel gettext-devel openssl-devel autoconf
 	git clone git://git.code.sf.net/p/zsh/code /tmp/zsh
 	cd /tmp/zsh && ./Util/preconfig && ./configure && make && sudo make install.bin
 	sudo usermod -s /usr/local//bin/zsh ikushin
 
 epel:
 	rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-	
+
 apt_proxy:
 	echo 'Acquire::ftp::proxy   "ftp://example.com:8080/"  ;' >>/etc/apt/apt.conf
 	echo 'Acquire::http::proxy  "http://example.com:8080/" ;' >>/etc/apt/apt.conf
@@ -76,15 +77,12 @@ parallel:
 	tar jxf /tmp/parallel-20150422.tar.bz2 -C /tmp
 	cd /tmp/parallel-20150422/; ./configure && make && make install
 
-apt:
-	sudo apt-get install -y pssh jq aptitude ncdu
-
 fuck_dpkg:
 	sudo aptitude install -y python-pip python2.7-dev && sudo pip install thefuck
 
 ansible:
 	sudo aptitude install -y ansible
-	
+
 adduser:
 	useradd -m -s /bin/zsh -p '$$6$$XYCe4cG6$$T/Is4TiopXaf8E06g6AKStbze2ENmhEsmOkC0mVacSWxHHLdff1kNF1EfSsKQpuvaniVwrdzZAOaKrgXagbjC1' ikushin
 

@@ -43,4 +43,6 @@ ceph daemon {daemon-type}.{id} config show | less
 ※daemonが起動しているnodeで実施
 
 
+■ADMIN TASKS
+ceph-deploy config push {host-name [host-name]...}
 
