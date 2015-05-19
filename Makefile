@@ -8,7 +8,8 @@
 
 cp:
 	for i in zshrc emacs inputrc screenrc vimrc; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
-	[ -f ~/.localrc ] || cp zprompt ~/.localrc
+	[[ -e ~/.localrc ]] || /bin/cp zprompt ~/.localrc
+	[[ -e ~/.ssh/config ]] || /bin/cp config ~/.ssh/config
 
 cygwin:
 	mkdir -p ~/bin/; [ -f ~/bin/puttylog_archive.sh ] || cp puttylog_archive.sh ~/bin/puttylog_archive.sh
