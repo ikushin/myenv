@@ -5,6 +5,7 @@
 # 5. scp ~/.ssh/ikushin.id_rsa ubuntu:~/.ssh
 # 6. make git_clone
 # 7. make git_proxy
+# 8. make date
 
 cp:
 	for i in zshrc emacs inputrc screenrc vimrc; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
