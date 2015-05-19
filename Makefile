@@ -1,11 +1,10 @@
 # 1. apt_proxy or yum_proxy
-# 2. install make && make apt_conf && make wget_proxy && make git_apt
-# 3. adduser
+# 2. apt-get install -y aptigude make && make apt_conf && make wget_proxy && make git_apt
+# 3. make adduser && make sudo
 # 4. ssh-copy-id
 # 5. scp ~/.ssh/ikushin.id_rsa ubuntu:~/.ssh
 # 6. make git_clone
 # 7. make git_proxy
-# 8. make sudo
 
 cp:
 	for i in zshrc emacs inputrc screenrc vimrc; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
@@ -19,7 +18,7 @@ ssh:
 
 apt_conf:
 	sudo /bin/sed -ri.org 's@http://[^ ]+ubuntu@http://ftp.jaist.ac.jp/ubuntu@' /etc/apt/sources.list
-	aptitude update && aptitude upgrade
+	aptitude update && aptitude -y upgrade
 	
 sudo:
 	echo 'Defaults:ikushin !requiretty' > /etc/sudoers.d/ikushin
@@ -85,7 +84,7 @@ ansible:
 	sudo aptitude install -y ansible
 	
 adduser:
-	useradd -m -s /bin/zsh -p '$6$XYCe4cG6$T/Is4TiopXaf8E06g6AKStbze2ENmhEsmOkC0mVacSWxHHLdff1kNF1EfSsKQpuvaniVwrdzZAOaKrgXagbjC1' ikushin
+	useradd -m -s /bin/zsh -p '$$6$$XYCe4cG6$$T/Is4TiopXaf8E06g6AKStbze2ENmhEsmOkC0mVacSWxHHLdff1kNF1EfSsKQpuvaniVwrdzZAOaKrgXagbjC1' ikushin
 
 git_clone:
 	echo 'IdentityFile=~/.ssh/ikushin.id_rsa' >.ssh/config
