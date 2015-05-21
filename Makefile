@@ -84,5 +84,5 @@ adduser:
 git_clone:
 	echo 'IdentityFile=~/.ssh/ikushin.id_rsa' >.ssh/config
 	git clone git@github.com:ikushin/myenv.git ~/.myenv
-	rm -f ~/.ssh/config
-	cd ~/.myenv && git config --global push.default simple
+	rm -f ~/.ssh/config ~/Makefile
+	cd ~/.myenv && git config --global push.default simple && make cp
