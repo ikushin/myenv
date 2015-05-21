@@ -42,6 +42,8 @@ git:
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-2.3.5.tar.gz -O /tmp/git-2.3.5.tar.gz
 	tar zxf /tmp/git-2.3.5.tar.gz -C /tmp
 	cd /tmp/git-2.3.5; ./configure --without-tcltk && make && sudo make install
+	git config --global user.email "you@example.com"
+	git config --global user.name "ikushin"
 
 zsh:
 	git clone git://git.code.sf.net/p/zsh/code /tmp/zsh
