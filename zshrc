@@ -302,6 +302,9 @@ alias -g s2u='|& lv -Is   -Ou8   | cat'
 
 alias -s 'gz'='tar zxvf'
 
+hash -d myenv=~/.myenv
+hash -d ssh=~/.ssh
+
 # for every OS
 case $OSTYPE in
   linux-gnu)
