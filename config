@@ -22,3 +22,6 @@ Host host03_web
         LocalForward 10080 host03:80
         Hostname proxy
         User proxy
+
+Host github.com
+    IdentityFile ~/.ssh/github_id_rsa
