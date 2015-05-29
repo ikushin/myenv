@@ -267,8 +267,6 @@ alias rpmqf='rpm -qf'
 alias rpmqi='rpm -qi'
 alias rpmqlp='rpm -qlp'
 alias rpmqip='rpm -qip'
-alias vagrant='/cygdrive/c/HashiCorp/Vagrant/bin/vagrant'
-
 
 # galiases
 alias -g L='|&less -SL'
