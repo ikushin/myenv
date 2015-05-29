@@ -322,6 +322,7 @@ case $OSTYPE in
           alias rpmqi='dpkg -s'
           alias rpmqlp='dpkg -c'
           alias rpmqip='dpkg -I'
+          alias free='free -h'
       fi
 
       ;;
