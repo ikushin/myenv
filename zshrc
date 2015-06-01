@@ -224,12 +224,12 @@ alias em='emacs'
 alias fe='femacs'
 alias fem='femacs'
 alias svndiff='svn diff --diff-cmd /usr/bin/diff -x "-Nurb"'
-alias dstat='~/bin/dstat/dstat --nocolor --load --cpu --disk --net --tcp --page --sys --proc --mem --swap --bits'
-alias dstat-full='~/bin/dstat/dstat -Tclmdrn --bits --nocolor'
-alias dstat-mem='~/bin/dstat/dstat -Tclm --bits --nocolor'
-alias dstat-cpu='~/bin/dstat/dstat -Tclr --bits --nocolor'
-alias dstat-net='~/bin/dstat/dstat -Tclnd --bits --nocolor'
-alias dstat-disk='~/bin/dstat/dstat -Tcldr --bits --nocolor'
+alias dstat-full='\dstat -clmdrn --bits --nocolor'
+alias dstat-mem='\dstat  -clm    --bits --nocolor'
+alias dstat-cpu='\dstat  -clr    --bits --nocolor'
+alias dstat-net='\dstat  -clnd   --bits --nocolor'
+alias dstat-disk='\dstat -cldr   --bits --nocolor'
+alias dstat='\dstat --nocolor --load --cpu --disk --net --tcp --page --sys --proc --mem --swap --bits'
 alias sed='sed --regexp-extended --follow-symlinks'
 #alias sar='sar -q'
 alias tcpdump='tcpdump -nnn'
@@ -268,8 +268,6 @@ alias rpmqf='rpm -qf'
 alias rpmqi='rpm -qi'
 alias rpmqlp='rpm -qlp'
 alias rpmqip='rpm -qip'
-alias vagrant='/cygdrive/c/HashiCorp/Vagrant/bin/vagrant'
-
 
 # galiases
 alias -g L='|&less -SL'
@@ -325,6 +323,8 @@ case $OSTYPE in
           alias rpmqi='dpkg -s'
           alias rpmqlp='dpkg -c'
           alias rpmqip='dpkg -I'
+          alias free='free -h'
+          alias netstat='/bin/netstat  --numeric --tcp -4 --listen --program'
       fi
 
       ;;
