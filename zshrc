@@ -369,6 +369,7 @@ case $OSTYPE in
       cdpath=( $cdpath /cygdrive/d/system/My\ Documents )
       path=( $path )
       bindkey -s "^[c"  'git commit -a -m "Update"; git push origin master '
+      alias vagrant='/cygdrive/c/HashiCorp/Vagrant/bin/vagrant'
       ;;
   minix)
       alias -g L='|&less'
