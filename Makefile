@@ -19,7 +19,7 @@ ssh:
 	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config
 
 package:
-	grep -q "Ubuntu" /etc/lsb-release; [ $$? -eq 0 ] && sudo aptitude install -y zsh make gcc ncurses-dev gettext jq ncdu pssh libcurl4-openssl-dev emacs; true
+	grep -q "Ubuntu" /etc/lsb-release; [ $$? -eq 0 ] && sudo aptitude install -y autoconf zsh make gcc ncurses-dev gettext jq ncdu pssh libcurl4-openssl-dev emacs; true
 	[ -x /usr/bin/yum ] && sudo yum install -y zsh make gcc ncurses-devel zlib-devel curl-devel expat-devel gettext-devel openssl-devel autoconf emacs; true
 
 apt_conf:
