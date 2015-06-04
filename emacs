@@ -26,8 +26,8 @@
 
 
 ;; dired ls option
-;(setq dired-listing-switches "-ltrh --group-directories-first --time-style=long-iso")
-(setq dired-listing-switches "-lh --group-directories-first --time-style=long-iso")
+(setq dired-listing-switches "-ltrh --group-directories-first --time-style=long-iso")
+;(setq dired-listing-switches "-lh --group-directories-first --time-style=long-iso")
 
 ;; yes -> SPC
 (fset 'yes-or-no-p 'y-or-n-p)
