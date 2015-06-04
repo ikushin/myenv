@@ -64,7 +64,7 @@ bindkey "^[H"  backward-kill-word
 bindkey "^[h"  backward-kill-word
 bindkey "^[^H" run-help
 
-bindkey -s "^[g"  '| egrep -v "\^[[:space:]]*#|\^\$" '
+bindkey -s "^[g"  '| egrep -v "\^[[:space:]]*(#|$)" '
 bindkey -s "^[f"  "| fgrep -v ?"
 
 # git key binds
