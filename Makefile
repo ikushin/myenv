@@ -51,12 +51,13 @@ zsh:
 	sudo usermod -s /usr/local//bin/zsh ikushin
 
 epel:
-	rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+	grep -q 'release 6' /etc/issue && rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm; true
+	grep -q 'release 5' /etc/issue && rpm -Uvh http://dl.fedoraproject.org/pub/epel/5/x86_64/epel-release-5-4.noarch.rpm; true
 
 apt_proxy:
-	echo 'Acquire::ftp::proxy   "ftp://example.com:8080/"  ;' >>/etc/apt/apt.conf
-	echo 'Acquire::http::proxy  "http://example.com:8080/" ;' >>/etc/apt/apt.conf
-	echo 'Acquire::https::proxy "https://example.com:8080/";' >>/etc/apt/apt.conf
+	echo 'Acquire::ftp::proxy   "ftp://example.com:8080/"  ;' | sudo tee -a /etc/apt/apt.conf
+	echo 'Acquire::http::proxy  "http://example.com:8080/" ;' | sudo tee -a /etc/apt/apt.conf
+	echo 'Acquire::https::proxy "https://example.com:8080/";' | sudo tee -a /etc/apt/apt.conf
 
 wget_proxy:
 	echo 'http_proxy = http://example.com:8080/' >>/etc/wgetrc
