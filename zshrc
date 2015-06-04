@@ -222,6 +222,7 @@ alias emacs='LANG=ja_JP.UTF8 emacs -nw -f shell'
 alias femacs='emacs $(mktemp --tmpdir=~/sandbox emacs.XXXXXXXXXX)'
 alias em='emacs'
 alias fe='femacs'
+alias fem='femacs'
 alias svndiff='svn diff --diff-cmd /usr/bin/diff -x "-Nurb"'
 alias dstat-full='\dstat -clmdrn --bits --nocolor'
 alias dstat-mem='\dstat  -clm    --bits --nocolor'
@@ -368,6 +369,7 @@ case $OSTYPE in
       cdpath=( $cdpath /cygdrive/d/system/My\ Documents )
       path=( $path )
       bindkey -s "^[c"  'git commit -a -m "Update"; git push origin master '
+      alias vagrant='/cygdrive/c/HashiCorp/Vagrant/bin/vagrant'
       ;;
   minix)
       alias -g L='|&less'
