@@ -72,7 +72,7 @@ bindkey -s "^[s"  "git status -s "
 bindkey -s "^[l"  "git log -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t "
 bindkey -s "^[b"  "git branch "
 bindkey -s "^[f"  "git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol "
-bindkey -s "^[c"  'git commit -a -m "Update"; git push origin master '
+bindkey -s "^[c"  'git pull && git commit -a -m "Update"; git push origin master '
 bindkey -s "^[v"  "git checkout "
 bindkey -s "^[p"  "git push origin master "
 bindkey -s "^[z"  "scp .zshrc .zprompt .emacs .screenrc "
