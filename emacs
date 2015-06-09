@@ -211,3 +211,6 @@
 ;             nil
 ;             '(("\t" 0 'trailing-whitespace prepend)))))
 ;
+
+;; コンパイルする前に全バッファ保存する
+(setq compilation-ask-about-save nil)
