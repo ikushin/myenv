@@ -19,7 +19,7 @@ ssh:
 	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config
 
 package:
-	grep -q "Ubuntu" /etc/lsb-release; [ $$? -eq 0 ] && sudo aptitude install -y autoconf zsh make gcc ncurses-dev gettext jq ncdu pssh libcurl4-openssl-dev emacs; true
+	grep -q "Ubuntu" /etc/lsb-release; [ $$? -eq 0 ] && sudo aptitude install -y git autoconf zsh make gcc ncurses-dev gettext jq ncdu pssh libcurl4-openssl-dev emacs; true
 	[ -x /usr/bin/yum ] && sudo yum install -y zsh make gcc ncurses-devel zlib-devel curl-devel expat-devel gettext-devel openssl-devel autoconf emacs; true
 
 apt_conf:
@@ -89,3 +89,8 @@ git_clone:
 	git clone git@github.com:ikushin/myenv.git ~/.myenv
 	rm -f ~/.ssh/config ~/Makefile
 	cd ~/.myenv && git config --global push.default simple && make cp
+	
+clone_https:
+	git clone https://github.com/ikushin/myenv.git ~/.myenv
+	cd ~/.myenv && git config --global push.default simple && make cp
+	
