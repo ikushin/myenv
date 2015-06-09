@@ -217,5 +217,6 @@
 (setq compilation-ask-about-save nil)
 
 ;; キルリングの内容を視覚化する
+(require 'browse-kill-ring)
 (browse-kill-ring-default-keybindings)
 
