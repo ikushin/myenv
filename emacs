@@ -215,3 +215,7 @@
 
 ;; コンパイルする前に全バッファ保存する
 (setq compilation-ask-about-save nil)
+
+;; キルリングの内容を視覚化する
+(browse-kill-ring-default-keybindings)
+
