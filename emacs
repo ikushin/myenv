@@ -5,7 +5,7 @@
 (setq inhibit-default-init t)
 (setq scroll-step 1)
 (setq dabbrev-case-fold-search nil)
-(add-to-list 'load-path "~/lisp")
+(add-to-list 'load-path "~/.lisp")
 (add-to-list 'load-path "~/lisp/apel")
 (add-to-list 'load-path "~/lisp/emu")
 (add-to-list 'load-path "~/lisp/emacs-w3m")
@@ -102,8 +102,9 @@
   (if (eq major-mode 'dired-mode)
       (kill-buffer my-dired-before-buffer)))
 
-;; minibuffer TAB TAB
-;(require 'minibuffer-complete-cycle)
+;; ミニバッファでの補完を TAB だけで行う
+(require 'minibuffer-complete-cycle)
+(and (load "minibuffer-complete-cycle") (setq minibuffer-complete-cycle t))
 
 ;; minibuffer isearch
 ;(require 'minibuf-isearch)
