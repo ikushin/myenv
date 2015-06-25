@@ -223,3 +223,6 @@
 ;; オートインデントでスペースを使う
 (setq-default indent-tabs-mode nil)
 
+;; 現在の関数名を表示する
+(which-function-mode 1)
+
