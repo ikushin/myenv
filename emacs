@@ -220,3 +220,6 @@
 (require 'browse-kill-ring)
 (browse-kill-ring-default-keybindings)
 
+;; オートインデントでスペースを使う
+(setq-default indent-tabs-mode nil)
+
