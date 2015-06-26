@@ -226,3 +226,6 @@
 ;; 現在の関数名を表示する
 (which-function-mode 1)
 
+;; php-mode
+(load "php-mode")
+
