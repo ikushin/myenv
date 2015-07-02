@@ -117,6 +117,10 @@ function org() {
   cp -a $1{,.org}
 }
 
+function pass() {
+    cat $1 >/dev/clipboard 2>&1
+}
+
 function bak() {
   cp $1{,.bak}
 }
