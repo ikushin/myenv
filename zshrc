@@ -375,6 +375,7 @@ case $OSTYPE in
       path=( $path )
       bindkey -s "^[c"  'git commit -a -m "Update"; git push origin master '
       alias vagrant='/cygdrive/c/HashiCorp/Vagrant/bin/vagrant'
+      alias sed='sed --regexp-extended'
       ;;
   minix)
       alias -g L='|&less'
