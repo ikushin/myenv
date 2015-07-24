@@ -66,8 +66,8 @@
 (global-set-key "\M-g" 'goto-line)
 
 (define-key global-map [f1] 'woman)
-;(define-key global-map [f3] 'previous-error)
-;(define-key global-map [f4] 'next-error)
+(define-key global-map [f3] 'previous-error)
+(define-key global-map [f4] 'next-error)
 ;(define-key global-map [(shift f4)] 'previous-error)
 ;(define-key global-map [f7] 'compile)
 (define-key global-map "\M-oP" 'woman)
