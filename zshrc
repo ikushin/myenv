@@ -106,7 +106,7 @@ export LESSCHARSET=utf-8
 
 # convenient variable
 host=${HOST%%.*}
-today=$( date +%Y%m%d )
+today=$( /bin/date +%Y%m%d )
 yesterday=`date --date "1 day ago" +%Y%m%d` 2>/dev/null
 
 # man
