@@ -226,10 +226,8 @@
 ;; 現在の関数名を表示する
 (which-function-mode 1)
 
-;; php-mode
-(load "php-mode")
-
 ;;通常のウィンドウ用の設定
 (setq-default truncate-lines t)
 ;;ウィンドウを左右に分割したとき用の設定
 (setq-default truncate-partial-width-windows t)
+
