@@ -106,8 +106,8 @@ export LESSCHARSET=utf-8
 
 # convenient variable
 host=${HOST%%.*}
-#today=$( $(which date) +%Y%m%d)
-#yesterday=`date --date "1 day ago" +%Y%m%d` 2>/dev/null
+today=$( $(which date) +%Y%m%d)
+yesterday=`date --date "1 day ago" +%Y%m%d` 2>/dev/null
 
 # man
 manpath=( /usr/share/man/ja(N-/) /usr/share/man(N-/) /usr/local/man(N-/) )
