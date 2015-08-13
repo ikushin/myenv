@@ -270,8 +270,11 @@ alias which='which -a'
 alias fdate='date "+%Y-%m-%d-%H:%M:%S"'
 alias free='free -m'
 alias pkill='pkill -f'
+alias rep='em ~/sandbox/WeeklyReport'
+
+# pgrep
 \pgrep -af init |& grep -q init
-[[ $? != 0 ]] && alias pgrep='pgrep -lf' || alias pgrep='pgrep -af'
+  [[ $? != 0 ]] && alias pgrep='pgrep -lf' || alias pgrep='pgrep -af'
 
 # end-alias
 
