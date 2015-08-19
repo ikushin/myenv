@@ -5,6 +5,7 @@ Compression=yes
 #LogLevel=QUIET
 LogLevel=ERROR
 ConnectTimeout=5
+ServerAliveInterval 60
 
 Host host01
         ProxyCommand ssh proxy@proxy nc %h %p
