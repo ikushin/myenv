@@ -99,4 +99,5 @@ emacs:
 	mkdir -p  ~/.lisp
 	wget --no-check-certificate -O ~/.lisp/minibuffer-complete-cycle.el https://raw.githubusercontent.com/knu/minibuffer-complete-cycle/master/minibuffer-complete-cycle.el
 	wget --no-check-certificate -O ~/.lisp/browse-kill-ring.el https://raw.githubusercontent.com/T-J-Teru/browse-kill-ring/master/browse-kill-ring.el
+	wget --no-check-certificate -O ~/.lisp/redo+.el http://www.emacswiki.org/emacs/download/redo%2b.el
 

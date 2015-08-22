@@ -231,3 +231,10 @@
 ;;ウィンドウを左右に分割したとき用の設定
 (setq-default truncate-partial-width-windows t)
 
+;;; redo+
+(require 'redo+)
+(global-set-key (kbd "C-M-_") 'redo)
+(setq undo-no-redo t) ; 過去のundoがredoされないようにする
+(setq undo-limit 600000)
+(setq undo-strong-limit 900000)
+
