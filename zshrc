@@ -270,7 +270,7 @@ alias which='which -a'
 alias fdate='date "+%Y-%m-%d-%H:%M:%S"'
 alias free='free -m'
 alias pkill='pkill -f'
-alias rep='em ~/sandbox/WeeklyReport'
+alias weeklyreport='em ~/sandbox/WeeklyReport'
 
 # pgrep
 \pgrep -af init |& grep -q init
@@ -380,7 +380,7 @@ case $OSTYPE in
       alias ls='ls --color=auto --show-control-chars --group-directories-first'
       alias exp='explorer . &'
       alias open='/usr/bin/cygstart'
-      alias ifconfig='/cygdrive/c/WINDOWS/system32/ipconfig'
+      alias ifconfig='/cygdrive/c/WINDOWS/system32/ipconfig j2u'
       alias sudo=''
       #alias ping='ping -t'
       #alias ping='/cygdrive/c/Windows/System32/ping -t'
