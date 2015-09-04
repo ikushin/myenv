@@ -201,6 +201,7 @@ path=( $HOME/*bin(N-/) /usr{/local,}/bin(N-/) /opt/*/*bin(N-/) /opt/*/*/*bin(N-/
 
 # aliases
 which vim  >/dev/null 2>&1  && alias vi=`which vim`
+alias fvi='vi $(mktemp --tmpdir=~/sandbox vi.XXXXXXXXXX)'
 
 alias .='source'
 alias ..='cd ..'
