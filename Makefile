@@ -35,7 +35,7 @@ date:
 	sudo ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 dstat:
-	mkdir $$HOME/bin
+	mkdir -p $$HOME/bin
 	git clone https://github.com/dagwieers/dstat.git $$HOME/bin/dstat
 
 git:
