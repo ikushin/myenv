@@ -290,7 +290,7 @@ alias sjis='LANG=ja_JP.UTF-8 LC_ALL=ja_JP.sjis'
 alias fuck='eval $(thefuck $(fc -ln -1))'
 
 # RPM
-alias rpmqa='rpm -qa'
+alias rpmqa='rpm -qa --queryformat="%-30{NAME} %-30{VERSION} %-30{RELEASE}\n"'
 alias rpmql='rpm -ql'
 alias rpmqf='rpm -qf'
 alias rpmqi='rpm -qi'
