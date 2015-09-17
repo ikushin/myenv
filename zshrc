@@ -195,6 +195,22 @@ function pdf() {
 	sudo du -d 1 | perl -nle 'my %a;($a{u},$a{d})=split(/\s/);push(@a,\%a);END{map{printf "%.2f %16d %s\n",$_->{u}/$a[-1]->{u},$_->{u},$_->{d}}@a}'
 }
 
+sandbox()
+{
+    (
+        d=$(mktemp -d) && cd "$d" || exit 1
+        zsh
+        s=$?
+        if [[ $s == 0 ]]; then
+            rm -rf "$d"
+        else
+            echo "Directory '$d' still exists." >&2
+        fi
+        exit $s
+    )
+}
+
+
 # PATH
 path=( $HOME/*bin(N-/) /usr{/local,}/bin(N-/) /opt/*/*bin(N-/) /opt/*/*/*bin(N-/) \
     /usr/local/*bin(N-/) /usr/*bin(N-/) /*bin(N-/) /usr/ucb(N-/) )
@@ -230,7 +246,6 @@ alias igrep='grep -i'
 alias fgrep='fgrep --color=auto'
 alias rgrep='grep -v "^#|^$"'
 alias scp='scp -r'
-alias diff='diff -tbwrN --unified=1'
 alias mrcsdiff='rcsdiff -utw'
 alias mci='ci -u -m"kim"'
 alias mrlog='rlog -L -R RCS/*'
@@ -274,6 +289,13 @@ alias fdate='date "+%Y-%m-%d-%H:%M:%S"'
 alias free='free -m'
 alias pkill='pkill -f'
 alias weeklyreport='em ~/sandbox/WeeklyReport'
+
+# diff
+if type git >/dev/null 2>&1; then
+    alias diff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index'
+else
+    alias diff='diff -tbwrN --unified=1'
+fi
 
 # pgrep
 \pgrep -af init |& grep -q init
