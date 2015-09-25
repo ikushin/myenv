@@ -195,7 +195,7 @@ function pdf() {
 	sudo du -d 1 | perl -nle 'my %a;($a{u},$a{d})=split(/\s/);push(@a,\%a);END{map{printf "%.2f %16d %s\n",$_->{u}/$a[-1]->{u},$_->{u},$_->{d}}@a}'
 }
 
-sandbox()
+function sa() 
 {
     (
         d=$(mktemp -d) && cd "$d" || exit 1
