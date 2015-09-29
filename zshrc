@@ -217,7 +217,8 @@ path=( $HOME/*bin(N-/) /usr{/local,}/bin(N-/) /opt/*/*bin(N-/) /opt/*/*/*bin(N-/
 
 # aliases
 which vim  >/dev/null 2>&1  && alias vi=`which vim`
-alias fvi='vi $(mktemp --tmpdir=~/sandbox vi.XXXXXXXXXX)'
+alias fvi='vi $(mktemp --tmpdir=./ vi.XXXXXXXXXX)'
+alias vv='fvi'
 
 alias .='source'
 alias ..='cd ..'
@@ -258,10 +259,10 @@ alias .viz='source ~/.zshrc'
 alias watch='watch -d'
 alias pstree='pstree -p'
 alias emacs='LANG=ja_JP.UTF8 emacs -nw -f shell'
-alias femacs='emacs $(mktemp --tmpdir=~/sandbox emacs.XXXXXXXXXX)'
+alias femacs='emacs $(mktemp --tmpdir=./ emacs.XXXXXXXXXX)'
 alias em='emacs'
 alias fe='femacs'
-alias fem='femacs'
+alias ff='femacs'
 alias svndiff='svn diff --diff-cmd /usr/bin/diff -x "-Nurb"'
 alias dstat-full='$HOME/bin/dstat/dstat -clmdrn --bits --nocolor'
 alias dstat-mem='$HOME/bin/dstat/dstat  -clm    --bits --nocolor'
