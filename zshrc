@@ -113,6 +113,10 @@ yesterday=`date --date "1 day ago" +%Y%m%d` 2>/dev/null
 manpath=( /usr/share/man/ja(N-/) /usr/share/man(N-/) /usr/local/man(N-/) )
 export MANPATH
 
+function col {
+  awk -v col=$1 '{print $col}'
+}
+
 function subnet2cidr ()
 {
     # Assumes there's no "255." after a non-255 byte in the mask
@@ -195,7 +199,7 @@ function pdf() {
 	sudo du -d 1 | perl -nle 'my %a;($a{u},$a{d})=split(/\s/);push(@a,\%a);END{map{printf "%.2f %16d %s\n",$_->{u}/$a[-1]->{u},$_->{u},$_->{d}}@a}'
 }
 
-function sa() 
+function sa()
 {
     (
         d=$(mktemp -d) && cd "$d" || exit 1
@@ -339,6 +343,7 @@ alias -g SC='S |uniq -c |sort -n'
 alias -g SU='S |uniq'
 alias -g CT='|&ct'
 alias -g J='2>/dev/null |jq .'
+alias -g CL='| column -t'
 
 alias -g e2s='|& lv -Ieuc -Osjis | cat'
 alias -g e2j='|& lv -Ieuc -Osjis | cat'
