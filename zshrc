@@ -430,6 +430,7 @@ case $OSTYPE in
       bindkey -s "^[c"  'git commit -a -m "Update"; git push origin master '
       alias vagrant='/cygdrive/c/HashiCorp/Vagrant/bin/vagrant'
       alias sed='sed --regexp-extended'
+      alias ipa='ifconfig | grep "Ethernet|IPv4 Address|Subnet Mask"'
       ;;
   minix)
       alias -g L='|&less'
@@ -482,6 +483,7 @@ if [[ $OSTYPE == "cygwin" ]]; then
     #find ~/sandbox -type f -atime +7 | xargs mv -t ~/sandbox/trash
     [[ -e ~/bin/puttylog_archive.sh ]] && bash ~/bin/puttylog_archive.sh
     [ `pwd` = "/usr/bin" ] && cd $HOME
+    chcp 437 >/dev/null
 fi
 
 #proxy=
