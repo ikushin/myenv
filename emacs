@@ -241,3 +241,6 @@
 ;; 行末の空白を削除
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+; M-% for query-replace-regexp
+(define-key global-map "\M-%" 'query-replace-regexp)
+
