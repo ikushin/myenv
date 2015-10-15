@@ -297,13 +297,8 @@ alias free='free -m'
 alias pkill='pkill -f'
 alias weeklyreport='em ~/sandbox/WeeklyReport'
 alias cata='cat -A'
-
-# diff
-if type git >/dev/null 2>&1; then
-    alias diff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index'
-else
-    alias diff='diff -tbwrN --unified=1'
-fi
+alias gdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index'
+alias diff='diff -tbwrN --unified=1'
 
 # pgrep
 \pgrep -af init |& grep -q init
@@ -348,6 +343,7 @@ alias -g CT='|&ct'
 alias -g J='2>/dev/null |jq .'
 alias -g COL='| column -t'
 alias -g A='| col'
+alias -g MD='| md5sum'
 
 alias -g e2s='|& lv -Ieuc -Osjis | cat'
 alias -g e2j='|& lv -Ieuc -Osjis | cat'
