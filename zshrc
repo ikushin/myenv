@@ -298,6 +298,7 @@ alias pkill='pkill -f'
 alias weeklyreport='em ~/sandbox/WeeklyReport'
 alias cata='cat -A'
 alias gdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index'
+alias ggdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index --word-diff'
 alias diff='diff -tbwrN --unified=1'
 
 # pgrep
