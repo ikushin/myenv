@@ -202,7 +202,7 @@ function pdf() {
 function sa()
 {
     (
-        d=$(mktemp -d -p /tmp XXXXXXXX) && cd "$d" || exit 1
+        d=$(mktemp -d -p /tmp tmp_XXXXXXXX) && cd "$d" || exit 1
         zsh
         s=$?
         if [[ $s == 0 ]]; then
