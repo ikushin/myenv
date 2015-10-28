@@ -224,6 +224,7 @@ which vim  >/dev/null 2>&1  && alias vi=`which vim`
 alias fvi='vi $(mktemp --tmpdir=./ vi.XXXXXXXXXX)'
 alias vv='fvi'
 alias via='vi a'
+alias vib='vi b'
 
 alias .='source'
 alias ..='cd ..'
