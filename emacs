@@ -244,3 +244,8 @@
 ; M-% for query-replace-regexp
 (define-key global-map "\M-%" 'query-replace-regexp)
 
+;; disable emacs here document completion
+(add-hook 'sh-mode-hook
+          (lambda ()
+            (sh-electric-here-document-mode -1)))
+
