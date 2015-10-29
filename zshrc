@@ -225,6 +225,7 @@ alias fvi='vi $(mktemp --tmpdir=./ vi.XXXXXXXXXX)'
 alias vv='fvi'
 alias via='vi -c startinsert a'
 alias vib='vi -c startinsert b'
+alias vic='vi -c startinsert c'
 
 alias .='source'
 alias ..='cd ..'
