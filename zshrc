@@ -389,8 +389,8 @@ case $OSTYPE in
       grep -q "release 7" /etc/redhat-release
       if [ $? -eq 0 ]; then
           # RHEL 7.x
-          alias rpmqa='dpkg -l'
           alias free='free -h'
+          alias netstat='/bin/netstat  --numeric --tcp --inet --listen --program'
       fi
 
       ;;
