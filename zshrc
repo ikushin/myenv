@@ -386,6 +386,12 @@ case $OSTYPE in
           alias free='free -h'
           alias netstat='/bin/netstat  --numeric --tcp -4 --listen --program'
       fi
+      grep -q "release 7" /etc/redhat-release
+      if [ $? -eq 0 ]; then
+          # RHEL 7.x
+          alias rpmqa='dpkg -l'
+          alias free='free -h'
+      fi
 
       ;;
   solaris*)

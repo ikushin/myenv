@@ -92,8 +92,10 @@ git_clone:
 	cd ~/.myenv && git config --global push.default simple && make cp
 
 clone_https:
+	mkdir -p ~/.ssh; chmod 700 ~/.ssh
 	git clone https://github.com/ikushin/myenv.git ~/.myenv
 	cd ~/.myenv && git config --global push.default simple && make cp
+	usermod -s /bin/zsh root
 
 emacs:
 	wget http://mirror.jre655.com/GNU/emacs/emacs-24.5.tar.gz && tar xvf emacs-24.5.tar.gz && cd emacs-24.5/ && ./configure --without-x && sudo make install && rm -rf emacs-24.5.tar.gz emacs-24.5
