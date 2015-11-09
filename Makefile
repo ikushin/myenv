@@ -39,6 +39,7 @@ dstat:
 	git clone https://github.com/dagwieers/dstat.git $$HOME/bin/dstat
 
 git:
+	yum install -y curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-2.5.2.tar.gz -O /tmp/git-2.5.2.tar.gz
 	tar zxf /tmp/git-2.5.2.tar.gz -C /tmp
 	cd /tmp/git-2.5.2; ./configure --without-tcltk && make && sudo make install
@@ -89,11 +90,11 @@ git_clone:
 	git clone git@github.com:ikushin/myenv.git ~/.myenv
 	rm -f ~/.ssh/config ~/Makefile
 	cd ~/.myenv && git config --global push.default simple && make cp
-	
+
 clone_https:
 	git clone https://github.com/ikushin/myenv.git ~/.myenv
 	cd ~/.myenv && git config --global push.default simple && make cp
-	
+
 emacs:
 	wget http://mirror.jre655.com/GNU/emacs/emacs-24.5.tar.gz && tar xvf emacs-24.5.tar.gz && cd emacs-24.5/ && ./configure --without-x && sudo make install && rm -rf emacs-24.5.tar.gz emacs-24.5
 	mkdir -p  ~/.lisp
