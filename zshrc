@@ -386,7 +386,7 @@ case $OSTYPE in
           alias free='free -h'
           alias netstat='/bin/netstat  --numeric --tcp -4 --listen --program'
       fi
-      grep -q "release 7" /etc/redhat-release
+      grep -q "release 7" /etc/redhat-release >/dev/null 2>&1
       if [ $? -eq 0 ]; then
           # RHEL 7.x
           alias free='free -h'
