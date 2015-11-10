@@ -305,7 +305,7 @@ alias ggdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-l
 alias diff='diff -tbwrN --unified=1'
 
 # pgrep
-\pgrep -af init |& grep -q init
+\pgrep -af init |& grep -q 'init|systemd'
   [[ $? != 0 ]] && alias pgrep='pgrep -lf' || alias pgrep='pgrep -af'
 
 # end-alias
