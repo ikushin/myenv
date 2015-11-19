@@ -91,16 +91,16 @@ git_clone:
 	rm -f ~/.ssh/config ~/Makefile
 	cd ~/.myenv && git config --global push.default simple && make cp
 
-clone_https:
-	mkdir -p ~/.ssh; chmod 700 ~/.ssh
-	git clone https://github.com/ikushin/myenv.git ~/.myenv
-	cd ~/.myenv && git config --global push.default simple && make cp
-	usermod -s /bin/zsh root
-
 emacs:
 	wget http://mirror.jre655.com/GNU/emacs/emacs-24.5.tar.gz && tar xvf emacs-24.5.tar.gz && cd emacs-24.5/ && ./configure --without-x && sudo make install && rm -rf emacs-24.5.tar.gz emacs-24.5
 	mkdir -p  ~/.lisp
 	wget --no-check-certificate -O ~/.lisp/minibuffer-complete-cycle.el https://raw.githubusercontent.com/knu/minibuffer-complete-cycle/master/minibuffer-complete-cycle.el
 	wget --no-check-certificate -O ~/.lisp/browse-kill-ring.el https://raw.githubusercontent.com/T-J-Teru/browse-kill-ring/master/browse-kill-ring.el
 	wget --no-check-certificate -O ~/.lisp/redo+.el http://www.emacswiki.org/emacs/download/redo%2b.el
+
+clone_https:
+	mkdir -p ~/.ssh; chmod 700 ~/.ssh
+	git clone https://github.com/ikushin/myenv.git ~/.myenv
+	cd ~/.myenv && git config --global push.default simple && make cp
+	usermod -s /bin/zsh root
 

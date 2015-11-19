@@ -156,7 +156,6 @@ function commit() {
   svn update
 }
 
-
 pmver () {
   perl -M${1} -le "print \$$1::VERSION"
 }
@@ -231,6 +230,7 @@ alias .='source'
 alias ..='cd ..'
 alias h='history 0 | /bin/sed -r "s/^ [ 0-9][ 0-9]*/ /"'
 
+alias year='printf "%d: %d\n" $(date +%Y) $(($(date +%Y)-1988))'
 alias cp='cp -ir'
 alias mv='/bin/mv -i'
 alias rm='rm -i'
