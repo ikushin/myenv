@@ -10,6 +10,7 @@
 cp:
 	for i in zshrc emacs inputrc screenrc vimrc; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
 	[ -e ~/.localrc ] || /bin/cp zprompt ~/.localrc
+	mkdir -p ~/.ssh
 	[ -e ~/.ssh/config ] || /bin/cp config ~/.ssh/config
 
 cygwin:
