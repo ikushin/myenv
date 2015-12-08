@@ -66,6 +66,7 @@ bindkey "^[^H" run-help
 
 bindkey -s "^[g"  '| egrep -v "\^[[:space:]]*(#|$)" '
 bindkey -s "^[f"  "| fgrep -v ?"
+bindkey -s "^[q"  "ps -eo uname,lstart,pid,rss,vsz,args | egrep"
 
 # git key binds
 bindkey -s "^[s"  "git status -s "

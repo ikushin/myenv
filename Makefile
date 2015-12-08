@@ -41,9 +41,9 @@ dstat:
 
 git:
 	yum install -y curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
-	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-2.5.2.tar.gz -O /tmp/git-2.5.2.tar.gz
-	tar zxf /tmp/git-2.5.2.tar.gz -C /tmp
-	cd /tmp/git-2.5.2; ./configure --without-tcltk && make && sudo make install
+	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-2.6.3.tar.gz -O /tmp/git-2.6.3.tar.gz
+	tar zxf /tmp/git-2.6.3.tar.gz -C /tmp
+	cd /tmp/git-2.6.3; ./configure --without-tcltk && make && sudo make install
 	git config --global user.email "you@example.com"
 	git config --global user.name "ikushin"
 
