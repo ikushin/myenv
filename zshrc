@@ -70,7 +70,7 @@ bindkey -s "^[q"  "ps -eo uname,lstart,pid,rss,vsz,args | egrep"
 
 # git key binds
 bindkey -s "^[s"  "git status -s "
-bindkey -s "^[l"  "git log -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t "
+bindkey -s "^[l"  "git log --oneline"
 bindkey -s "^[b"  "git branch "
 bindkey -s "^[f"  "git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol "
 bindkey -s "^[c"  'git pull && git commit -a -m "Update"; git push origin master '
@@ -302,7 +302,7 @@ alias weeklyreport='em ~/sandbox/WeeklyReport'
 alias cata='cat -A'
 alias gdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index'
 alias ggdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index --word-diff'
-alias gitl='git log --oneline'
+alias gitl='git log -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t'
 alias diff='diff -tbwrN --unified=1'
 
 # pgrep
