@@ -97,8 +97,8 @@ RPROMPT='[%~]'
 
 
 # environment variable
-LC_ALL=C
-LANG=C
+LC_ALL="ja_JP.UTF8"
+LANG="C"
 cdpath=( $HOME .. )
 export EDITOR=vi
 export PAGER=less
