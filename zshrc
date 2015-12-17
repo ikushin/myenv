@@ -68,15 +68,25 @@ bindkey -s "^[g"  '| egrep -v "\^[[:space:]]*(#|$)" '
 bindkey -s "^[f"  "| fgrep -v ?"
 bindkey -s "^[q"  "ps -eo uname,lstart,pid,rss,vsz,args | egrep"
 
-# git key binds
+# Git key binds
 bindkey -s "^[s"  "git status -s "
-bindkey -s "^[l"  "git log --oneline"
+bindkey -s "^[l"  "git log --oneline "
 bindkey -s "^[b"  "git branch "
 bindkey -s "^[f"  "git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol "
-bindkey -s "^[c"  'git pull && git commit -a -m "Update"; git push origin master '
+bindkey -s "^[c"  'git commit -a -m "Update"'
 bindkey -s "^[v"  "git checkout "
-bindkey -s "^[p"  "git push origin master "
-bindkey -s "^[z"  "scp .zshrc .zprompt .emacs .screenrc "
+bindkey -s "^[p"  "git pull "
+
+# Git aliases
+alias gdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index'
+alias gitd='gitdiff'
+alias ggdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index --word-diff'
+alias gc='git checkout'
+alias gcm='git checkout master'
+alias gcd='git checkout dev'
+alias gl='git log --name-status'
+alias gll='git log -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t'
+alias gp='git push origin master'
 
 # not end of word
 #WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
@@ -288,8 +298,6 @@ alias unetstat='/bin/netstat --numeric --udp --listen --program'
 alias fmt='fmt -s -w $(($COLUMNS))'
 alias ct='cut -c -$(($COLUMNS-10))'
 alias less='LANG=ja_JP.UTF8 less -iFe'
-#alias git='git --no-pager'
-alias gitd='git diff -b -w -B'
 alias sl='ls'
 alias time='/usr/bin/time -p'
 alias jq='jq -r'
@@ -300,13 +308,6 @@ alias free='free -m'
 alias pkill='pkill -f'
 alias weeklyreport='em ~/sandbox/WeeklyReport'
 alias cata='cat -A'
-alias gdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index'
-alias ggdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index --word-diff'
-alias gc='git checkout'
-alias gcm='git checkout master'
-alias gcd='git checkout dev'
-alias gl='git log --name-status'
-alias gll='git log -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t'
 alias diff='diff -tbwrN --unified=1'
 
 # pgrep
@@ -440,7 +441,6 @@ case $OSTYPE in
       export SHELL=/bin/bash
       cdpath=( $cdpath /cygdrive/d/system/My\ Documents )
       path=( $path )
-      bindkey -s "^[c"  'git commit -a -m "Update"; git push origin master '
       alias vagrant='/cygdrive/c/HashiCorp/Vagrant/bin/vagrant'
       alias sed='sed --regexp-extended'
       alias ipa='ifconfig | grep "Ethernet|IPv4 Address|Subnet Mask"'
