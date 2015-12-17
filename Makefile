@@ -12,7 +12,6 @@ cp:
 	[ -e ~/.localrc ] || /bin/cp zprompt ~/.localrc
 	mkdir -p ~/.ssh
 	[ -e ~/.ssh/config ] || /bin/cp config ~/.ssh/config
-	exec zsh
 
 cygwin:
 	mkdir -p ~/bin/; [ -f ~/bin/puttylog_archive.sh ] || cp puttylog_archive.sh ~/bin/puttylog_archive.sh
