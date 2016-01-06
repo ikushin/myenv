@@ -312,6 +312,7 @@ alias pkill='pkill -f'
 alias weeklyreport='em ~/sandbox/WeeklyReport'
 alias cata='cat -A'
 alias diff='diff -tbwrN --unified=1'
+alias d='gdiff a b'
 
 # pgrep
 \pgrep -af init |& grep -q 'init|systemd'
