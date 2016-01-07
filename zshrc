@@ -31,7 +31,7 @@ setopt nonomatch
 setopt magic_equal_subst
 setopt auto_pushd
 setopt auto_cd
-setopt correct
+unsetopt correctall
 setopt cdable_vars
 setopt hist_no_store
 setopt hist_ignore_dups
@@ -300,7 +300,7 @@ alias netstat='/bin/netstat  --numeric --tcp --listen --program'
 alias unetstat='/bin/netstat --numeric --udp --listen --program'
 alias fmt='fmt -s -w $(($COLUMNS))'
 alias ct='cut -c -$(($COLUMNS-10))'
-alias less='LANG=ja_JP.UTF8 less -iFe'
+alias less='LANG=ja_JP.UTF8 less -i'
 alias sl='ls'
 alias time='/usr/bin/time -p'
 alias jq='jq -r'
