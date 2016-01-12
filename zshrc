@@ -359,6 +359,7 @@ alias -g COL='| column -t'
 alias -g A='| col'
 alias -g MD='| md5sum'
 alias -g D='| diff $_ -'
+alias -g PE='| perl -pe '
 
 alias -g e2s='|& lv -Ieuc -Osjis | cat'
 alias -g e2j='|& lv -Ieuc -Osjis | cat'
