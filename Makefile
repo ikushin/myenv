@@ -33,10 +33,11 @@ dstat:
 
 GIT=2.7.0
 git2:
-	sudo yum --disablerepo=updates install -y curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
+	sudo yum --disablerepo=updates install -y curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker; :
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-$(GIT).tar.gz -O /tmp/git-$(GIT).tar.gz
 	tar zxf /tmp/git-$(GIT).tar.gz -C /tmp
-	cd /tmp/git-$(GIT); ./configure --without-tcltk && make && sudo make install
+	cd /tmp/git-$(GIT); ./configure --without-tcltk && make
+	[ $$OSTYPE == "cygwin" ] && PERL_PATH=/usr/local/bin/perl make install || sudo make install
 	git config --global user.email "you@example.com"
 	git config --global user.name "ikushin"
 
@@ -97,3 +98,13 @@ clone_https:
 	git clone https://github.com/ikushin/myenv.git ~/.myenv
 	cd ~/.myenv && git config --global push.default simple && make cp
 	usermod -s /bin/zsh root
+
+test:
+	[ $$OSTYPE != "cygwin" ] && echo cygwin || echo xxx
+
+perl:
+	wget perl
+	tar xvf perl-5.22.1.tar.gz
+	cd perl-5.22.1
+	./Configure -des -Dprefix=/usr/local
+	make && make install
