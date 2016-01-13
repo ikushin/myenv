@@ -1,11 +1,3 @@
-# 1. apt_proxy or yum_proxy
-# 2. apt-get install -y aptigude make && make apt_conf && make wget_proxy && make package && make git_apt
-# 3. make adduser && make sudo
-# 4. ssh-copy-id
-# 5. scp ~/.ssh/ikushin.id_rsa ubuntu:~/.ssh
-# 6. make git_clone
-# 7. make git_proxy
-# 8. make date
 
 cp:
 	for i in zshrc emacs inputrc screenrc vimrc; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
@@ -41,7 +33,7 @@ dstat:
 
 GIT=2.7.0
 git2:
-	yum install -y curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
+	sudo yum --disablerepo=updates install -y curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-$(GIT).tar.gz -O /tmp/git-$(GIT).tar.gz
 	tar zxf /tmp/git-$(GIT).tar.gz -C /tmp
 	cd /tmp/git-$(GIT); ./configure --without-tcltk && make && sudo make install

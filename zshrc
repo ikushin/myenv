@@ -73,7 +73,7 @@ bindkey -s "^[s"  "git status -s "
 bindkey -s "^[l"  "git log --oneline "
 bindkey -s "^[b"  "git branch "
 bindkey -s "^[f"  "git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol "
-bindkey -s "^[c"  'git commit -m "Update"'
+bindkey -s "^[c"  'git commit -m "Update" '
 bindkey -s "^[v"  "git checkout "
 bindkey -s "^[p"  "git pull "
 
