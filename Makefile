@@ -3,7 +3,7 @@ cp:
 	for i in zshrc emacs inputrc screenrc vimrc; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
 	[ -e ~/.localrc ] || /bin/cp zprompt ~/.localrc
 	mkdir -p ~/.ssh
-	[ -e ~/.ssh/config ] || /bin/cp config ~/.ssh/config; chown 600 ~/.ssh/config
+	[ -e ~/.ssh/config ] || /bin/cp config ~/.ssh/config; chmod 600 ~/.ssh/config
 
 cygwin:
 	mkdir -p ~/bin/; [ -f ~/bin/puttylog_archive.sh ] || cp puttylog_archive.sh ~/bin/puttylog_archive.sh
