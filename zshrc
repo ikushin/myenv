@@ -124,6 +124,20 @@ yesterday=`date --date "1 day ago" +%Y%m%d` 2>/dev/null
 manpath=( /usr/share/man/ja(N-/) /usr/share/man(N-/) /usr/local/man(N-/) )
 export MANPATH
 
+# color echo
+nc='\033[0m'
+red='\033[0;31m'
+green='\033[0;32m'
+function echo_red
+{
+    printf "${red}$*${nc}\n"
+}
+function echo_green
+{
+    printf "${green}$*${nc}\n"
+}
+
+
 function col {
   awk -v col=$1 '{print $col}'
 }
