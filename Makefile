@@ -42,6 +42,7 @@ git2:
 	git config --global user.name "ikushin"
 
 zsh5:
+	grep -q "release 5" /etc/issue && make autoconf
 	rpm --quiet -q ncurses-devel || sudo yum --disablerepo=updates install ncurses-devel
 	git clone http://git.code.sf.net/p/zsh/code zsh-code
 	cd zsh-code && ./Util/preconfig && ./configure && make && sudo make install.bin
@@ -109,3 +110,12 @@ perl:
 	cd perl-5.22.1
 	./Configure -des -Dprefix=/usr/local
 	make && make install
+
+autoconf:
+	rpm --quiet -q texinfo || sudo yum --disablerepo=updates texinfo
+	git clone http://git.sv.gnu.org/r/autoconf.git /tmp/autoconf
+	cd /tmp/autoconf
+	git checkout 100f26c
+	./configure && make && sudo make install
+	which autoconf
+	autoconf --version
