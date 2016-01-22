@@ -42,6 +42,7 @@ git2:
 	git config --global user.name "ikushin"
 
 zsh5:
+	rpm --quiet -q ncurses-devel || sudo yum --disablerepo=updates install ncurses-devel
 	git clone http://git.code.sf.net/p/zsh/code zsh-code
 	cd zsh-code && ./Util/preconfig && ./configure && make && sudo make install.bin
 	sudo usermod -s /usr/local//bin/zsh ikushin
