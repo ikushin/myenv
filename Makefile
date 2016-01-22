@@ -33,7 +33,7 @@ dstat:
 
 GIT=2.7.0
 git2:
-	sudo yum --disablerepo=updates install -y curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker; :
+	rpm --quiet -q curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker && sudo yum --disablerepo=updates install -y curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker; :
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-$(GIT).tar.gz -O /tmp/git-$(GIT).tar.gz
 	tar zxf /tmp/git-$(GIT).tar.gz -C /tmp
 	cd /tmp/git-$(GIT); ./configure --without-tcltk && make
@@ -41,9 +41,9 @@ git2:
 	git config --global user.email "you@example.com"
 	git config --global user.name "ikushin"
 
-zsh:
-	git clone git://git.code.sf.net/p/zsh/code /tmp/zsh
-	cd /tmp/zsh && ./Util/preconfig && ./configure && make && sudo make install.bin
+zsh5:
+	git clone http://git.code.sf.net/p/zsh/code zsh-code
+	cd zsh-code && ./Util/preconfig && ./configure && make && sudo make install.bin
 	sudo usermod -s /usr/local//bin/zsh ikushin
 
 epel:
