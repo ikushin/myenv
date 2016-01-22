@@ -45,8 +45,7 @@ zsh5:
 	grep -q "release 5" /etc/issue && make autoconf
 	rpm --quiet -q ncurses-devel || sudo yum --disablerepo=updates install ncurses-devel
 	git clone http://git.code.sf.net/p/zsh/code zsh-code
-	cd zsh-code && ./Util/preconfig && ./configure && make && sudo make install.bin
-	sudo usermod -s /usr/local//bin/zsh ikushin
+	cd zsh-code && ./Util/preconfig && ./configure && make && sudo make install && sudo /usr/sbin/usermod -s /usr/local/bin/zsh $(id -un)
 
 epel:
 	grep -q 'release 6' /etc/issue && rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm; true
