@@ -38,7 +38,7 @@ git2:
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-$(GIT).tar.gz -O /tmp/git-$(GIT).tar.gz
 	tar zxf /tmp/git-$(GIT).tar.gz -C /tmp
 	cd /tmp/git-$(GIT); ./configure --without-tcltk && make
-	[ $$OSTYPE == "cygwin" ] && PERL_PATH=/usr/local/bin/perl make install || sudo make install
+	cd /tmp/git-$(GIT); [ $$OSTYPE == "cygwin" ] && PERL_PATH=/usr/local/bin/perl make install || sudo make install
 	git config --global user.email "you@example.com"
 	git config --global user.name "ikushin"
 
