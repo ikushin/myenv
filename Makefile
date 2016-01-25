@@ -4,6 +4,7 @@ cp:
 	[ -e ~/.localrc ] || /bin/cp zprompt ~/.localrc
 	mkdir -p ~/.ssh
 	[ -e ~/.ssh/config ] || /bin/cp config ~/.ssh/config; chmod 600 ~/.ssh/config
+	[ $$OSTYPE == "cygwin" ] && if [[ ! -e /usr/local/bin/perl ]]; then make perl; fi
 
 cygwin:
 	mkdir -p ~/bin/; [ -f ~/bin/puttylog_archive.sh ] || cp puttylog_archive.sh ~/bin/puttylog_archive.sh
@@ -104,7 +105,7 @@ test:
 	[ $$OSTYPE != "cygwin" ] && echo cygwin || echo xxx
 
 perl:
-	wget perl
+	wget http://www.cpan.org/src/5.0/perl-5.22.1.tar.gz
 	tar xvf perl-5.22.1.tar.gz
 	cd perl-5.22.1
 	./Configure -des -Dprefix=/usr/local
