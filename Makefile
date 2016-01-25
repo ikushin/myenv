@@ -4,10 +4,10 @@ cp:
 	[ -e ~/.localrc ] || /bin/cp zprompt ~/.localrc
 	mkdir -p ~/.ssh
 	[ -e ~/.ssh/config ] || /bin/cp config ~/.ssh/config; chmod 600 ~/.ssh/config
-	[ $$OSTYPE == "cygwin" ] && if [[ ! -e /usr/local/bin/perl ]]; then make perl; fi
 
 cygwin:
 	mkdir -p ~/bin/; [ -f ~/bin/puttylog_archive.sh ] || cp puttylog_archive.sh ~/bin/puttylog_archive.sh
+	if [[ ! -e /usr/local/bin/perl ]]; then make perl; fi
 
 ssh:
 	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config
