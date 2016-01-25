@@ -328,6 +328,7 @@ alias weeklyreport='em ~/sandbox/WeeklyReport'
 alias cata='cat -A'
 alias diff='diff -tbwrN --unified=1'
 alias d='gdiff a b'
+alias clock='while :; do printf "%s\r" "$(date +%T)"; sleep 1 ; done'
 
 # pgrep
 \pgrep -af init |& grep -q 'init|systemd'
