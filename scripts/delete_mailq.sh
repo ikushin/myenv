@@ -1,47 +1,56 @@
-#!/bin/bash -x delete_mailq.sh 3
 #!/bin/bash
 #
 # 概要:
 #   閾値を超えた場合、mailq 内の任意の FROM/TO 宛のメールを削除する。
+#   閾値はスクリプトの引数で指定する。引数がない場合の閾値は0である。
 #
+
+# シェル関数
+function message()
+{
+    logger -t "$0" $*
+    tty -s && echo $*  # tty が存在すれば message を出力する
+}
 
 # 多重起動チェック
 if [ $$ -ne $(pgrep -fo "$0") ]; then
-    logger -t "$0" "error: Cannot run multiple instance."
-    #exit 1
+    message "error: Cannot run multiple instance."
+    exit 1
 fi
 
 # 引数チェック
 if [[ $# > 0 ]]; then
     if ! egrep -q '^[0-9]+$' <<<$1; then
-        logger -t "$0" "error: '$1' is not numerical value."
+        message "error: '$1' is not numerical value."
         exit 1
     fi
     arg=$1
 fi
 
-# この閾値以上で mailq を削除する。初期値は0。
+# 閾値の設定
 threshold=${arg:=0}
 
 # 削除対象の FROM/TO を正規表現で指定する
-from="MAILER-DAEMON"
+from="^MAILER-DAEMON$"
 to="^.*@example.com$"
 
 # mailq の数
 nr_mailq=$(mailq 2>/dev/null | egrep -c "^[[:alnum:]]{11}")
 
 # nr_mailq が数値であるかチェック
-if ! egrep -q '^[0-9]+$' <<<$nr_mailq
-then
-    logger -t "$0" "error: '$nr_mailq' is not numerical value."
+if ! egrep -q '^[0-9]+$' <<<$nr_mailq; then
+    message "error: '$nr_mailq' is not numerical value."
     exit 1
 fi
 
-# 閾値を下回っていたらスクリプト終了
-[[ $nr_mailq -le $threshold ]] && exit 0
+# 閾値以下ならスクリプト終了
+if [[ $nr_mailq -le $threshold ]]; then
+    tty -s && echo "mailq <= threshold, exit."
+    exit 0
+fi
 
 # mailq の削除
-logger -t "$0" "start"
+message "start:"
 output=$( mailq | tail -n +2 | \
              /bin/grep -v '^ *(' | \
              awk "BEGIN { RS = \"\" } { if( \$7 ~ \"$from\" && \$8 ~ \"$to\" && \$9 == \"\") print \$1 }" | \
@@ -49,7 +58,7 @@ output=$( mailq | tail -n +2 | \
              postsuper -d - 2>&1 ); rc=$?
 
 # 終了メッセージ生成
-if egrep "Deleted" <<<$output; then
+if egrep -q "Deleted" <<<$output; then
     return_message=$( egrep -o 'postsuper: Deleted:.*messages?' <<<$output )
 else
     return_message=$output
@@ -57,4 +66,4 @@ fi
 
 # 終了処理
 [[ $rc == 0 ]] && end="end" || end="error"
-logger -t "$0" "$end: $return_message"
+message "$end: $return_message"
