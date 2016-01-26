@@ -45,7 +45,7 @@ fi
 
 # 閾値以下ならスクリプト終了
 if [[ $nr_mailq -le $threshold ]]; then
-    tty -s && echo "mailq <= threshold, exit."
+    tty -s && echo "mailq($nr_mailq) <= threshold($threshold), exit."
     exit 0
 fi
 
