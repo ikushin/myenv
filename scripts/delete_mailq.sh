@@ -58,8 +58,8 @@ output=$( mailq | tail -n +2 | \
              postsuper -d - 2>&1 ); rc=$?
 
 # 終了メッセージ生成
-if egrep -q "Deleted" <<<$output; then
-    return_message=$( egrep -o 'postsuper: Deleted:.*messages?' <<<$output )
+if egrep -q "Deleted" <<<"$output"; then
+    return_message=$( egrep -o 'postsuper: Deleted:.*messages?' <<<"$output" )
 else
     return_message=$output
 fi
