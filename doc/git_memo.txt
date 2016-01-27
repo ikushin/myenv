@@ -1,0 +1,2 @@
+秘密鍵をコピー
+git@github.com:ikushin/myenv.git
