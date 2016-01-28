@@ -44,7 +44,7 @@ git2:
 
 zsh5:
 	grep -q "release 5" /etc/issue && make autoconf
-	rpm --quiet -q ncurses-devel || sudo yum --disablerepo=updates install ncurses-devel
+	rpm --quiet -q ncurses-devel || sudo yum -y --disablerepo=updates install ncurses-devel
 	git clone http://git.code.sf.net/p/zsh/code zsh-code
 	cd zsh-code && ./Util/preconfig && ./configure && make && sudo make install && sudo /usr/sbin/usermod -s /usr/local/bin/zsh $(id -un)
 
@@ -112,10 +112,9 @@ perl:
 	make && make install
 
 autoconf:
-	rpm --quiet -q texinfo || sudo yum --disablerepo=updates texinfo
+	rpm --quiet -q texinfo || sudo yum -y --disablerepo=updates install texinfo
 	git clone http://git.sv.gnu.org/r/autoconf.git /tmp/autoconf
-	cd /tmp/autoconf
-	git checkout 100f26c
-	./configure && make && sudo make install
+	cd /tmp/autoconf && git checkout -b 100f26c
+	cd /tmp/autoconf && ./configure && make && sudo make install
 	which autoconf
 	autoconf --version
