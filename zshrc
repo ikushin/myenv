@@ -69,7 +69,7 @@ bindkey -s "^[f"  "| fgrep -v ?"
 bindkey -s "^[q"  "ps -eo uname,lstart,pid,rss,vsz,args | egrep"
 
 # Git key binds
-bindkey -s "^[s"  "git status -s "
+bindkey -s "^[s"  "git status -sb "
 bindkey -s "^[l"  "git log --oneline --decorate "
 bindkey -s "^[b"  "git branch "
 bindkey -s "^[f"  "git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol "
