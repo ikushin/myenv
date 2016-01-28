@@ -70,7 +70,7 @@ bindkey -s "^[q"  "ps -eo uname,lstart,pid,rss,vsz,args | egrep"
 
 # Git key binds
 bindkey -s "^[s"  "git status -sb "
-bindkey -s "^[l"  "git log --oneline --decorate "
+bindkey -s "^[l"  "git log --oneline --decorate --no-merges "
 bindkey -s "^[b"  "git branch "
 bindkey -s "^[f"  "git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol "
 bindkey -s "^[c"  'git commit -m "Update" '
@@ -84,8 +84,8 @@ alias ggdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-l
 alias gc='git checkout'
 alias gcm='git checkout master'
 alias gcd='git checkout dev'
-alias gl='git log --name-status'
-alias gll='git log -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t'
+alias gl='git log --name-status --no-merges'
+alias gll='git log -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges'
 alias gp='git push origin master'
 
 # not end of word
