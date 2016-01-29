@@ -44,9 +44,9 @@ git2:
 
 zsh5:
 	rpm --quiet -q ncurses-devel || sudo yum -y --disablerepo=updates install ncurses-devel
-       git clone http://git.code.sf.net/p/zsh/code /tmp/zsh-code
-       cd /tmp/zsh-code && ./Util/preconfig || make autoconf
-       cd /tmp/zsh-code && ./Util/preconfig && ./configure && make && sudo make install.bin install.modules && sudo /usr/sbin/usermod -s /usr/local/bin/zsh $(id -un)
+	git clone http://git.code.sf.net/p/zsh/code /tmp/zsh-code
+	cd /tmp/zsh-code && ./Util/preconfig || make autoconf
+	cd /tmp/zsh-code && ./Util/preconfig && ./configure && make && sudo make install.bin install.modules && sudo /usr/sbin/usermod -s /usr/local/bin/zsh $(id -un)
 
 epel:
 	grep -q 'release 6' /etc/issue && rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm; true
