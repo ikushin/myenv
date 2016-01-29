@@ -262,7 +262,8 @@ alias mv='/bin/mv -i'
 alias rm='rm -i'
 alias mvf='/bin/mv -f'
 alias rmf='rm -rf'
-alias ls='/bin/ls --color=auto --group-directories-first'
+alias ls='ls --color=auto --group-directories-first'
+alias sl='ls'
 alias ll='ls -lh --time-style=long-iso'
 alias lll='ll -tr'
 alias llll='lll --time-style=full-iso'
@@ -316,7 +317,6 @@ alias unetstat='/bin/netstat --numeric --udp --listen --program'
 alias fmt='fmt -s -w $(($COLUMNS))'
 alias ct='cut -c -$(($COLUMNS-10))'
 alias less='LANG=ja_JP.UTF8 less -i'
-alias sl='ls'
 alias time='/usr/bin/time -p'
 alias jq='jq -r'
 alias crm_mon='crm_mon -rAf'
@@ -478,10 +478,9 @@ case $OSTYPE in
 esac
 
 # for CentOS5
-grep -q 'release 5' /etc/redhat-release 2>/dev/null
-if [[ $? = 0 ]]
+if grep -q 'release 5' /etc/redhat-release 2>/dev/null
 then
-    alias ls='/bin/ls --color=auto'
+    ls --help | grep -q group-directories-first || alias ls='ls --color=auto'
     alias sed='sed --regexp-extended'
 fi
 
