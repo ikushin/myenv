@@ -480,7 +480,7 @@ esac
 # for CentOS5
 if grep -q 'release 5' /etc/redhat-release 2>/dev/null
 then
-    ls --help | grep -q group-directories-first || alias ls='ls --color=auto'
+    ls --help 2>&1 | grep -q group-directories-first || alias ls='ls --color=auto'
     alias sed='sed --regexp-extended'
 fi
 
