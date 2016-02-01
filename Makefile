@@ -34,8 +34,8 @@ dstat:
 
 GIT=2.7.0
 git2:
-	rpm --quiet -q curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker && sudo yum --disablerepo=updates install -y curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker; :
-	git --version 2>&1 | grep -q $(GIT) && false
+	grep -q 'CentOS' /etc/issue && if rpm --quiet -q curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker; then sudo yum --disablerepo=updates install -y curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker; else :; fi || :
+	if git --version 2>&1 | grep -q 2.7.0; then false; fi
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-$(GIT).tar.gz -O /tmp/git-$(GIT).tar.gz
 	tar zxf /tmp/git-$(GIT).tar.gz -C /tmp
 	cd /tmp/git-$(GIT); ./configure --without-tcltk && make
