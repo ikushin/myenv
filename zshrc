@@ -328,7 +328,7 @@ alias weeklyreport='em ~/sandbox/WeeklyReport'
 alias cata='cat -A'
 alias diff='diff -tbwrN --unified=1'
 alias d='gdiff a b'
-alias clock='while :; do printf "%s\r" "$(date +%T)"; sleep 1 ; done'
+alias clock='clear; cal; while :; do printf "%s\r" "$(date +%T)"; sleep 1 ; done'
 
 # pgrep
 \pgrep -af init |& grep -q 'init|systemd'
@@ -480,7 +480,7 @@ esac
 # for CentOS5
 if grep -q 'release 5' /etc/redhat-release 2>/dev/null
 then
-    ls --help 2>&1 | grep -q group-directories-first || alias ls='ls --color=auto'
+    env ls --help 2>&1 | grep -q group-directories-first || alias ls='ls --color=auto'
     alias sed='sed --regexp-extended'
 fi
 
