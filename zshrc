@@ -45,6 +45,7 @@ setopt auto_name_dirs
 setopt auto_param_keys
 setopt auto_remove_slash
 setopt extended_glob
+setopt null_glob
 setopt hist_ignore_space
 setopt list_types
 setopt no_beep
@@ -525,17 +526,17 @@ fi
 # for cygwin
 if [[ $OSTYPE == "cygwin" ]]; then
     # mv系
-    rm -f ~/sandbox/emacs.*(L0,m+7) ~/\#*
+    #rm -f ~/sandbox/emacs.*(L0,m+7) ~/\#*
     #mv -f *~Makefile~localrc~user* ~/Trash 2>/dev/null
     #mv -f *~Makefile~localrc(L0,a+7.)~user* ~/Trash 2>/dev/null
-    mv -f instances.*(L0,a+1.) ~/Trash 2>/dev/null
+    #mv -f instances.*(L0,a+1.) ~/Trash 2>/dev/null
     #find ~/sandbox -type f -atime +7 | xargs mv -t ~/sandbox/trash
     [[ -e ~/bin/puttylog_archive.sh ]] && bash ~/bin/puttylog_archive.sh
     [ `pwd` = "/usr/bin" ] && cd $HOME
     chcp 437 >/dev/null
 fi
 
-#proxy=
-#export {HTTP{,S}_PROXY,http{,s}_proxy}=$proxy
-
 [[ -e ~/.localrc ]] && $source ~/.localrc
+
+#export {HTTP{,S}_PROXY,http{,s}_proxy}="http://example.com:8080"
+#echo /tmp/*(m+7) | xargs -r /bin/rm -r
