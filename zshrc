@@ -328,7 +328,7 @@ alias weeklyreport='em ~/sandbox/WeeklyReport'
 alias cata='cat -A'
 alias diff='diff -tbwrN --unified=1'
 alias d='gdiff a b'
-alias clock='clear; cal; while :; do printf "%s\r" "$(date +%T)"; sleep 1 ; done'
+alias clock='clear; xcal; echo; while :; do printf "%s\r" "$(date +%T)"; sleep 1 ; done'
 alias c='clock'
 
 # pgrep
