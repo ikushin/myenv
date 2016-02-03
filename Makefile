@@ -125,3 +125,7 @@ coreutils:
 	wget --no-check-certificate http://ftp.jaist.ac.jp/pub/GNU/coreutils/coreutils-8.13.tar.gz -O /tmp/coreutils-8.13.tar.gz
 	tar xf /tmp/coreutils-8.13.tar.gz -C /tmp
 	cd /tmp/coreutils-8.13/; ./configure && make && make install
+
+xcal:
+	sed -i -e 's@msg =.*Encoding::ASCII_8BIT.*@msg = "\\0\\0".force_encoding(Encoding::UTF_16LE) * 1024@' -e '/super msg.tr/d' /usr/share/ruby/2.0.0/win32/registry.rb
+	gem install -V --backtrace xcal
