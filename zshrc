@@ -73,7 +73,7 @@ bindkey -s '^G^S' "git status -sb "
 bindkey -s "^[s"  "git status -sb "
 bindkey -s "^[b"  "git branch "
 bindkey -s "^G^B" "git branch "
-bindkey -s "^[f"  "git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol "
+bindkey -s "^[f"  "git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --color=always "
 bindkey -s "^[p"  "git pull "
 bindkey -s "^G^P" "git push origin master "
 bindkey -s "^G."  'cd $(git rev-parse --show-toplevel) '
@@ -88,12 +88,14 @@ bindkey -s "^G^L"   'git log --name-status --no-merges '
 bindkey -s "^G^L^L" 'git log -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges '
 
 # Vagrant key binds
-bindkey -s "^V^S"  "vagrant status "
+bindkey -s "^V^S"   "vagrant status "
+bindkey -s "^V^S^S" "vagrant ssh "
+bindkey -s "^V^U"   "vagrant up "
 
 # Git aliases
-alias gdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index'
-alias gitd='gitdiff'
-alias ggdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index --word-diff'
+alias gitdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index --color=always'
+alias gd='gitdiff'
+alias wgd='gitdiff --word-diff'
 alias gc='git checkout'
 alias gcm='git checkout master'
 alias gcd='git checkout dev'
@@ -329,7 +331,7 @@ alias netstat='/bin/netstat  --numeric --tcp --listen --program'
 alias unetstat='/bin/netstat --numeric --udp --listen --program'
 alias fmt='fmt -s -w $(($COLUMNS))'
 alias ct='cut -c -$(($COLUMNS-10))'
-alias less='LANG=ja_JP.UTF8 less -i'
+alias less='LANG=ja_JP.UTF8 less -iR'
 alias time='/usr/bin/time -p'
 alias jq='jq -r'
 alias crm_mon='crm_mon -rAf'
@@ -340,7 +342,7 @@ alias pkill='pkill -f'
 alias weeklyreport='em ~/sandbox/WeeklyReport'
 alias cata='cat -A'
 alias diff='diff -tbwrN --unified=1'
-alias d='gdiff a b'
+alias d='gitdiff a b'
 alias clock='clear; xcal; echo; while :; do printf "%s\r" "$(date +%T)"; sleep 1 ; done'
 alias c='clock'
 
@@ -367,7 +369,7 @@ alias rpmqlp='rpm -qlp'
 alias rpmqip='rpm -qip'
 
 # galiases
-alias -g L='|&less -SL'
+alias -g L='|&less -SLRi'
 alias -g M='|&more'
 alias -g H='|&head'
 alias -g TEE='|&tee'
