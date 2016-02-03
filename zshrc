@@ -69,13 +69,26 @@ bindkey -s "^[f"  "| fgrep -v ?"
 bindkey -s "^[q"  "ps -eo uname,lstart,pid,rss,vsz,args | egrep"
 
 # Git key binds
+bindkey -s '^G^S' "git status -sb "
 bindkey -s "^[s"  "git status -sb "
-bindkey -s "^[l"  'git log --oneline --decorate --no-merges -$((LINES-10)) '
 bindkey -s "^[b"  "git branch "
+bindkey -s "^G^B" "git branch "
 bindkey -s "^[f"  "git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol "
-bindkey -s "^[c"  'git commit -m "Update" '
-bindkey -s "^[v"  "git checkout "
 bindkey -s "^[p"  "git pull "
+bindkey -s "^G^P" "git push origin master "
+bindkey -s "^G."  'cd $(git rev-parse --show-toplevel) '
+bindkey -s "^G^R" "git reset --hard "
+
+bindkey -s "^[c"    'git checkout '
+bindkey -s "^[c^[c" 'git commit -m "Update" '
+bindkey -s "^[v"    "git checkout "
+
+bindkey -s "^[l"    'git log --oneline --decorate --no-merges -$((LINES-10)) '
+bindkey -s "^G^L"   'git log --name-status --no-merges '
+bindkey -s "^G^L^L" 'git log -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges '
+
+# Vagrant key binds
+bindkey -s "^V^S"  "vagrant status "
 
 # Git aliases
 alias gdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index'
