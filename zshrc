@@ -45,7 +45,7 @@ setopt auto_name_dirs
 setopt auto_param_keys
 setopt auto_remove_slash
 setopt extended_glob
-setopt null_glob
+#setopt null_glob
 setopt hist_ignore_space
 setopt list_types
 setopt no_beep
@@ -87,14 +87,15 @@ bindkey -s "^[c"    'git checkout '
 bindkey -s "^[c^[c" 'git commit -m "Update" '
 bindkey -s "^[v"    "git checkout "
 
-bindkey -s "^[l"    'git log --oneline --decorate --no-merges -$((LINES-10)) '
-bindkey -s "^G^L"   'git log --name-status --no-merges '
-bindkey -s "^G^L^L" 'git log -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges '
+bindkey -s "^[l"    'git log --color=always --oneline --decorate --no-merges -$((LINES-10)) '
+bindkey -s "^G^L"   'git log --color=always --name-status --no-merges '
+bindkey -s "^G^L^L" 'git log --color=always -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges '
 
 # Vagrant key binds
 bindkey -s "^V^S"   "vagrant status "
 bindkey -s "^V^S^S" "vagrant ssh "
 bindkey -s "^V^U"   "vagrant up "
+bindkey -s "^V^V"   "cd ~/vagrant "
 
 # Git aliases
 alias gitdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index --color=always'
@@ -103,8 +104,8 @@ alias wgd='gitdiff --word-diff'
 alias gc='git checkout'
 alias gcm='git checkout master'
 alias gcd='git checkout dev'
-alias gl='git log --name-status --no-merges'
-alias gll='git log -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges'
+alias gl='git log --color=always --name-status --no-merges'
+alias gll='git log --color=always -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges'
 alias gp='git push origin master'
 
 # not end of word
@@ -536,10 +537,11 @@ if [[ $OSTYPE == "cygwin" ]]; then
     #find ~/sandbox -type f -atime +7 | xargs mv -t ~/sandbox/trash
     [[ -e ~/bin/puttylog_archive.sh ]] && bash ~/bin/puttylog_archive.sh
     [ `pwd` = "/usr/bin" ] && cd $HOME
+    /bin/ls -d /tmp/*(m+7) 2>/dev/null | xargs -r /bin/rm -r
+    /bin/ls -d ~/sandbox/*(m+7) 2>/dev/null | xargs -r /bin/mv -t ~/sandbox/.trash
     chcp 437 >/dev/null
 fi
 
 [[ -e ~/.localrc ]] && $source ~/.localrc
 
 #export {HTTP{,S}_PROXY,http{,s}_proxy}="http://example.com:8080"
-#echo /tmp/*(m+7) | xargs -r /bin/rm -r
