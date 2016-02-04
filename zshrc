@@ -55,6 +55,8 @@ setopt sun_keyboard_hack
 setopt transient_rprompt
 setopt brace_ccl
 setopt interactive_comments
+setopt chase_links
+setopt pushd_minus
 #setopt ignore_eof      # ignore logout in crtr-d
 unsetopt flow_control   # ignore ctrl-s
 unsetopt prompt_cr
@@ -296,9 +298,9 @@ alias df='df -PTh'
 alias df.='df .'
 alias dfx='df -x tmpfs -x devtmpfs'
 alias view='vi -R'
-alias grep='egrep --color=auto'
+alias grep='egrep --color=always'
 alias igrep='grep -i'
-alias fgrep='fgrep --color=auto'
+alias fgrep='fgrep --color=always'
 alias rgrep='grep -v "^#|^$"'
 alias GG='grep'
 alias scp='scp -r'
