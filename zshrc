@@ -95,10 +95,11 @@ bindkey -s "^G^L^L" 'git log --color=always -p --ignore-space-change --ignore-al
 bindkey -s "^V^S"   "vagrant status "
 bindkey -s "^V^S^S" "vagrant ssh "
 bindkey -s "^V^U"   "vagrant up "
-bindkey -s "^V^V"   "cd ~/vagrant "
+bindkey -s "^V^V"   "cd ~/vagrant/"
 
 # Git aliases
 alias gitdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index --color=always'
+alias gdff='gitdiff'
 alias gd='gitdiff'
 alias wgd='gitdiff --word-diff'
 alias gc='git checkout'
