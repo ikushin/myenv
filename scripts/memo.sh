@@ -20,3 +20,4 @@ usage()
 
 IFS=$'\n'
 
+read day month year <<< $(date +'%d %m %y')

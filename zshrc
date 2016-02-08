@@ -99,7 +99,7 @@ bindkey -s "^V^V"   "cd ~/vagrant/"
 
 # Git aliases
 alias gitdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index --color=always'
-alias gdff='gitdiff'
+alias gdiff='gitdiff'
 alias gd='gitdiff'
 alias wgd='gitdiff --word-diff'
 alias gc='git checkout'
