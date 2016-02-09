@@ -17,10 +17,10 @@ kyosyutu=$( tr -d , <<<$3 )
 while :
 do
     # sleep
-    sleep 3
+    sleep 60
 
     # 19時台のみ実施
-    #date '+%H' | grep -q '19' || continue
+    date '+%H' | grep -q '19' || continue
 
     # 基準価額取得
     now=$(curl 'http://www.morningstar.co.jp/FundData/SnapShot.do?fnc=2009011606' \
@@ -39,6 +39,7 @@ do
     kijun_sa=$(( $now - $last ))
     hyoka_sa=$( LANG=ja_JP.utf-8 ; printf "%'d\n"  $(( $hyoka_now - $hyoka )) )
     kyosyutsu_sa=$( LANG=ja_JP.utf-8 ; printf "%'d\n"  $(( $hyoka_now - $kyosyutu )) )
+    kyosyutsu_p=$( printf "%.1f" $(bc -l <<< "$hyoka_now/$kyosyutu * 100") )
 
     # 最新の値の保存
     hyoka=$hyoka_now
@@ -52,11 +53,11 @@ do
     # メール送信
     cat <<-EOF | /usr/sbin/sendmail -t
 	To: xuhuang.ikin@gmail.com
-	Subject: $kijun_sa 円, $hyoka_sa, $kyosyutsu_sa 円
+	Subject: $kijun_sa 円, $hyoka_sa 円, $kyosyutsu_sa 円, $kyosyutsu_p %
 
-	基準価額：$kijun_sa 円
-	評価額  ：$hyoka_sa
-	含み損益：$kyosyutsu_sa
+	基準価額上下：$kijun_sa 円
+	評価額上下  ：$hyoka_sa 円
+	通算含み損益：$kyosyutsu_sa 円
+	騰落率      ：$kyosyutsu_p %
 	EOF
-
 done
