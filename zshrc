@@ -351,6 +351,7 @@ alias diff='diff -tbwrN --unified=1'
 alias d='gitdiff a b'
 alias clock='clear; xcal; echo; while :; do printf "%s\r" "$(date +%T)"; sleep 1 ; done'
 alias c='clock'
+alias ser='python -m CGIHTTPServer'
 
 # pgrep
 \pgrep -af init |& grep -q 'init|systemd'

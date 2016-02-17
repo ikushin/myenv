@@ -249,9 +249,7 @@
           (lambda ()
             (sh-electric-here-document-mode -1)))
 
-;;汎用機の SPF (mule みたいなやつ) には
-;;画面を 2 分割したときの 上下を入れ替える swap screen
-;;というのが PF 何番かにわりあてられていました。
+;; 画面入替え
 (defun swap-screen()
   "Swap two screen,leaving cursor at current window."
   (interactive)
@@ -267,6 +265,5 @@
     (other-window 1)
     (set-window-buffer thiswin (window-buffer))
     (set-window-buffer (selected-window) thisbuf)))
-(global-set-key [f2] 'swap-screen)
-(global-set-key [S-f2] 'swap-screen-with-cursor)
-
+(global-set-key [S-f2] 'swap-screen)
+(global-set-key [f2] 'swap-screen-with-cursor)
