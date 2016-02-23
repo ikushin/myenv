@@ -267,3 +267,8 @@
     (set-window-buffer (selected-window) thisbuf)))
 (global-set-key [S-f2] 'swap-screen)
 (global-set-key [f2] 'swap-screen-with-cursor)
+
+;; カーソル位置を戻すpoint-undoパッケージ
+(require 'point-undo)
+(define-key global-map [f7] 'point-undo)
+(define-key global-map [f17] 'point-redo)

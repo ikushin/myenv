@@ -488,7 +488,8 @@ case $OSTYPE in
       alias vagrant='/cygdrive/c/HashiCorp/Vagrant/bin/vagrant'
       alias sed='sed --regexp-extended'
       alias ipa='ifconfig | grep "Ethernet|IPv4 Address|Subnet Mask"'
-      alias t='tasklist | /bin/egrep "[0-9,]{7}" | sort -k5 -r'
+      alias t='tasklist  | /bin/egrep "[0-9,]{7}" | sort -k5 -r'
+      alias tt='tasklist | /bin/egrep "[0-9,]{6}" | sort -k5 -r'
       ;;
   minix)
       alias -g L='|&less'
