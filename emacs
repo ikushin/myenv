@@ -11,7 +11,8 @@
 (add-to-list 'load-path "~/lisp/emacs-w3m")
 (setq kill-whole-line t)
 ;(setq-default indicate-empty-lines t)
-(global-set-key "\C-x\C-b" 'buffer-menu)
+;(global-set-key "\C-x\C-b" 'buffer-menu)
+(global-set-key (kbd "C-x C-b") 'bs-show)
 (show-paren-mode t)
 (column-number-mode 1)  ;keta hyouji
 
@@ -142,14 +143,14 @@
                         (my-make-scratch 1)))))
 
 ;; occur-at-point
-(defun occurat()
+(defun oc()
   (interactive)
   (if (thing-at-point 'word)
       (occur (thing-at-point 'word))
     (call-interactively 'occur)))
 
 (setq list-matching-lines-face 'color-occur-face)
-                                        ;(setq list-matching-lines-face "light steel blue")
+;(setq list-matching-lines-face "light steel blue")
 
 ;;
 ;(require 'color-moccur)
@@ -272,3 +273,22 @@
 (require 'point-undo)
 (define-key global-map [f7] 'point-undo)
 (define-key global-map [f17] 'point-redo)
+
+;; 設定ファイルの色付けをする
+(require 'generic-x)
+
+;; 最初から*Occur*を選択させる
+(defun occur-and-select (regexp &optional nlines)
+  (interactive (occur-read-primary-args))
+  (occur regexp nlines)
+  (select-window (get-buffer-window "*Occur*"))
+  (forward-line 1))
+(global-set-key (kbd "M-s o") 'occur-and-select)
+
+;; 最近のファイル500個を保存する
+(setq recentf-max-saved-items 500)
+;; 最近使ったファイルに加えないファイルを
+;; 正規表現で指定する
+(setq recentf-exclude
+      '("/TAGS$" "/var/tmp/"))
+(require 'recentf-ext)
