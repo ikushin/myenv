@@ -292,3 +292,7 @@
 (setq recentf-exclude
       '("/TAGS$" "/var/tmp/"))
 (require 'recentf-ext)
+
+;; バッファの同一ファイル名を区別する
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
