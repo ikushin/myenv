@@ -355,6 +355,7 @@ alias clock='clear; xcal; echo; while :; do printf "%s\r" "$(date +%T)"; sleep 1
 alias c='clock'
 alias ser='python -m CGIHTTPServer'
 alias curl='curl -L -Ss'
+alias ps='ps -eo "user,pid,pcpu,pmem,vsz,rss,lstart,command"'
 
 # pgrep
 \pgrep -af init |& grep -q 'init|systemd'
