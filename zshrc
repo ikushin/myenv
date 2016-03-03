@@ -386,11 +386,15 @@ alias -g H='|&head'
 alias -g TEE='|&tee'
 alias -g T='|&tail'
 alias -g WC='|&wc -l'
+
 alias -g G='|&grep -a'
 alias -g GI='G -i'
 alias -g GV='G -v'
 alias -g GVV="G -v '^(#|$)'"
 alias -g GO='G -o'
+alias -g G-='|&grep -a "^-(?!-)"'
+alias -g G+='|&grep -a "^\+(?!\+)"'
+
 alias -g FG='|& fgrep -a'
 alias -g FGV='FG -v'
 alias -g S='GVV |&sort'
