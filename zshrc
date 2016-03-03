@@ -77,7 +77,7 @@ bindkey -s '^G^S' "git status -sb "
 bindkey -s "^[s"  "git status -sb "
 bindkey -s "^[b"  "git branch "
 bindkey -s "^G^B" "git branch "
-bindkey -s "^[f"  "git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --color=always "
+bindkey -s "^[f"  "git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --color=auto "
 bindkey -s "^[p"  "git pull "
 bindkey -s "^G^P" "git push origin master "
 bindkey -s "^G."  'cd $(git rev-parse --show-toplevel) '
@@ -289,7 +289,7 @@ alias ll='ls -lh --time-style=long-iso'
 alias lll='ll -tr'
 alias llll='lll --time-style=full-iso'
 alias l4='llll'
-alias l5='lll **/*(.) 2>/dev/null'
+alias s='stat -c "%A %a %U %G %n" '
 alias la='ll -A'
 alias lld='ll -d'
 alias ip='/sbin/ip -4 -oneline'
