@@ -407,7 +407,7 @@ alias -g CLM='| column -t'
 alias -g A='| col'
 alias -g MD='| md5sum'
 alias -g D='| diff $_ -'
-alias -g PE='| /bin/perl -pe '
+alias -g PE='| perl -pe '
 alias -g CAT='|& cat -An'
 
 alias -g e2s='|& lv -Ieuc -Osjis | cat'
