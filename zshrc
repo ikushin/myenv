@@ -124,7 +124,7 @@ DIRSTACKSIZE=200
 
 # prompts
 #PROMPT='[%n@%{$bg[blue]%}%m%{$reset_color%}]%(#.#.$) '
-RPROMPT='[%~]'
+RPROMPT='[%d]'
 
 
 # environment variable
