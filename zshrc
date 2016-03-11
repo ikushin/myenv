@@ -54,7 +54,7 @@ setopt rm_star_silent
 setopt sun_keyboard_hack
 setopt transient_rprompt
 setopt brace_ccl
-setopt interactive_comments
+#setopt interactive_comments
 setopt chase_links
 setopt pushd_minus
 #setopt ignore_eof      # ignore logout in crtr-d
