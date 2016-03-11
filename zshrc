@@ -275,6 +275,8 @@ alias vic='vi -c startinsert c'
 alias .='source'
 alias ..='cd ..'
 alias h='history 0 | perl -pe "s/^ [0-9]+ //" | tail -100'
+alias \$=';'
+alias \#=';'
 
 alias now='date +%F_%T'
 alias year='printf "%d: %d\n" $(date +%Y) $(($(date +%Y)-1988))'
