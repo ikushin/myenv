@@ -42,6 +42,7 @@ git2:
 	cd /tmp/git-$(GIT); [ $$OSTYPE == "cygwin" ] && PERL_PATH=/usr/local/bin/perl make install || sudo make install
 	git config --global user.email "you@example.com"
 	git config --global user.name "ikushin"
+	git config --global http.sslVerify false
 
 zsh5:
 	rpm --quiet -q ncurses-devel || sudo yum -y --disablerepo=updates install ncurses-devel
