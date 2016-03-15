@@ -525,7 +525,7 @@ fi
 typeset -U path cdpath fpath manpath
 
 # rc
-mkdir -p $HOME/{,sandbox}/Trash
+mkdir -p $HOME/.trash
 which dircolors  >/dev/null 2>&1  && eval `dircolors`
 [[ -e $HOME/.zprompt ]] && source $HOME/.zprompt
 [[ -e $HOME/.localrc ]] && source $HOME/.localrc

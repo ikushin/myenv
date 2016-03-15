@@ -62,6 +62,8 @@
 (define-key global-map "\M-w" 'kill-region)
 (define-key global-map "\C-s" 'isearch-forward)
 (define-key global-map "\C-r" 'isearch-backward)
+(define-key global-map "\M-s\M-s" 'isearch-forward-regexp)
+(define-key global-map "\M-s\M-r" 'isearch-backward-regexp)
 (define-key global-map "\M-h" 'backward-kill-word)
 (global-set-key "\C-\M-b" 'scroll-other-window-down)
 (global-set-key "\M-g" 'goto-line)
@@ -283,7 +285,7 @@
   (occur regexp nlines)
   (select-window (get-buffer-window "*Occur*"))
   (forward-line 1))
-(global-set-key (kbd "M-s o") 'occur-and-select)
+(global-set-key (kbd "M-s M-o") 'occur-and-select)
 
 ;; 最近のファイル500個を保存する
 (setq recentf-max-saved-items 500)
