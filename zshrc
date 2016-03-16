@@ -357,7 +357,7 @@ alias clock='clear; xcal; echo; while :; do printf "%s\r" "$(date +%T)"; sleep 1
 alias c='clock'
 alias ser='python -m CGIHTTPServer'
 alias curl='curl -L -Ss'
-alias ps='ps -eo "user,pid,pcpu,pmem,vsz,rss,lstart,command"'
+alias pso='ps -eo "user,pid,pcpu,pmem,vsz,rss,lstart,command"'
 
 # pgrep
 \pgrep -af init |& grep -q 'init|systemd'
@@ -411,6 +411,7 @@ alias -g MD='| md5sum'
 alias -g D='| diff $_ -'
 alias -g PE='| perl -pe '
 alias -g CAT='|& cat -An'
+alias -g SIP='|& sort -n -t'.' -k1,1 -k2,2 -k3,3 -k4,4'
 
 alias -g e2s='|& lv -Ieuc -Osjis | cat'
 alias -g e2j='|& lv -Ieuc -Osjis | cat'
