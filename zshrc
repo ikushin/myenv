@@ -259,6 +259,9 @@ function sa()
     )
 }
 
+function grep_keyword() {
+        /bin/egrep --color "$|$@"
+}
 
 # PATH
 path=( $HOME/*bin(N-/) /usr{/local,}/bin(N-/) /opt/*/*bin(N-/) /opt/*/*/*bin(N-/) \
@@ -280,6 +283,8 @@ alias \#=';'
 
 alias now='date +%F_%T'
 alias year='printf "%d: %d\n" $(date +%Y) $(($(date +%Y)-1988))'
+alias hei=year
+alias wareki=year
 alias cp='cp -ir'
 alias mv='/bin/mv -i'
 alias rm='rm -i'
@@ -358,6 +363,8 @@ alias c='clock'
 alias ser='python -m CGIHTTPServer'
 alias curl='curl -L -Ss'
 alias pso='ps -eo "user,pid,pcpu,pmem,vsz,rss,lstart,command"'
+alias sua='cat a SU'
+alias sca='cat a SC'
 
 # pgrep
 \pgrep -af init |& grep -q 'init|systemd'
@@ -394,6 +401,7 @@ alias -g GI='G -i'
 alias -g GV='G -v'
 alias -g GVV="G -v '^(#|$)'"
 alias -g GO='G -o'
+alias -g GK='|& grep_keyword'
 alias -g G-='|&grep -a "^-(?!-)"'
 alias -g G+='|&grep -a "^\+(?!\+)"'
 
