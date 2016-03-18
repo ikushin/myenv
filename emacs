@@ -323,3 +323,6 @@
             '(my-close-compilation-buffer-if-succeeded))
   (setq compilation-finish-functions
         '(my-close-compilation-buffer-if-succeeded)))
+
+;;; サーチをループしない
+(setq isearch-wrap-function '(lambda nil))
