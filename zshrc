@@ -363,12 +363,30 @@ alias c='clock'
 alias ser='python -m CGIHTTPServer'
 alias curl='curl -L -Ss'
 alias pso='ps -eo "user,pid,pcpu,pmem,vsz,rss,lstart,command"'
+
 alias asu='cat a SU'
 alias asc='cat a SC'
+alias sua='cat a SU'
+alias sca='cat a SC'
+
 alias bsu='cat b SU'
 alias bsc='cat b SC'
+alias sub='cat b SU'
+alias scb='cat b SC'
+
 alias csu='cat c SU'
 alias csc='cat c SC'
+alias suc='cat c SU'
+alias scc='cat c SC'
+
+function su_file() {
+    [[ $# != 1 ]] && return
+    [[ ! -f $@ ]] && return
+
+    mkdir -p ./.trash
+    /bin/mv -f -t ./.trash $@
+    cat ./.trash/$@ |&/bin/egrep -av '^(#|$)' |&sort |uniq | tee $@
+}
 
 # pgrep
 \pgrep -af init |& grep -q 'init|systemd'
