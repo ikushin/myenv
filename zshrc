@@ -98,7 +98,7 @@ bindkey -s "^V^U"   "vagrant up "
 bindkey -s "^V^V"   "cd ~/vagrant/"
 
 # Git aliases
-alias gitdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index --color=always'
+alias gitdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index --color=auto'
 alias gdiff='gitdiff'
 alias gd='gitdiff'
 alias wgd='gitdiff --word-diff'
@@ -131,7 +131,7 @@ RPROMPT='[%d]'
 LC_ALL="ja_JP.UTF8"
 LANG="C"
 cdpath=( $HOME .. )
-export EDITOR=vi
+export EDITOR=vim
 export PAGER=less
 export LESSCHARSET=utf-8
 #export CFLAGS='-g -Wall -Wuninitialized -O'
@@ -363,6 +363,8 @@ alias c='clock'
 alias ser='python -m CGIHTTPServer'
 alias curl='curl -L -Ss'
 alias pso='ps -eo "user,pid,pcpu,pmem,vsz,rss,lstart,command"'
+alias today='/bin/date +%Y%m%d'
+alias yesterday='date --date "1 day ago" +%Y%m%d'
 
 alias asu='cat a SU'
 alias asc='cat a SC'
