@@ -32,14 +32,24 @@ dstat:
 	mkdir -p $$HOME/bin
 	git clone https://github.com/dagwieers/dstat.git $$HOME/bin/dstat
 
-GIT=2.7.0
+GIT=2.8.1
+PKG=curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
 git2:
-	grep -q 'CentOS' /etc/issue && if rpm --quiet -q curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker; then sudo yum --disablerepo=updates install -y curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker; else :; fi || :
-	if git --version 2>&1 | grep -q 2.7.0; then false; fi
+	if git --version |& grep -q $(GIT); then false; fi
+	if ! rpm --quiet -q $(PKG) ; then sudo yum --disablerepo=updates install -y $(PKG); fi
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-$(GIT).tar.gz -O /tmp/git-$(GIT).tar.gz
 	tar zxf /tmp/git-$(GIT).tar.gz -C /tmp
-	cd /tmp/git-$(GIT); ./configure --without-tcltk && make
-	cd /tmp/git-$(GIT); [ $$OSTYPE == "cygwin" ] && PERL_PATH=/usr/local/bin/perl make install || sudo make install
+	cd /tmp/git-$(GIT); ./configure --without-tcltk && make && sudo make install
+	git config --global user.email "you@example.com"
+	git config --global user.name "ikushin"
+	git config --global http.sslVerify false
+
+cygwin_git2:
+	if git --version |& grep -q $(GIT); then false; fi
+	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-$(GIT).tar.gz -O /tmp/git-$(GIT).tar.gz
+	tar zxf /tmp/git-$(GIT).tar.gz -C /tmp
+	cd /tmp/git-$(GIT); ./configure --without-tcltk && PERL_PATH=/usr/local/perl/bin/perl make
+	cd /tmp/git-$(GIT); PERL_PATH=/usr/local/perl/bin/perl make install
 	git config --global user.email "you@example.com"
 	git config --global user.name "ikushin"
 	git config --global http.sslVerify false
