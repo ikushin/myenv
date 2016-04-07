@@ -444,6 +444,8 @@ alias -g A='| col'
 alias -g MD='| md5sum'
 alias -g D='| diff $_ -'
 alias -g PE='| perl -pe '
+alias -g P='| perl -pe '
+alias -g PP='| perl -00 -nae '
 alias -g CAT='|& cat -An'
 alias -g SIP='|& sort -n -t'.' -k1,1 -k2,2 -k3,3 -k4,4'
 
