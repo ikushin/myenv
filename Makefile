@@ -43,6 +43,7 @@ git2:
 	git config --global user.email "you@example.com"
 	git config --global user.name "ikushin"
 	git config --global http.sslVerify false
+	git config --global core.quotepath false
 
 cygwin_git2:
 	if git --version |& grep -q $(GIT); then false; fi
