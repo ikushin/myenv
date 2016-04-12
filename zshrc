@@ -82,6 +82,7 @@ bindkey -s "^[p"  "git pull "
 bindkey -s "^G^P" "git push origin master "
 bindkey -s "^G."  'cd $(git rev-parse --show-toplevel) '
 bindkey -s "^G^R" "git reset --hard "
+bindkey -s "^G^A" "git add "
 
 bindkey -s "^[c"    'git checkout '
 bindkey -s "^[c^[c" 'git commit -m "Update" '
@@ -281,6 +282,25 @@ alias h='history 0 | perl -pe "s/^ [0-9]+ //" | tail -100'
 alias \$=';'
 alias \#=';'
 
+# grep aliases
+alias grep='grep --color'
+alias egrep='egrep --color'
+alias g='grep -P --color=auto'
+alias igrep='g -i'
+alias fgrep='fgrep --color'
+alias rgrep='g -v "^#|^$"'
+
+alias -g G='|& g -a'
+alias -g GI='G -i'
+alias -g GV='G -v'
+alias -g GVV="G -v '^(#|$)'"
+alias -g GO='G -o'
+alias -g GK='|& grep_keyword'
+alias -g G-='|&grep -a "^-(?!-)"'
+alias -g G+='|&grep -a "^\+(?!\+)"'
+alias -g G++='|&/bin/egrep -a "^[+-][^+-]"'
+alias -g FG='|& fgrep -a'
+
 alias now='date +%F_%T'
 alias year='printf "%d: %d\n" $(date +%Y) $(($(date +%Y)-1988))'
 alias hei=year
@@ -307,11 +327,6 @@ alias df='df -PTh'
 alias df.='df .'
 alias dfx='df -x tmpfs -x devtmpfs'
 alias view='vi -R'
-alias grep='grep -P --color=auto'
-alias igrep='grep -i'
-alias fgrep='fgrep'
-alias rgrep='grep -v "^#|^$"'
-alias GG='grep'
 alias scp='scp -r'
 alias mci='ci -u -m"kim"'
 alias mrlog='rlog -L -R RCS/*'
@@ -421,17 +436,6 @@ alias -g TEE='|&tee'
 alias -g T='|&tail'
 alias -g WC='|&wc -l'
 
-alias -g G='|&grep -a'
-alias -g GI='G -i'
-alias -g GV='G -v'
-alias -g GVV="G -v '^(#|$)'"
-alias -g GO='G -o'
-alias -g GK='|& grep_keyword'
-alias -g G-='|&grep -a "^-(?!-)"'
-alias -g G+='|&grep -a "^\+(?!\+)"'
-alias -g G++='|&/bin/egrep -a "^[+-][^+-]"'
-
-alias -g FG='|& fgrep -a'
 alias -g FGV='FG -v'
 alias -g S='GVV |&sort'
 alias -g SC='S |uniq -c |sort -n'
