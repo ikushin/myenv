@@ -1,0 +1,17 @@
+■ IPソート
+sort -n -t'.' -k1,1 -k2,2 -k3,3 -k4,4
+
+■ load が閾値を超えたら top の結果を mail する
+[[ $(/bin/egrep -o '^[0-9]+' /proc/loadavg ) > 1 ]] && top -b -n1 | mail vagrant
+
+■ SNMPトラップ受信
+$ sudo yum install net-snmp
+$ cat /etc/snmp/snmptrapd.conf
+authCommunity log,execute,net public
+$ sudo service snmptrapd start
+$ sudo tailf /var/log/messages
+
+■ SNMP Trap 送信
+$ sudo yum install net-snmp
+$ snmptrap -v2 -c public 10.207.221.48 .1.3.6.1.4.1 localhost 1 0 ""
+
