@@ -378,7 +378,7 @@ alias clock='clear; xcal; echo; while :; do printf "%s\r" "$(date +%T)"; sleep 1
 alias c='clock'
 alias ser='python -m CGIHTTPServer'
 alias curl='curl -L -Ss'
-alias pso='ps -eo "user,pid,pcpu,pmem,vsz,rss,lstart,command"'
+alias pso='ps -eo "user,pid,pcpu,pmem,vsz,rss,stat,lstart,command"'
 alias today='/bin/date +%Y%m%d'
 alias yesterday='date --date "1 day ago" +%Y%m%d'
 
