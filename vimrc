@@ -7,4 +7,5 @@ set nowrapscan
 set nobackup
 set noswapfile
 set hlsearch
+set paste
 

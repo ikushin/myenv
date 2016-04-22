@@ -60,6 +60,7 @@ zsh5:
 	git clone http://git.code.sf.net/p/zsh/code /tmp/zsh-code
 	cd /tmp/zsh-code && ./Util/preconfig || make autoconf
 	cd /tmp/zsh-code && ./Util/preconfig && ./configure && make && sudo make install.bin install.modules && sudo /usr/sbin/usermod -s /usr/local/bin/zsh $(id -un)
+	sed -i 's/^clear/#&/' /etc/zlogout
 
 epel:
 	grep -q 'release 6' /etc/issue && rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm; true
@@ -102,13 +103,13 @@ git_clone:
 	cd ~/.myenv && git config --global push.default simple && make cp
 
 emacs24:
-	if emacs --version | tee /tmp/zzai | egrep  'GNU Emacs 24'; then :; else wget http://mirror.jre655.com/GNU/emacs/emacs-24.5.tar.gz && tar xvf emacs-24.5.tar.gz && cd emacs-24.5/ && ./configure --without-x && sudo make install && rm -rf emacs-24.5.tar.gz emacs-24.5; fi
 	mkdir -p  ~/.lisp
 	wget -nc --no-check-certificate -O ~/.lisp/minibuffer-complete-cycle.el https://raw.githubusercontent.com/knu/minibuffer-complete-cycle/master/minibuffer-complete-cycle.el; :
 	wget -nc --no-check-certificate -O ~/.lisp/browse-kill-ring.el https://raw.githubusercontent.com/T-J-Teru/browse-kill-ring/master/browse-kill-ring.el; :
 	wget -nc --no-check-certificate -O ~/.lisp/redo+.el            http://www.emacswiki.org/emacs/download/redo%2b.el; :
 	wget -nc --no-check-certificate -O ~/.lisp/point-undo.el       https://www.emacswiki.org/emacs/download/point-undo.el; :
 	wget -nc --no-check-certificate -O ~/.lisp/recentf-ext.el      https://www.emacswiki.org/emacs/download/recentf-ext.el; :
+	if emacs --version | tee /tmp/zzai | egrep  'GNU Emacs 24'; then :; else wget http://mirror.jre655.com/GNU/emacs/emacs-24.5.tar.gz && tar xvf emacs-24.5.tar.gz && cd emacs-24.5/ && ./configure --without-x && sudo make install && rm -rf emacs-24.5.tar.gz emacs-24.5; fi
 
 clone_https:
 	mkdir -p ~/.ssh; chmod 700 ~/.ssh

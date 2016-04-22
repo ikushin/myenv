@@ -61,6 +61,15 @@ setopt pushd_minus
 unsetopt flow_control   # ignore ctrl-s
 unsetopt prompt_cr
 
+# cdr, add-zsh-hook を有効にする
+autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+add-zsh-hook chpwd chpwd_recent_dirs
+# cdr の設定
+zstyle ':completion:*' recent-dirs-insert both
+zstyle ':chpwd:*' recent-dirs-max 500
+zstyle ':chpwd:*' recent-dirs-default true
+zstyle ':chpwd:*' recent-dirs-pushd true
+
 # key binds
 bindkey -e
 bindkey '^O'   edit-command-line
@@ -540,7 +549,7 @@ case $OSTYPE in
       path=( $path )
       alias vagrant='/cygdrive/c/HashiCorp/Vagrant/bin/vagrant'
       alias sed='sed --regexp-extended'
-      alias ipa='ifconfig | grep "Ethernet|IPv4 Address|Subnet Mask"'
+      alias ipa='ifconfig | /bin/egrep "Ethernet|IPv4 Address|Subnet Mask"'
       alias t='tasklist  | /bin/egrep "[0-9,]{7}" | sort -k5 -r'
       alias tt='tasklist | /bin/egrep "[0-9,]{6}" | sort -k5 -r'
       ;;
