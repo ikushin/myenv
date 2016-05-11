@@ -305,8 +305,8 @@ alias -g GV='G -v'
 alias -g GVV="G -v '^(#|$)'"
 alias -g GO='G -o'
 alias -g GK='|& grep_keyword'
-alias -g G-='|&grep -a "^-(?!-)"'
-alias -g G+='|&grep -a "^\+(?!\+)"'
+alias -g G-='|&/bin/grep -P -a "^-(?!-)"'
+alias -g G+='|&/bin/grep -P -a "^\+(?!\+)"'
 alias -g G++='|&/bin/egrep -a "^[+-][^+-]"'
 alias -g FG='|& fgrep -a'
 
