@@ -326,3 +326,7 @@
 
 ;;; サーチをループしない
 (setq isearch-wrap-function '(lambda nil))
+
+;;; コンパイル時に出力を追って表示する
+(setq compilation-scroll-output t)
+

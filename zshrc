@@ -92,6 +92,7 @@ bindkey -s "^G^P" "git push origin master "
 bindkey -s "^G."  'cd $(git rev-parse --show-toplevel) '
 bindkey -s "^G^R" "git reset --hard "
 bindkey -s "^G^A" "git add "
+bindkey -s "^G^T" "git cat-file -p HEAD:file "
 
 bindkey -s "^[c"    'git checkout '
 bindkey -s "^[c^[c" 'git commit -m "Update" '
@@ -385,7 +386,7 @@ alias diff='diff -tbwrN --unified=1'
 alias d='gitdiff a b'
 alias clock='clear; xcal; echo; while :; do printf "%s\r" "$(date +%T)"; sleep 1 ; done'
 alias c='clock'
-alias pyser='python -m CGIHTTPServer'
+alias pyser='ipa; python -m CGIHTTPServer'
 alias curl='curl -L -Ss'
 alias pso='ps -eo "user,pid,pcpu,pmem,vsz,rss,stat,lstart,command"'
 alias today='/bin/date +%Y%m%d'
