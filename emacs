@@ -12,9 +12,16 @@
 (setq kill-whole-line t)
 ;(setq-default indicate-empty-lines t)
 ;(global-set-key "\C-x\C-b" 'buffer-menu)
-(global-set-key (kbd "C-x C-b") 'bs-show)
 (show-paren-mode t)
 (column-number-mode 1)  ;keta hyouji
+
+(global-set-key (kbd "C-x C-b") 'bs-show)
+;; possible values for the configuration are:
+;;    ("all"                . bs-config--all)
+;;    ("files"              . bs-config--only-files)
+;;    ("files-and-scratch"  . bs-config--files-and-scratch)
+;;    ("all-intern-last"    . bs-config--all-intern-last)
+(setq bs-default-configuration "all")
 
 ;; new
 (global-hl-line-mode 0)
@@ -329,4 +336,3 @@
 
 ;;; コンパイル時に出力を追って表示する
 (setq compilation-scroll-output t)
-

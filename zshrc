@@ -293,14 +293,15 @@ alias \$=';'
 alias \#=';'
 
 # grep aliases
-alias grep='grep --color'
-alias egrep='egrep --color'
-alias g='grep -P --color=auto'
+alias grep='/bin/grep --color'
+alias egrep='/bin/egrep --color'
+alias pgrep='/bin/grep -P --color'
+alias fgrep='/bin/fgrep --color'
+alias g='pgrep'
 alias igrep='g -i'
-alias fgrep='fgrep --color'
 alias rgrep='g -v "^#|^$"'
 
-alias -g G='|& g -a'
+alias -g G='|& grep -aP'
 alias -g GI='G -i'
 alias -g GV='G -v'
 alias -g GVV="G -v '^(#|$)'"
@@ -388,7 +389,7 @@ alias clock='clear; xcal; echo; while :; do printf "%s\r" "$(date +%T)"; sleep 1
 alias c='clock'
 alias pyser='ipa; python -m CGIHTTPServer'
 alias curl='curl -L -Ss'
-alias pso='ps -eo "user,pid,pcpu,pmem,vsz,rss,stat,lstart,command"'
+alias pso='ps -eo "user,pid,ppid,pgid,pcpu,pmem,vsz,rss,stat,lstart,command"'
 alias today='/bin/date +%Y%m%d'
 alias yesterday='date --date "1 day ago" +%Y%m%d'
 
@@ -406,6 +407,8 @@ alias csu='cat c SU'
 alias csc='cat c SC'
 alias suc='cat c SU'
 alias scc='cat c SC'
+
+alias sss='su_file'
 
 function su_file() {
     [[ $# != 1 ]] && return
@@ -459,7 +462,7 @@ alias -g MD='| md5sum'
 alias -g D='| diff $_ -'
 alias -g PE='| perl -pe '
 alias -g P='| perl -pe '
-alias -g PP='| perl -00 -nae '
+alias -g P0='| perl -00 -nae '
 alias -g CAT='|& cat -An'
 alias -g SIP='|& sort -n -t'.' -k1,1 -k2,2 -k3,3 -k4,4'
 

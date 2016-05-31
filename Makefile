@@ -2,7 +2,7 @@
 cp:
 	for i in zshrc emacs inputrc screenrc vimrc; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
 	[ -e ~/.localrc ] || /bin/cp localrc ~/.localrc
-	mkdir -p ~/.ssh
+	mkdir -p ~/.ssh && chmod 700 ~/.ssh
 	[ -e ~/.ssh/config ] || /bin/cp ssh_config ~/.ssh/config; chmod 600 ~/.ssh/config
 
 cygwin:
