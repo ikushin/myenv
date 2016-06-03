@@ -93,6 +93,7 @@ bindkey -s "^G."  'cd $(git rev-parse --show-toplevel) '
 bindkey -s "^G^R" "git reset --hard "
 bindkey -s "^G^A" "git add "
 bindkey -s "^G^T" "git cat-file -p HEAD:file "
+bindkey -s "^G^I" "git init; echo .* >.gitignore "
 
 bindkey -s "^[c"    'git checkout '
 bindkey -s "^[c^[c" 'git commit -m "Update" '
@@ -295,9 +296,9 @@ alias \#=';'
 # grep aliases
 alias grep='/bin/grep --color'
 alias egrep='/bin/egrep --color'
-alias pgrep='/bin/grep -P --color'
+alias xgrep='/bin/grep -P --color'
 alias fgrep='/bin/fgrep --color'
-alias g='pgrep'
+alias g='xgrep'
 alias igrep='g -i'
 alias rgrep='g -v "^#|^$"'
 
@@ -380,7 +381,7 @@ alias crm_mon='crm_mon -rAf'
 alias which='which -a'
 alias fdate='date "+%Y-%m-%d-%H:%M:%S"'
 alias free='free -m'
-alias pkill='pkill -f'
+#alias pkill='pkill -f'
 alias weeklyreport='em ~/sandbox/WeeklyReport'
 alias cata='cat -A'
 alias diff='diff -tbwrN --unified=1'
@@ -443,7 +444,6 @@ alias rpmqip='rpm -qip'
 
 # galiases
 alias -g L='|&less -SLRi'
-alias -g M='|&more'
 alias -g H='|&head'
 alias -g TEE='|&tee'
 alias -g T='|&tail'
@@ -458,7 +458,7 @@ alias -g J='2>/dev/null |jq .'
 alias -g COL='| column -t'
 alias -g CLM='| column -t'
 alias -g A='| col'
-alias -g MD='| md5sum'
+alias -g M='| md5sum'
 alias -g D='| diff $_ -'
 alias -g PE='| perl -pe '
 alias -g P='| perl -pe '
