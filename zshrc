@@ -93,7 +93,7 @@ bindkey -s "^G."  'cd $(git rev-parse --show-toplevel) '
 bindkey -s "^G^R" "git reset --hard "
 bindkey -s "^G^A" "git add "
 bindkey -s "^G^T" "git cat-file -p HEAD:file "
-bindkey -s "^G^I" "git init; echo .* >.gitignore "
+bindkey -s "^G^I" "git init; echo '.*' >.gitignore "
 
 bindkey -s "^[c"    'git checkout '
 bindkey -s "^[c^[c" 'git commit -m "Update" '
@@ -273,6 +273,15 @@ function sa()
 
 function grep_keyword() {
         /bin/egrep --color "$|$@"
+}
+
+function make
+{
+    echo_green "START: make $@"
+    /usr/bin/make $@
+    rc=$?
+    [[ $rc != 0 ]] && echo_red "EROOR: make $@" || echo_green "END: make $@"
+    return $rc
 }
 
 # PATH
