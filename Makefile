@@ -57,10 +57,10 @@ cygwin_git2:
 	/bin/rm -rf /tmp/git*
 
 zsh5:
-	rpm --quiet -q ncurses-devel || sudo yum -y --disablerepo=updates install ncurses-devel
+	rpm --quiet -q ncurses-devel || sudo yum -y --disablerepo=updates install ncurses-devel; true
 	git clone http://git.code.sf.net/p/zsh/code /tmp/zsh-code
 	cd /tmp/zsh-code && ./Util/preconfig || make autoconf
-	cd /tmp/zsh-code && ./Util/preconfig && ./configure && make && sudo make install.bin install.modules && sudo /usr/sbin/usermod -s /usr/local/bin/zsh $(shell id -un)
+	cd /tmp/zsh-code && ./Util/preconfig && ./configure && make && sudo make install.bin install.modules install.fns && sudo /usr/sbin/usermod -s /usr/local/bin/zsh $(shell id -un)
 	sed -i 's/^clear/#&/' /etc/zlogout
 
 epel:
