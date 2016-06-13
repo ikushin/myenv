@@ -1,0 +1,12 @@
+IdentityFile=~/.ssh/ikushin.id_rsa
+StrictHostKeyChecking=no
+UserKnownHostsFile=/dev/null
+Compression=yes
+#LogLevel=QUIET
+LogLevel=ERROR
+ConnectTimeout=5
+ServerAliveInterval 60
+
+Host xuhuang
+        User ikushin
+        Hostname 1.203.48.187
