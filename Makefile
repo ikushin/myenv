@@ -2,8 +2,9 @@
 cp:
 	for i in zshrc emacs inputrc screenrc vimrc; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
 	[ -e ~/.localrc ] || /bin/cp localrc ~/.localrc
-	mkdir -p ~/.ssh && chmod 700 ~/.ssh
+	[ -d ~/.ssh ] || mkdir -p ~/.ssh && chmod 700 ~/.ssh
 	[ -e ~/.ssh/config ] || /bin/cp ssh_config ~/.ssh/config; chmod 600 ~/.ssh/config
+	cmp -s ssh_config_my ~/.ssh/config_my || cp ssh_config_my ~/.ssh/config_my
 
 cygwin:
 	mkdir -p ~/bin/; [ -f ~/bin/puttylog_archive.sh ] || cp puttylog_archive.sh ~/bin/puttylog_archive.sh
@@ -61,7 +62,7 @@ zsh5:
 	git clone http://git.code.sf.net/p/zsh/code /tmp/zsh-code
 	cd /tmp/zsh-code && ./Util/preconfig || make autoconf
 	cd /tmp/zsh-code && ./Util/preconfig && ./configure && make && sudo make install.bin install.modules install.fns && sudo /usr/sbin/usermod -s /usr/local/bin/zsh $(shell id -un)
-	sed -i 's/^clear/#&/' /etc/zlogout
+	sudo sed -i 's/^clear/#&/' /etc/*/zlogout 2>/dev/null
 
 epel:
 	grep -q 'release 6' /etc/issue && rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm; true
@@ -154,3 +155,6 @@ static:
 
 route:
 	route add 192.168.0.1 MASK 255.255.255.0 10.0.0.254
+
+net:
+	/usr/bin/cygstart ncpa.cpl
