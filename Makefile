@@ -35,31 +35,32 @@ dstat:
 GIT=2.8.1
 PKG=curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
 git2:
-	if git --version |& grep -q $(GIT); then false; fi
+	if git --version |& grep -q $(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1 | tail -n1); then false; fi
 	if ! rpm --quiet -q $(PKG) ; then sudo yum --disablerepo=updates install -y $(PKG); fi
-	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-$(GIT).tar.gz -O /tmp/git-$(GIT).tar.gz
-	tar zxf /tmp/git-$(GIT).tar.gz -C /tmp
-	cd /tmp/git-$(GIT); ./configure --without-tcltk && make && sudo make install
+	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/$(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po 'git-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/git.tar.gz
+	tar zxf /tmp/git.tar.gz -C /tmp
+	cd /tmp/git-*; ./configure --without-tcltk && make && sudo make install
 	git config --global user.email "you@example.com"
 	git config --global user.name "ikushin"
 	git config --global http.sslVerify false
 	git config --global core.quotepath false
+	/bin/rm -rf /tmp/git*
 
 cygwin_git2:
-	if git --version |& grep -q $(GIT); then false; fi
-	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-$(GIT).tar.gz -O /tmp/git-$(GIT).tar.gz
-	tar zxf /tmp/git-$(GIT).tar.gz -C /tmp
-	cd /tmp/git-$(GIT); ./configure --without-tcltk && PERL_PATH=/usr/local/perl/bin/perl make
-	cd /tmp/git-$(GIT); PERL_PATH=/usr/local/perl/bin/perl make install
+	if git --version |& grep -q $(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1 | tail -n1); then false; fi
+	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/$(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po 'git-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/git.tar.gz
+	tar zxf /tmp/git.tar.gz -C /tmp
+	cd /tmp/git-*; ./configure --without-tcltk && PERL_PATH=/usr/local/perl/bin/perl make && PERL_PATH=/usr/local/perl/bin/perl make install
 	git config --global user.email "you@example.com"
 	git config --global user.name "ikushin"
 	git config --global http.sslVerify false
+	/bin/rm -rf /tmp/git*
 
 zsh5:
 	rpm --quiet -q ncurses-devel || sudo yum -y --disablerepo=updates install ncurses-devel
 	git clone http://git.code.sf.net/p/zsh/code /tmp/zsh-code
 	cd /tmp/zsh-code && ./Util/preconfig || make autoconf
-	cd /tmp/zsh-code && ./Util/preconfig && ./configure && make && sudo make install.bin install.modules && sudo /usr/sbin/usermod -s /usr/local/bin/zsh $(id -un)
+	cd /tmp/zsh-code && ./Util/preconfig && ./configure && make && sudo make install.bin install.modules && sudo /usr/sbin/usermod -s /usr/local/bin/zsh $(shell id -un)
 	sed -i 's/^clear/#&/' /etc/zlogout
 
 epel:
@@ -109,7 +110,7 @@ emacs24:
 	wget -nc --no-check-certificate -O ~/.lisp/redo+.el            http://www.emacswiki.org/emacs/download/redo%2b.el; :
 	wget -nc --no-check-certificate -O ~/.lisp/point-undo.el       https://www.emacswiki.org/emacs/download/point-undo.el; :
 	wget -nc --no-check-certificate -O ~/.lisp/recentf-ext.el      https://www.emacswiki.org/emacs/download/recentf-ext.el; :
-	if emacs --version | tee /tmp/zzai | egrep  'GNU Emacs 24'; then :; else wget http://mirror.jre655.com/GNU/emacs/emacs-24.5.tar.gz && tar xvf emacs-24.5.tar.gz && cd emacs-24.5/ && ./configure --without-x && sudo make install && rm -rf emacs-24.5.tar.gz emacs-24.5; fi
+	if emacs --version | egrep -q 'GNU Emacs 24'; then :; else wget http://mirror.jre655.com/GNU/emacs/emacs-24.5.tar.gz && tar xvf emacs-24.5.tar.gz && cd emacs-24.5/ && ./configure --without-x && sudo make install && rm -rf emacs-24.5.tar.gz emacs-24.5; fi
 
 clone_https:
 	mkdir -p ~/.ssh; chmod 700 ~/.ssh
@@ -144,3 +145,12 @@ coreutils:
 xcal:
 	sed -i -e 's@msg =.*Encoding::ASCII_8BIT.*@msg = "\\0\\0".force_encoding(Encoding::UTF_16LE) * 1024@' -e '/super msg.tr/d' /usr/share/ruby/2.0.0/win32/registry.rb
 	gem install -V --backtrace xcal
+
+dhcp:
+	netsh interface ip set address LAN dhcp
+
+static:
+	netsh interface ip set address LAN static 10.0.0.1 255.255.255.0
+
+route:
+	route add 192.168.0.1 MASK 255.255.255.0 10.0.0.254
