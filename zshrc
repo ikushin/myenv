@@ -154,7 +154,7 @@ today=$( /bin/date +%Y%m%d )
 yesterday=`date --date "1 day ago" +%Y%m%d` 2>/dev/null
 
 # man
-manpath=( /usr/share/man/ja(N-/) /usr/share/man(N-/) /usr/local/man(N-/) )
+manpath=( /usr/local/share/man(N-/) /usr/local/man(N-/) /usr/share/man/ja(N-/) /usr/share/man(N-/) )
 export MANPATH
 
 # color echo
