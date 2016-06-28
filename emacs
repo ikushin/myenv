@@ -308,28 +308,28 @@
 
 ;;;; コンパイルに成功したら*compilation*バッファを閉じる
 ;;; 指定したバッファに警告の文字列があるか
-(defun my-compilation-warning-bufferp (buf)
-  (save-current-buffer
-    (set-buffer buf)
-    (save-excursion
-        (goto-char (point-min))
-          (if (or (search-forward "warning:" nil t)
-                    (search-forward "警告:" nil t)) t nil))))
-;;; バッファに"abnormally"や警告メッセージがなければウィンドウを閉じる
-(defun my-close-compilation-buffer-if-succeeded (buf str)
-  (cond ((string-match "abnormally" str)
-          (message "Error!"))
-        ((if (my-compilation-warning-bufferp buf)
-              (message "Warning!")))
-        (t
-          (delete-window (get-buffer-window buf))
-           (message "Succeeded"))))
-;;; compile終了時の実行関数に追加する
-(if compilation-finish-functions
-  (append compilation-finish-functions
-            '(my-close-compilation-buffer-if-succeeded))
-  (setq compilation-finish-functions
-        '(my-close-compilation-buffer-if-succeeded)))
+;; (defun my-compilation-warning-bufferp (buf)
+;;   (save-current-buffer
+;;     (set-buffer buf)
+;;     (save-excursion
+;;         (goto-char (point-min))
+;;           (if (or (search-forward "warning:" nil t)
+;;                     (search-forward "警告:" nil t)) t nil))))
+;; ;;; バッファに"abnormally"や警告メッセージがなければウィンドウを閉じる
+;; (defun my-close-compilation-buffer-if-succeeded (buf str)
+;;   (cond ((string-match "abnormally" str)
+;;           (message "Error!"))
+;;         ((if (my-compilation-warning-bufferp buf)
+;;               (message "Warning!")))
+;;         (t
+;;           (delete-window (get-buffer-window buf))
+;;            (message "Succeeded"))))
+;; ;;; compile終了時の実行関数に追加する
+;; (if compilation-finish-functions
+;;   (append compilation-finish-functions
+;;             '(my-close-compilation-buffer-if-succeeded))
+;;   (setq compilation-finish-functions
+;;         '(my-close-compilation-buffer-if-succeeded)))
 
 ;;; サーチをループしない
 (setq isearch-wrap-function '(lambda nil))
