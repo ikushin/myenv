@@ -29,14 +29,13 @@ date:
 	sudo ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 dstat:
-	mkdir -p $$HOME/bin
-	git clone https://github.com/dagwieers/dstat.git $$HOME/bin/dstat
+	[ -d $$HOME/bin ] && git -C $$HOME/bin/dstat pull || { mkdir -p $$HOME/bin; git clone https://github.com/dagwieers/dstat.git $$HOME/bin/dstat; }
 
 GIT=2.8.1
 PKG=curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
 git2:
-	if git --version |& grep -q $(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1 | tail -n1); then false; fi
-	if ! rpm --quiet -q $(PKG) ; then sudo yum --disablerepo=updates install -y $(PKG); fi
+	if git --version 2>&1 | grep -q $(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1 | tail -n1); then false; fi
+	if [ -x /usr/bin/apt-get ]; then :; else if ! rpm --quiet -q $(PKG); then sudo yum --disablerepo=updates install -y $(PKG); fi; fi
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/$(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po 'git-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/git.tar.gz
 	tar zxf /tmp/git.tar.gz -C /tmp
 	cd /tmp/git-*; ./configure --without-tcltk && make && sudo make install
