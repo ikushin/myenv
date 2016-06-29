@@ -341,7 +341,7 @@ alias s='stat -c "%A %a %U %G %n" '
 alias la='ll -A'
 alias lld='ll -d'
 alias ip='/sbin/ip -4 -oneline'
-alias ipa='/sbin/ip -4 -oneline addr | grep -vw lo | /bin/sed "s@/@ /@"'
+alias ipa='/sbin/ip -4 -oneline addr | /bin/grep -vw lo | /bin/sed "s@/@ /@" | column -t | /bin/grep --color -P "(\d+\.){3}\d+" '
 alias ips='/sbin/ip -stats link show'
 alias locate='locate -r'
 alias df='df -PTh'
@@ -562,7 +562,7 @@ case $OSTYPE in
       path=( $path )
       alias vagrant='/cygdrive/c/HashiCorp/Vagrant/bin/vagrant'
       alias sed='sed --regexp-extended'
-      alias ipa='ifconfig | /bin/egrep "Ethernet|IPv4 Address|Subnet Mask"'
+      alias ipa='ifconfig | /bin/egrep "Ethernet|IPv4 Address|Subnet Mask" | /bin/grep --color -P "(\d+\.){3}\d+|$"'
       alias t='tasklist  | /bin/egrep "[0-9,]{7}" | sort -k5 -r'
       alias tt='tasklist | /bin/egrep "[0-9,]{6}" | sort -k5 -r'
       ;;
