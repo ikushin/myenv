@@ -37,6 +37,7 @@ git:
 	git config --global pager.log  '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less'
 	git config --global pager.show '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less'
 	git config --global pager.diff '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less'
+	git config --global diff.compactionHeuristic true
 	if git --version 2>&1 | grep -q $(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1 | tail -n1); then false; fi
 	if [ -x /usr/bin/apt-get ]; then :; else if ! rpm --quiet -q $(PKG); then sudo yum --disablerepo=updates install -y $(PKG); fi; fi
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/$(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po 'git-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/git.tar.gz
