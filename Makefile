@@ -32,14 +32,16 @@ date:
 dstat:
 	[ -d $$HOME/bin ] && git -C $$HOME/bin/dstat pull || { mkdir -p $$HOME/bin; git clone https://github.com/dagwieers/dstat.git $$HOME/bin/dstat; }
 
-GIT=2.8.1
 PKG=curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
-git2:
+git:
+	git config --global pager.log  '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less'
+	git config --global pager.show '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less'
+	git config --global pager.diff '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less'
 	if git --version 2>&1 | grep -q $(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1 | tail -n1); then false; fi
 	if [ -x /usr/bin/apt-get ]; then :; else if ! rpm --quiet -q $(PKG); then sudo yum --disablerepo=updates install -y $(PKG); fi; fi
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/$(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po 'git-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/git.tar.gz
 	tar zxf /tmp/git.tar.gz -C /tmp
-	cd /tmp/git-*; ./configure --without-tcltk && make && sudo make install
+	cd /tmp/git-*; ./configure --without-tcltk && make && sudo make install && cp -a contrib /usr/local/share/git-core/
 	git config --global user.email "you@example.com"
 	git config --global user.name "ikushin"
 	git config --global http.sslVerify false
