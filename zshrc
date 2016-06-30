@@ -86,7 +86,7 @@ bindkey -s '^G^S' "git status --short --branch "
 bindkey -s "^[s"  "git status --short --branch "
 bindkey -s "^[b"  "git branch "
 bindkey -s "^G^B" "git branch "
-bindkey -s "^[f"  "git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --color=auto "
+bindkey -s "^[f"  "git diff  --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --color=auto "
 bindkey -s "^[p"  "git pull "
 bindkey -s "^G^P" "git push origin master "
 bindkey -s "^G."  'cd $(git rev-parse --show-toplevel) '

@@ -34,37 +34,40 @@ dstat:
 
 PKG=curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
 git:
+	if [ ! -e /etc/issue ]; then true; else if [ `id -u` -eq 0 ]; then true; else false; fi; fi
+	/bin/rm -rf /tmp/git*
+	if git --version 2>&1 | grep -q $(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1); then false; fi
+	egrep -q 'CentOS' /etc/issue 2>/dev/null  &&  rpm --quiet -q $(PKG)  &&  sudo yum --disablerepo=updates install -y $(PKG)  ||  true
+	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/$(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po 'git-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/git.tar.gz
+	tar zxf /tmp/git.tar.gz -C /tmp
+	[ ! -e /etc/issue ] && [ ! -e /usr/local/perl/bin/perl ] && make perl || true
+	[ ! -e /etc/issue ] && { cd /tmp/git-*; ./configure --without-tcltk && PERL_PATH=/usr/local/perl/bin/perl make && PERL_PATH=/usr/local/perl/bin/perl make install; } || true
+	egrep -q 'CentOS' /etc/issue 2>/dev/null && { cd /tmp/git-*; ./configure --without-tcltk && make && make install && /bin/cp -a contrib /usr/local/share/git-core/; } || true
+	/bin/rm -rf /tmp/git*
+	make git_config
+
+git_config:
 	git config --global pager.log  '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less'
 	git config --global pager.show '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less'
 	git config --global pager.diff '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less'
 	git config --global diff.compactionHeuristic true
-	if git --version 2>&1 | grep -q $(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1 | tail -n1); then false; fi
-	if [ -x /usr/bin/apt-get ]; then :; else if ! rpm --quiet -q $(PKG); then sudo yum --disablerepo=updates install -y $(PKG); fi; fi
-	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/$(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po 'git-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/git.tar.gz
-	tar zxf /tmp/git.tar.gz -C /tmp
-	cd /tmp/git-*; ./configure --without-tcltk && make && sudo make install && cp -a contrib /usr/local/share/git-core/
 	git config --global user.email "you@example.com"
 	git config --global user.name "ikushin"
 	git config --global http.sslVerify false
 	git config --global core.quotepath false
-	/bin/rm -rf /tmp/git*
 
-cygwin_git2:
-	if git --version |& grep -q $(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1 | tail -n1); then false; fi
-	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/$(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po 'git-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/git.tar.gz
-	tar zxf /tmp/git.tar.gz -C /tmp
-	cd /tmp/git-*; ./configure --without-tcltk && PERL_PATH=/usr/local/perl/bin/perl make && PERL_PATH=/usr/local/perl/bin/perl make install
-	git config --global user.email "you@example.com"
-	git config --global user.name "ikushin"
-	git config --global http.sslVerify false
-	/bin/rm -rf /tmp/git*
-
-zsh5:
+zsh:
+	if [ ! -e /etc/issue ]; then true; else if [ `id -u` -eq 0 ]; then true; else false; fi; fi
+	/bin/rm -rf /tmp/zsh*
 	rpm --quiet -q ncurses-devel || sudo yum -y --disablerepo=updates install ncurses-devel; true
-	git clone http://git.code.sf.net/p/zsh/code /tmp/zsh-code
-	cd /tmp/zsh-code && ./Util/preconfig || make autoconf
-	cd /tmp/zsh-code && ./Util/preconfig && ./configure && make && sudo make install.bin install.modules install.fns && sudo /usr/sbin/usermod -s /usr/local/bin/zsh $(shell id -un)
-	sudo sed -i 's/^clear/#&/' /etc/*/zlogout 2>/dev/null
+	wget https://sourceforge.net/projects/zsh/files/latest/download?source=files -O /tmp/zsh.tar.gz
+	tar zxf /tmp/zsh.tar.gz -C /tmp
+	cd /tmp/zsh-* && ./configure && make && make install
+	sed -i 's/^clear/#&/' /etc/*/zlogout 2>/dev/null
+	/bin/rm -rf /tmp/zsh*
+
+user_zsh:
+	[ -e /etc/issue ] && sudo /usr/sbin/usermod -s /usr/local/bin/zsh $(shell id -un) || true
 
 epel:
 	grep -q 'release 6' /etc/issue && rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm; true
@@ -122,14 +125,11 @@ clone_https:
 	usermod -s /bin/zsh root
 
 test:
-	[ $$OSTYPE != "cygwin" ] && echo cygwin || echo xxx
+	sudo id
 
 perl:
-	wget http://www.cpan.org/src/5.0/perl-5.22.1.tar.gz
-	tar xvf perl-5.22.1.tar.gz
-	cd perl-5.22.1
-	./Configure -des -Dprefix=/usr/local
-	make && make install
+	wget http://www.cpan.org/src/5.0/perl-5.22.1.tar.gz -O /tmp/perl.tar.gz && tar zxf /tmp/perl.tar.gz -C /tmp
+	cd /tmp/perl-5.22.1 && ./Configure -des -Dprefix=/usr/local && make && make install
 
 autoconf:
 	rpm --quiet -q texinfo || sudo yum -y --disablerepo=updates install texinfo
