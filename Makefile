@@ -32,12 +32,12 @@ date:
 dstat:
 	[ -d $$HOME/bin ] && git -C $$HOME/bin/dstat pull || { mkdir -p $$HOME/bin; git clone https://github.com/dagwieers/dstat.git $$HOME/bin/dstat; }
 
-PKG=curl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
+PKG=libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
 git:
 	if [ ! -e /etc/issue ]; then true; else if [ `id -u` -eq 0 ]; then true; else false; fi; fi
 	/bin/rm -rf /tmp/git*
 	if git --version 2>&1 | grep -q $(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1); then false; fi
-	egrep -q 'CentOS' /etc/issue 2>/dev/null  &&  rpm --quiet -q $(PKG)  &&  sudo yum --disablerepo=updates install -y $(PKG)  ||  true
+	egrep -q 'CentOS' /etc/issue 2>/dev/null  &&  rpm --quiet -q $(PKG)  ||  sudo yum --disablerepo=updates install -y $(PKG)
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/$(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po 'git-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/git.tar.gz
 	tar zxf /tmp/git.tar.gz -C /tmp
 	[ ! -e /etc/issue ] && [ ! -e /usr/local/perl/bin/perl ] && make perl || true
@@ -63,7 +63,7 @@ zsh:
 	wget https://sourceforge.net/projects/zsh/files/latest/download?source=files -O /tmp/zsh.tar.gz
 	tar zxf /tmp/zsh.tar.gz -C /tmp
 	cd /tmp/zsh-* && ./configure && make && make install
-	sed -i 's/^clear/#&/' /etc/*/zlogout 2>/dev/null
+	sed -i 's/^clear/#&/' /etc/*/zlogout 2>/dev/null; true
 	/bin/rm -rf /tmp/zsh*
 
 user_zsh:
