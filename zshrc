@@ -169,7 +169,8 @@ function echo_green
 {
     printf "${green}$*${nc}\n"
 }
-
+# こんなのもあり
+#echo aaa | perl -MTerm::ANSIColor -ne 'print colored($_,"red")'
 
 function col {
   awk -v col=$1 '{print $col}'
@@ -282,6 +283,11 @@ function make
     rc=$?
     [[ $rc != 0 ]] && echo_red "EROOR: make $@" || echo_green "END: make $@"
     return $rc
+}
+
+function dig
+{
+    /bin/dig $@ | /bin/egrep --color '$|.*SECTION.*'
 }
 
 # PATH
