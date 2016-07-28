@@ -110,19 +110,23 @@ git_clone:
 	rm -f ~/.ssh/config ~/Makefile
 	cd ~/.myenv && git config --global push.default simple && make cp
 
+.PHONY : emacs
 emacs:
 	if [ ! -e /etc/issue ]; then true; else if [ `id -u` -eq 0 ]; then true; else false; fi; fi
 	/bin/rm -rf /tmp/emacs-*
-	mkdir -p  ~/.lisp
+	make emacs_lisp
+	emacs --version 2>&1 | egrep -q 'GNU Emacs 24' || wget --no-check-certificate https://mirror.jre655.com/GNU/emacs/emacs-24.5.tar.gz -O /tmp/emacs.tar.gz
+	tar zxf /tmp/emacs.tar.gz -C /tmp
+	cd /tmp/emacs-* && ./configure --without-x && make && make install
+	/bin/rm -rf /tmp/emacs-*
+
+emacs_lisp:
+	mkdir -p ~/.lisp
 	wget -nc --no-check-certificate -O ~/.lisp/minibuffer-complete-cycle.el https://raw.githubusercontent.com/knu/minibuffer-complete-cycle/master/minibuffer-complete-cycle.el; :
 	wget -nc --no-check-certificate -O ~/.lisp/browse-kill-ring.el https://raw.githubusercontent.com/T-J-Teru/browse-kill-ring/master/browse-kill-ring.el; :
 	wget -nc --no-check-certificate -O ~/.lisp/redo+.el            http://www.emacswiki.org/emacs/download/redo%2b.el; :
 	wget -nc --no-check-certificate -O ~/.lisp/point-undo.el       https://www.emacswiki.org/emacs/download/point-undo.el; :
 	wget -nc --no-check-certificate -O ~/.lisp/recentf-ext.el      https://www.emacswiki.org/emacs/download/recentf-ext.el; :
-	emacs --version 2>&1 | egrep -q 'GNU Emacs 24' || wget --no-check-certificate https://mirror.jre655.com/GNU/emacs/emacs-24.5.tar.gz -O /tmp/emacs.tar.gz
-	tar zxf /tmp/emacs.tar.gz -C /tmp
-	cd /tmp/emacs-* && ./configure --without-x && make && make install
-	/bin/rm -rf /tmp/emacs-*
 
 clone_https:
 	mkdir -p ~/.ssh; chmod 700 ~/.ssh
