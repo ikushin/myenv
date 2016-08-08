@@ -436,6 +436,12 @@ function su_file() {
     cat ./.trash/$@ |&/bin/egrep -av '^(#|$)' |&sort |uniq | tee $@
 }
 
+function page() {
+    /cygdrive/c/Windows/System32/wbem/wmic pagefile \
+        | /bin/sed -n '2p' \
+        | /bin/perl -ane 'printf"CurrentUsage = %.1f%%\nPeakUsage    = %.1f%%\n",$F[2]/$F[0]*100,$F[6]/$F[0]*100'
+}
+
 # pgrep
 \pgrep -af init |& grep -q 'init|systemd'
   [[ $? != 0 ]] && alias pgrep='pgrep -lf' || alias pgrep='pgrep -af'
