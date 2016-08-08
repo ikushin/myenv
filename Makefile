@@ -42,7 +42,7 @@ git:
 	tar zxf /tmp/git.tar.gz -C /tmp
 	[ ! -e /etc/issue ] && [ ! -e /usr/local/perl/bin/perl ] && make perl || true
 	[ ! -e /etc/issue ] && { cd /tmp/git-*; ./configure --without-tcltk && PERL_PATH=/usr/local/perl/bin/perl make && PERL_PATH=/usr/local/perl/bin/perl make install; } || true
-	egrep -q 'CentOS' /etc/issue 2>/dev/null && { cd /tmp/git-*; ./configure --without-tcltk && make && make install && /bin/cp -a contrib /usr/local/share/git-core/; } || true
+	[ -e /etc/issue ]   && { cd /tmp/git-*; ./configure --without-tcltk && make && make install && /bin/cp -a contrib /usr/local/share/git-core/; } || true
 	/bin/rm -rf /tmp/git*
 	make git_config
 
@@ -56,6 +56,17 @@ git_config:
 	git config --global http.sslVerify false
 	git config --global core.quotepath false
 	git config --global status.showuntrackedfiles all
+
+openssh:
+	SSH_PKG="bash"
+	if [ ! -e /etc/issue ]; then true; else if [ `id -u` -eq 0 ]; then true; else false; fi; fi
+	/bin/rm -rf /tmp/openssh*
+	if ssh -V 2>&1 | /bin/grep -q $(shell curl --max-time 3 -Ls http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/ | /bin/grep -Po '(?<=openssh-)\d+.*?(?=.tar.gz)' | tail -n1); then false; fi
+	/bin/egrep -q 'CentOS' /etc/issue 2>/dev/null  &&  { rpm --quiet -q $(SSH_PKG)  ||  sudo yum --disablerepo=updates install -y $(SSH_PKG); } || true
+	wget --no-check-certificate http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/$(shell curl -Ls http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/ | /bin/grep -Po 'openssh-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/openssh.tar.gz
+	tar zxf /tmp/openssh.tar.gz -C /tmp
+	{ cd /tmp/openssh-*; ./configure && make && make install; } || true
+	/bin/rm -rf /tmp/openssh*
 
 zsh:
 	if [ ! -e /etc/issue ]; then true; else if [ `id -u` -eq 0 ]; then true; else false; fi; fi

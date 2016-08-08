@@ -1,0 +1,72 @@
+# vagrant box add CentOS-6.7-x64 https://github.com/CommanderK5/packer-centos-template/releases/download/0.6.7/vagrant-centos-6.7.box
+
+VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "CentOS-6.4-i386"
+  #config.vm.network :public_network
+
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "128"]
+  end
+
+  if Vagrant.has_plugin?("vagrant-proxyconf")
+    config.proxy.http     = "http://proxy:8080/"
+    config.proxy.https    = "http://proxy:8080/"
+    config.proxy.no_proxy = "localhost,127.0.0.1"
+  end
+
+  config.vm.provision :shell, :inline => <<-EOT
+    sed -i 's@^#*baseurl.*mirror.centos.org@baseurl=http://example.com/pub/linux@' /etc/yum.repos.d/*
+    yum check-update && yum update -y
+    yum install -y zsh make gcc ncurses-devel zlib-devel curl-devel expat-devel gettext-devel openssl-devel autoconf git perl-ExtUtils-MakeMaker sysstat mlocate tcpdump
+    git clone https://github.com/ikushin/myenv.git ~vagrant/.myenv && chown -R vagrant:vagrant ~vagrant/.myenv; sudo -u vagrant make -C ~vagrant/.myenv
+    git clone https://github.com/ikushin/myenv.git ~/.myenv && make -C ~vagrant/.myenv
+    usermod -s /bin/zsh vagrant
+    usermod -s /bin/zsh root
+    #rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+    chkconfig --level 2345 iptables off
+    chkconfig --level 2345 ip6tables off
+    service iptables stop
+    service ip6tables stop
+    sed -i '$a NETWORKING_IPV6=no' /etc/sysconfig/network
+    echo 'options ipv6 disable=1' >/etc/modprobe.d/disable-ipv6.conf
+    /bin/sed -ir -e 's/^(UseDNS|GSSAPIAuthentication|AddressFamily)/#&/' -e '$a UseDNS=no\nGSSAPIAuthentication no\nAddressFamily inet' /etc/ssh/sshd_config && service sshd reload
+
+  EOT
+
+  config.vm.define :myhost do |server|
+    server.vm.hostname = "myhost"
+    config.vm.provision :shell, :inline => <<-EOT
+    EOT
+  end
+
+  config.vm.define :lvs1 do |server|
+    server.vm.network :private_network, ip:"10.81.160.8"
+    server.vm.network :private_network, ip:"10.92.24.11"
+    server.vm.hostname = "lvs1"
+    config.vm.provision :shell, :inline => <<-EOT
+    EOT
+  end
+
+  config.vm.define :lvs2 do |server|
+    server.vm.network :private_network, ip:"10.81.160.9"
+    server.vm.hostname = "lvs2"
+    config.vm.provision :shell, :inline => <<-EOT
+    EOT
+  end
+
+  config.vm.define :mysql1 do |server|
+    server.vm.network :private_network, ip:"10.92.24.74"
+    server.vm.hostname = "mysql1"
+    config.vm.provision :shell, :inline => <<-EOT
+    EOT
+  end
+
+  config.vm.define :mysql2 do |server|
+    server.vm.network :private_network, ip:"10.92.24.75"
+    server.vm.hostname = "mysql2"
+    config.vm.provision :shell, :inline => <<-EOT
+    EOT
+  end
+
+end

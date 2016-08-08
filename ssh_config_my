@@ -10,3 +10,11 @@ ServerAliveInterval 60
 Host xuhuang
         User ikushin
         Hostname 153.203.48.187
+
+Host *.hogehoge.ugauga
+          ProxyJump user@fumidai01,user2@fumidai02
+
+Host xu_centos6
+          ProxyJump xuhuang
+          Hostname 192.168.22.27
+          User vagrant
