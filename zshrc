@@ -273,7 +273,7 @@ function sa()
 }
 
 function grep_keyword() {
-        /bin/egrep --color "$|$@"
+        /bin/grep -i -P --color "$|$@"
 }
 
 function make
@@ -323,6 +323,8 @@ alias -g GV='G -v'
 alias -g GVV="G -v '^(#|$)'"
 alias -g GO='G -o'
 alias -g GK='|& grep_keyword'
+alias -g key='|& grep_keyword'
+alias -g KEY='|& grep_keyword'
 alias -g G-='|&/bin/grep -P -a "^-(?!-)"'
 alias -g G+='|&/bin/grep -P -a "^\+(?!\+)"'
 alias -g G++='|&/bin/egrep -a "^[+-][^+-]"'
@@ -436,10 +438,23 @@ function su_file() {
     cat ./.trash/$@ |&/bin/egrep -av '^(#|$)' |&sort |uniq | tee $@
 }
 
-function page() {
-    /cygdrive/c/Windows/System32/wbem/wmic pagefile \
+function winstat() {
+
+    wmic="/cygdrive/c/Windows/System32/wbem/wmic"
+
+    # CPU
+    cpu_load=$($wmic cpu get LoadPercentage | /bin/grep -Po '\d+' )
+    printf "CpuUsage = %02.1f%%\n" $cpu_load
+
+    # MEM
+    mem_total=$( $wmic ComputerSystem get TotalPhysicalMemory | /bin/grep -Po '\d+' )
+    mem_free=$( $wmic OS get FreePhysicalMemory | /bin/grep -Po '\d+' )
+    printf "MemUsage = %.1f%%\n" $(( $mem_free.0 / ( $mem_total / 1024 ) * 100 ))
+
+    # PAGE
+    $wmic pagefile \
         | /bin/sed -n '2p' \
-        | /bin/perl -ane 'printf"CurrentUsage = %.1f%%\nPeakUsage    = %.1f%%\n",$F[2]/$F[0]*100,$F[6]/$F[0]*100'
+        | /bin/perl -ane 'printf "PageUsage = %.1f%%\nPeakPageUsage = %.1f%%\n",$F[2]/$F[0]*100,$F[6]/$F[0]*100'
 }
 
 # pgrep
