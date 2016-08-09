@@ -447,15 +447,18 @@ function winstat() {
     printf "CpuUsage = %02.1f%%\n" $cpu_load
 
     # MEM
-    mem_total=$( $wmic ComputerSystem get TotalPhysicalMemory | /bin/grep -Po '\d+' )
+    _mem_total=$( $wmic ComputerSystem get TotalPhysicalMemory | /bin/grep -Po '\d+' )
+    mem_total=$(( $_mem_total / 1024 ))
     mem_free=$( $wmic OS get FreePhysicalMemory | /bin/grep -Po '\d+' )
-    printf "MemUsage = %.1f%%\n" $(( $mem_free.0 / ( $mem_total / 1024 ) * 100 ))
+    mem_used=$(( $mem_total - $mem_free ))
+    printf "MemUsage = %.1f%%\n" $(( ($mem_used.0 / $mem_total) * 100 ))
 
     # PAGE
     $wmic pagefile \
         | /bin/sed -n '2p' \
         | /bin/perl -ane 'printf "PageUsage = %.1f%%\nPeakPageUsage = %.1f%%\n",$F[2]/$F[0]*100,$F[6]/$F[0]*100'
 }
+alias ws='winstat'
 
 # pgrep
 \pgrep -af init |& grep -q 'init|systemd'
