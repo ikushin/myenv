@@ -318,6 +318,8 @@ alias igrep='g -i'
 alias rgrep='g -v "^#|^$"'
 
 alias -g G='|& grep -aP'
+alias -g GF='|& grep -af'
+alias -g GFV='|& grep -avf'
 alias -g GI='G -i'
 alias -g GV='G -v'
 alias -g GVV="G -v '^(#|$)'"
