@@ -120,6 +120,7 @@ alias gcd='git checkout dev'
 alias gl='git log --color=always --name-status --no-merges'
 alias gll='git log --color=always -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges'
 alias gp='git push origin master'
+alias gb='git branch --verbose --all'
 
 # not end of word
 #WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
@@ -320,6 +321,7 @@ alias rgrep='g -v "^#|^$"'
 alias -g G='|& grep -aP'
 alias -g GF='|& grep -af'
 alias -g GFV='|& grep -avf'
+alias -g GVF='|& grep -avf'
 alias -g GI='G -i'
 alias -g GV='G -v'
 alias -g GVV="G -v '^(#|$)'"

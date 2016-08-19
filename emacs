@@ -336,3 +336,8 @@
 
 ;;; コンパイル時に出力を追って表示する
 (setq compilation-scroll-output t)
+
+;;; 縦分割を強制する
+;(setq split-height-threshold nil)
+;(setq split-width-threshold 0)
+
