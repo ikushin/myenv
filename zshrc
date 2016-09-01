@@ -121,6 +121,7 @@ alias gl='git log --color=always --name-status --no-merges'
 alias gll='git log --color=always -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges'
 alias gp='git push origin master'
 alias gb='git branch --verbose --all'
+alias ga='git add'
 
 # not end of word
 #WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
@@ -628,7 +629,7 @@ typeset -U path cdpath fpath manpath
 
 # rc
 mkdir -p $HOME/.trash
-which dircolors  >/dev/null 2>&1  && eval `dircolors`
+which dircolors  >/dev/null 2>&1  && eval `dircolors --bourne-shell`
 [[ -e $HOME/.zprompt ]] && source $HOME/.zprompt
 [[ -e $HOME/.localrc ]] && source $HOME/.localrc
 source="source"
