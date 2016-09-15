@@ -6,3 +6,7 @@ $if mysql
 "\C-xv": "SHOW VARIABLES;\n"
 "\C-xu": "SELECT * FROM "
 $endif
+
+# Alt-h
+"\eh": backward-kill-word
+
