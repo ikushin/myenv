@@ -303,6 +303,7 @@ alias vv='fvi'
 alias via='vi -c startinsert a'
 alias vib='vi -c startinsert b'
 alias vic='vi -c startinsert c'
+alias vif='vi -c startinsert f'
 
 alias .='source'
 alias ..='cd ..'
