@@ -77,6 +77,12 @@ bindkey "^[H"  backward-kill-word
 bindkey "^[h"  backward-kill-word
 bindkey "^[^H" run-help
 
+# 単語区切り文字指定
+autoload -Uz select-word-style
+select-word-style default
+zstyle ':zle:*' word-chars "/*?[]~&;!#$%^{}<>| "
+zstyle ':zle:*' word-style unspecified
+
 bindkey -s "^[g"  '| egrep -v "\^[[:space:]]*(#|$)" '
 bindkey -s "^[f"  "| fgrep -v ?"
 bindkey -s "^[q"  "ps -eo uname,lstart,pid,rss,vsz,args | egrep"
@@ -262,7 +268,7 @@ function pdf() {
 function sa()
 {
     (
-        d=$(mktemp -d -p /tmp tmp_XXXXXXXX) && cd "$d" || exit 1
+        d=$(mktemp -d -p ~/.sandbox tmp_XXXXXXXX) && cd "$d" || exit 1
         zsh
         s=$?
         if [[ $s == 0 ]]; then
@@ -305,6 +311,10 @@ alias vib='vi -c startinsert b'
 alias vic='vi -c startinsert c'
 alias vif='vi -c startinsert f'
 
+alias mva='mvf aa a'
+alias mvb='mvf bb b'
+alias mvc='mvf cc c'
+
 alias .='source'
 alias ..='cd ..'
 alias h='history 0 | perl -pe "s/^ [0-9]+ //" | tail -100'
@@ -336,7 +346,7 @@ alias -g G+='|&/bin/grep -P -a "^\+(?!\+)"'
 alias -g G++='|&/bin/egrep -a "^[+-][^+-]"'
 alias -g FG='|& fgrep -a'
 
-alias now='date +%F_%T'
+alias now='date +%F %T'
 alias year='printf "%d: %d\n" $(date +%Y) $(($(date +%Y)-1988))'
 alias hei=year
 alias wareki=year
@@ -402,7 +412,7 @@ alias time='/usr/bin/time -p'
 alias jq='jq -r'
 alias crm_mon='crm_mon -rAf'
 alias which='which -a'
-alias fdate='date "+%Y-%m-%d-%H:%M:%S"'
+alias fdate='date "+%Y-%m-%d %H:%M:%S"'
 alias free='free -m'
 #alias pkill='pkill -f'
 alias weeklyreport='em ~/sandbox/WeeklyReport'
@@ -631,7 +641,7 @@ fi
 typeset -U path cdpath fpath manpath
 
 # rc
-mkdir -p $HOME/.trash
+mkdir -p $HOME/.{trash,sandbox}
 which dircolors  >/dev/null 2>&1  && eval `dircolors --bourne-shell`
 [[ -e $HOME/.zprompt ]] && source $HOME/.zprompt
 [[ -e $HOME/.localrc ]] && source $HOME/.localrc
