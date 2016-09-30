@@ -182,3 +182,6 @@ route:
 
 net:
 	/usr/bin/cygstart ncpa.cpl
+
+cygterm:
+	if /bin/grep -q '^#.*putty_067.exe' /bin/cygterm.cfg; then /bin/sed -i -e '3s/^#T/T/' -e '4s/^T/#T/' /bin/cygterm.cfg; else /bin/sed -i -e '3s/^T/#T/' -e '4s/^#//' /bin/cygterm.cfg; fi
