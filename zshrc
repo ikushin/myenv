@@ -80,7 +80,7 @@ bindkey "^[^H" run-help
 # 単語区切り文字指定
 autoload -Uz select-word-style
 select-word-style default
-zstyle ':zle:*' word-chars "/*?[]~&;!#$%^{}<>| "
+zstyle ':zle:*' word-chars ':"/*?[]~&;!#$%^{}<>| '\'
 zstyle ':zle:*' word-style unspecified
 
 bindkey -s "^[g"  '| egrep -v "\^[[:space:]]*(#|$)" '
@@ -384,6 +384,7 @@ alias .viz='source ~/.zshrc'
 alias watch='watch -d'
 alias pstree='pstree -p'
 alias emacs='LANG=ja_JP.UTF8 emacs -nw'
+alias tejun='emacs -l ~/.emacs_tejun'
 alias femacs='emacs $(mktemp --tmpdir=./ emacs.XXXXXXXXXX)'
 alias em='emacs'
 alias ema='emacs a'
@@ -513,8 +514,7 @@ alias -g SC='S |uniq -c |sort -n'
 alias -g SU='S |uniq'
 alias -g CUT='|& cut -c -$(($COLUMNS-10))'
 alias -g J='2>/dev/null |jq .'
-alias -g COL='| column -t'
-alias -g CLM='| column -t'
+alias -g COL='| LANG=ja_JP.UTF8 column -t'
 alias -g A='| col'
 alias -g A1='A 1'
 alias -g A2='A 2'
@@ -604,9 +604,10 @@ case $OSTYPE in
       alias sudo=''
       #alias ping='ping -t'
       #alias ping='/cygdrive/c/Windows/System32/ping -t'
-      alias -g CLIP='>/dev/clipboard 2>&1'
-      alias -g SCLIP='s2u >/dev/clipboard 2>&1'
-      alias -g CLIPS='s2u >/dev/clipboard 2>&1'
+      alias -g CL='|& tee /dev/clipboard'
+      alias -g CLIP='CL'
+      alias -g SCL='s2u CLIP'
+      alias -g CLS='SCLIP'
       #export LC_ALL=ja_JP.sjis
       #export LANG=ja_JP.sjis
       export OUTPUT_CHARSET=ja_JP.sjis
@@ -618,6 +619,8 @@ case $OSTYPE in
       alias ipa='ifconfig | /bin/egrep "Ethernet|IPv4 Address|Subnet Mask" | /bin/grep --color -P "(\d+\.){3}\d+|$"'
       alias t='tasklist  | /bin/egrep "[0-9,]{7}" | sort -k5 -r'
       alias tt='tasklist | /bin/egrep "[0-9,]{6}" | sort -k5 -r'
+      alias path2unix='LANG=ja_JP.UTF8 cygpath -am'
+      alias w2u='path2unix'
       ;;
   minix)
       alias -g L='|&less'
