@@ -97,6 +97,7 @@ bindkey -s "^[p"  "git pull "
 bindkey -s "^G^P" "git push origin master "
 bindkey -s "^G."  'cd $(git rev-parse --show-toplevel) '
 bindkey -s "^G^R" "git reset --hard "
+bindkey -s "^[a"  "git add "
 bindkey -s "^G^A" "git add "
 bindkey -s "^G^T" "git cat-file -p HEAD:file "
 bindkey -s "^G^I" "git init; echo '.*' >.gitignore "
@@ -127,7 +128,7 @@ alias gl='git log --color=always --name-status --no-merges'
 alias gll='git log --color=always -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges'
 alias gp='git push origin master'
 alias gb='git branch --verbose --all'
-alias ga='git add'
+alias ga='git add -u'
 
 # not end of word
 #WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
@@ -223,6 +224,12 @@ function commit() {
   svn update
 }
 
+function myip() {
+    curl http://inet-ip.info   ||
+    curl http://ifconfig.me    ||
+    curl http://httpbin.org/ip
+}
+
 pmver () {
   perl -M${1} -le "print \$$1::VERSION"
 }
@@ -295,7 +302,7 @@ function make
 
 function dig
 {
-    /bin/dig $@ | /bin/egrep --color '$|.*SECTION.*'
+    $(type -p dig | awk '{print $3}') $@ | /bin/egrep --color '$|.*SECTION.*'
 }
 
 # PATH
@@ -419,7 +426,7 @@ alias free='free -m'
 alias weeklyreport='em ~/sandbox/WeeklyReport'
 alias cata='cat -A'
 alias diff='diff -tbwrN --unified=1'
-alias d='gitdiff a b'
+#alias d='gitdiff a b'
 alias d0='gitdiff -U100 a b'
 alias rd='gitdiff b a'
 alias rd0='gitdiff -U100 b a'
@@ -433,20 +440,18 @@ alias yesterday='date --date "1 day ago" +%Y%m%d'
 
 alias asu='cat a SU'
 alias asc='cat a SC'
-alias sua='cat a SU'
+alias sua='su_file a'
 alias sca='cat a SC'
 
 alias bsu='cat b SU'
 alias bsc='cat b SC'
-alias sub='cat b SU'
+alias sub='su_file b'
 alias scb='cat b SC'
 
 alias csu='cat c SU'
 alias csc='cat c SC'
 alias suc='cat c SU'
 alias scc='cat c SC'
-
-alias sss='su_file'
 
 function su_file() {
     [[ $# != 1 ]] && return
@@ -455,6 +460,12 @@ function su_file() {
     mkdir -p ./.trash
     /bin/mv -f -t ./.trash $@
     cat ./.trash/$@ |&/bin/egrep -av '^(#|$)' |&sort |uniq | tee $@
+}
+
+function d() {
+	a=${1:-"a"}
+	b=${2:-"b"}
+	git diff $a $b
 }
 
 function winstat() {
@@ -597,7 +608,7 @@ case $OSTYPE in
       alias rpmqf='cygcheck -f'
       alias rpmqi='cygcheck -p'
       alias sum='md5sum'
-      alias ls='ls --color=auto --show-control-chars --group-directories-first'
+      alias ls='ls --color=auto --show-control-chars --group-directories-first -1'
       alias exp='explorer . &'
       alias open='/usr/bin/cygstart'
       alias ifconfig='/cygdrive/c/WINDOWS/system32/ipconfig j2u'
