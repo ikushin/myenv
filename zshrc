@@ -335,6 +335,7 @@ alias egrep='/bin/egrep --color'
 alias xgrep='/bin/grep -P --color'
 alias fgrep='/bin/fgrep --color'
 alias g='xgrep'
+alias go='xgrep -o'
 alias igrep='g -i'
 alias rgrep='g -v "^#|^$"'
 
