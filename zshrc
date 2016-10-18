@@ -129,6 +129,7 @@ alias gll='git log --color=always -p --ignore-space-change --ignore-all-space --
 alias gp='git push origin master'
 alias gb='git branch --verbose --all'
 alias ga='git add -u'
+alias gs='git status --short --branch .'
 
 # not end of word
 #WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
@@ -343,7 +344,7 @@ alias -g GFV='|& grep -avf'
 alias -g GVF='|& grep -avf'
 alias -g GI='G -i'
 alias -g GV='G -v'
-alias -g GVV="G -v '^(#|$)'"
+alias -g GVV='|& egrep -v "^[[:space:]]*(#|$)"'
 alias -g GO='G -o'
 alias -g GK='|& grep_keyword'
 alias -g key='|& grep_keyword'
@@ -351,6 +352,7 @@ alias -g KEY='|& grep_keyword'
 alias -g G-='|&/bin/grep -P -a "^-(?!-)"'
 alias -g G+='|&/bin/grep -P -a "^\+(?!\+)"'
 alias -g G++='|&/bin/egrep -a "^[+-][^+-]"'
+alias -g G+++='G++ PE "s/^.//"'
 alias -g FG='|& fgrep -a'
 
 alias now='date +%F %T'
@@ -366,7 +368,7 @@ alias ls='ls --color=auto --group-directories-first'
 alias sl='ls'
 alias ll='ls -lh --time-style=long-iso'
 alias lll='ll -tr'
-alias llll='lll --time-style=full-iso'
+alias llll='lll -i --time-style=full-iso'
 alias l4='llll'
 alias s='stat -c "%A %a %U %G %n" '
 alias la='ll -A'
@@ -465,7 +467,7 @@ function su_file() {
 function d() {
 	a=${1:-"a"}
 	b=${2:-"b"}
-	git diff $a $b
+	gdiff $a $b
 }
 
 function winstat() {
