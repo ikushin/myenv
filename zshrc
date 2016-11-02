@@ -97,8 +97,8 @@ bindkey -s "^[p"  "git pull "
 bindkey -s "^G^P" "git push origin master "
 bindkey -s "^G."  'cd $(git rev-parse --show-toplevel) '
 bindkey -s "^G^R" "git reset --hard "
-bindkey -s "^[a"  "git add "
-bindkey -s "^G^A" "git add "
+bindkey -s "^[a"  "git add . "
+bindkey -s "^G^A" "git add . "
 bindkey -s "^G^T" "git cat-file -p HEAD:file "
 bindkey -s "^G^I" "git init; echo '.*' >.gitignore "
 
@@ -317,6 +317,9 @@ alias vv='fvi'
 alias via='vi -c startinsert a'
 alias vib='vi -c startinsert b'
 alias vic='vi -c startinsert c'
+alias viaa='vi -c startinsert aa'
+alias vibb='vi -c startinsert bb'
+alias vicc='vi -c startinsert cc'
 alias vif='vi -c startinsert f'
 
 alias mva='mvf aa a'
@@ -347,6 +350,7 @@ alias -g GI='G -i'
 alias -g GV='G -v'
 alias -g GVV='|& egrep -v "^[[:space:]]*(#|$)"'
 alias -g GO='G -o'
+alias -g Go='G -o'
 alias -g GK='|& grep_keyword'
 alias -g key='|& grep_keyword'
 alias -g KEY='|& grep_keyword'
@@ -371,7 +375,8 @@ alias ll='ls -lh --time-style=long-iso'
 alias lll='ll -tr'
 alias llll='lll -i --time-style=full-iso'
 alias l4='llll'
-alias s='stat -c "%A %a %U %G %n" '
+alias lsstat='stat -c "%A %a %U %G %N"'
+alias s='lsstat'
 alias la='ll -A'
 alias lld='ll -d'
 alias ip='/sbin/ip -4 -oneline'
