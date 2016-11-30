@@ -152,7 +152,7 @@ RPROMPT='[%d]'
 # environment variable
 LC_ALL="ja_JP.UTF8"
 LANG="C"
-cdpath=( $HOME .. )
+cdpath=( .. $HOME )
 export EDITOR=vim
 export PAGER=less
 export LESSCHARSET=utf-8
@@ -353,7 +353,7 @@ alias -g GVV='|& egrep -v "^[[:space:]]*(#|$)"'
 alias -g GO='G -o'
 alias -g Go='G -o'
 alias -g GK='|& grep_keyword'
-alias -g key='|& grep_keyword'
+alias -g Key='|& grep_keyword'
 alias -g KEY='|& grep_keyword'
 alias -g G-='|&/bin/grep -P -a "^-(?!-)"'
 alias -g G+='|&/bin/grep -P -a "^\+(?!\+)"'
@@ -436,9 +436,9 @@ alias weeklyreport='em ~/sandbox/WeeklyReport'
 alias cata='cat -A'
 alias diff='diff -tbwrN --unified=1'
 #alias d='gitdiff a b'
-alias d0='gitdiff -U100 a b'
+#alias d0='gitdiff -U100 a b'
 alias rd='gitdiff b a'
-alias rd0='gitdiff -U100 b a'
+#alias rd0='gitdiff -U100 b a'
 alias clock='clear; xcal; echo; while :; do printf "%s\r" "$(date +%T)"; sleep 1 ; done'
 alias c='clock'
 alias pyser='ipa; python -m CGIHTTPServer'
@@ -475,6 +475,25 @@ function d() {
 	a=${1:-"a"}
 	b=${2:-"b"}
 	gdiff $a $b
+}
+alias myd='d'
+
+function d0() {
+	a=${1:-"a"}
+	b=${2:-"b"}
+	gdiff -U100 $a $b
+}
+
+function rd() {
+	a=${1:-"a"}
+	b=${2:-"b"}
+	gdiff $b $a
+}
+
+function rd0() {
+	a=${1:-"a"}
+	b=${2:-"b"}
+	gdiff -U100 $b $a
 }
 
 function winstat() {
@@ -639,10 +658,8 @@ case $OSTYPE in
       alias ipa='ifconfig | /bin/egrep "Ethernet|IPv4 Address|Subnet Mask" | /bin/grep --color -P "(\d+\.){3}\d+|$"'
       alias t='tasklist  | /bin/egrep "[0-9,]{7}" | sort -k5 -r'
       alias tt='tasklist | /bin/egrep "[0-9,]{6}" | sort -k5 -r'
-      alias path2unix='LANG=ja_JP.UTF8 cygpath -am'
-      alias w2u='path2unix'
-      alias path2win='LANG=ja_JP.UTF8 cygpath -aw'
-      alias u2w='path2unix'
+      alias p2u='LANG=ja_JP.UTF8 cygpath -am'
+      alias p2w='LANG=ja_JP.UTF8 cygpath -aw'
       ;;
   minix)
       alias -g L='|&less'
@@ -677,7 +694,6 @@ if [[ $EMACS = t ]] ;then
   unsetopt zle
   unsetopt transient_rprompt
   alias ls='/bin/ls -F -w 100 --group-directories-first'
-  alias grep='egrep'
   alias emacs='ls'
   alias git='git --no-pager'
   PROMPT='[(zsh)%~]%(#.#.$) '
@@ -697,6 +713,7 @@ if [[ $OSTYPE == "cygwin" ]]; then
     /bin/ls -d /tmp/*(m+7) 2>/dev/null | xargs -r /bin/rm -r
     /bin/ls -d ~/sandbox/*(m+7) 2>/dev/null | xargs -r /bin/mv -t ~/sandbox/.trash
     chcp 437 >/dev/null
+    #/bin/rm /cygdrive/c/Users/ikushin/Downloads/*(L0,a+7.)
 fi
 
 [[ -e ~/.localrc ]] && $source ~/.localrc
