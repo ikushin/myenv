@@ -5,7 +5,7 @@ autoload -U compinit
 compinit -u
 autoload -U colors
 colors
-setopt hist_ignoreall_dups
+#setopt hist_ignoreall_dups
 setopt hist_save_nodups
 setopt share_history
 
@@ -34,7 +34,7 @@ setopt auto_cd
 unsetopt correctall
 setopt cdable_vars
 setopt hist_no_store
-setopt hist_ignore_dups
+#setopt hist_ignore_dups
 setopt hist_reduce_blanks
 setopt numeric_globsort
 setopt pushd_ignore_dups
@@ -72,10 +72,11 @@ zstyle ':chpwd:*' recent-dirs-pushd true
 
 # key binds
 bindkey -e
-bindkey '^O'   edit-command-line
+bindkey '^O'   accept-line-and-down-history
+bindkey '^J' edit-command-line
 bindkey "^[H"  backward-kill-word
 bindkey "^[h"  backward-kill-word
-bindkey "^[^H" run-help
+#bindkey "^[^H" run-help
 
 # 単語区切り文字指定
 autoload -Uz select-word-style
@@ -97,8 +98,8 @@ bindkey -s "^[p"  "git pull "
 bindkey -s "^G^P" "git push origin master "
 bindkey -s "^G."  'cd $(git rev-parse --show-toplevel) '
 bindkey -s "^G^R" "git reset --hard "
-bindkey -s "^[a"  "git add . "
-bindkey -s "^G^A" "git add . "
+bindkey -s "^[a"  "git add "
+bindkey -s "^G^A" "git add "
 bindkey -s "^G^T" "git cat-file -p HEAD:file "
 bindkey -s "^G^I" "git init; echo '.*' >.gitignore "
 
@@ -321,6 +322,7 @@ alias viaa='vi -c startinsert aa'
 alias vibb='vi -c startinsert bb'
 alias vicc='vi -c startinsert cc'
 alias vif='vi -c startinsert f'
+alias vii='vi -c startinsert'
 
 alias mva='mvf aa a'
 alias mvb='mvf bb b'
@@ -435,10 +437,6 @@ alias free='free -m'
 alias weeklyreport='em ~/sandbox/WeeklyReport'
 alias cata='cat -A'
 alias diff='diff -tbwrN --unified=1'
-#alias d='gitdiff a b'
-#alias d0='gitdiff -U100 a b'
-alias rd='gitdiff b a'
-#alias rd0='gitdiff -U100 b a'
 alias clock='clear; xcal; echo; while :; do printf "%s\r" "$(date +%T)"; sleep 1 ; done'
 alias c='clock'
 alias pyser='ipa; python -m CGIHTTPServer'
@@ -446,6 +444,7 @@ alias curl='curl --location --silent --show-error --max-time 3'
 alias pso='ps -eo "user,pid,ppid,pgid,pcpu,pmem,vsz,rss,stat,lstart,command"'
 alias today='/bin/date +%Y%m%d'
 alias yesterday='date --date "1 day ago" +%Y%m%d'
+alias DU='du -sh * | sort -h'
 
 alias asu='cat a SU'
 alias asc='cat a SC'
@@ -517,6 +516,11 @@ function winstat() {
         | /bin/perl -ane 'printf "PageUsage = %.1f%%\nPeakPageUsage = %.1f%%\n",$F[2]/$F[0]*100,$F[6]/$F[0]*100'
 }
 alias ws='winstat'
+
+function cdw() {
+    cdpath=$(p2u "$1")
+    cd $cdpath
+}
 
 # pgrep
 \pgrep -af init |& grep -q 'init|systemd'
