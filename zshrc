@@ -3,8 +3,8 @@
 #
 autoload -U compinit
 compinit -u
-autoload -U colors
-colors
+#autoload -U colors
+#colors
 #setopt hist_ignoreall_dups
 setopt hist_save_nodups
 setopt share_history
@@ -23,12 +23,11 @@ autoload -Uz add-zsh-hook
 zstyle ':completion:*:default' menu select=1
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*:cd:*' tag-order local-directories path-directories
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+#zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 unsetopt case_glob
 setopt auto_resume
 setopt nonomatch
-setopt magic_equal_subst
 setopt auto_pushd
 setopt auto_cd
 unsetopt correctall
@@ -39,15 +38,11 @@ setopt hist_reduce_blanks
 setopt numeric_globsort
 setopt pushd_ignore_dups
 setopt notify
-setopt always_last_prompt
-setopt auto_menu
 setopt auto_name_dirs
-setopt auto_param_keys
 setopt auto_remove_slash
-setopt extended_glob
 #setopt null_glob
 setopt hist_ignore_space
-setopt list_types
+unsetopt list_types
 setopt no_beep
 setopt prompt_subst
 setopt rm_star_silent
@@ -84,9 +79,42 @@ select-word-style default
 zstyle ':zle:*' word-chars ':"/*?[]~&;!#$%^{}<>| '\'
 zstyle ':zle:*' word-style unspecified
 
+#ファイル補完候補に色を付ける
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
 bindkey -s "^[g"  '| egrep -v "\^[[:space:]]*(#|$)" '
 bindkey -s "^[f"  "| fgrep -v ?"
 bindkey -s "^[q"  "ps -eo uname,lstart,pid,rss,vsz,args | egrep"
+
+# 補完関数の表示を強化する
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _list _history
+zstyle ':completion:*:messages' format '%F{YELLOW}%d'$DEFAULT
+zstyle ':completion:*:warnings' format '%F{RED}No matches for:''%F{YELLOW} %d'$DEFAULT
+zstyle ':completion:*:descriptions' format '%F{YELLOW}completing %B%d%b'$DEFAULT
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:descriptions' format '%F{yellow}Completing %B%d%b%f'$DEFAULT
+
+# マッチ種別を別々に表示
+zstyle ':completion:*' group-name ''
+
+# 補完に関するオプション
+# http://voidy21.hatenablog.jp/entry/20090902/1251918174
+setopt auto_param_slash      # ディレクトリ名の補完で末尾の / を自動的に付加し、次の補完に備える
+setopt mark_dirs             # ファイル名の展開でディレクトリにマッチした場合 末尾に / を付加
+setopt auto_menu             # 補完キー連打で順に補完候補を自動で補完
+setopt auto_param_keys       # カッコの対応などを自動的に補完
+setopt interactive_comments  # コマンドラインでも # 以降をコメントと見なす
+setopt magic_equal_subst     # コマンドラインの引数で --prefix=/usr などの = 以降でも補完できる
+
+setopt complete_in_word      # 語の途中でもカーソル位置で補完
+setopt always_last_prompt    # カーソル位置は保持したままファイル名一覧を順次その場で表示
+
+setopt print_eight_bit  #日本語ファイル名等8ビットを通す
+setopt extended_glob  # 拡張グロブで補完(~とか^とか。例えばless *.txt~memo.txt ならmemo.txt 以外の *.txt にマッチ)
+
+bindkey "^I" menu-complete   # 展開する前に補完候補を出させる(Ctrl-iで補完するようにする)
+
 
 # Git key binds
 bindkey -s '^G^S' "git status --short --branch "
@@ -101,7 +129,7 @@ bindkey -s "^G^R" "git reset --hard "
 bindkey -s "^[a"  "git add "
 bindkey -s "^G^A" "git add "
 bindkey -s "^G^T" "git cat-file -p HEAD:file "
-bindkey -s "^G^I" "git init; echo '.*' >.gitignore "
+bindkey -s "^G^I" "test -d .git || git init; echo '.*' >.gitignore "
 
 bindkey -s "^[c"    'git checkout '
 bindkey -s "^[c^[c" 'git commit -m "Update" '
@@ -120,7 +148,7 @@ bindkey -s "^V^V"   "cd ~/vagrant/"
 # Git aliases
 alias gitdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index --color=auto'
 alias gdiff='gitdiff'
-alias gd='gitdiff'
+alias gd='git dsf'
 alias wgd='gitdiff --word-diff'
 alias gc='git checkout'
 alias gcm='git checkout master'
@@ -330,7 +358,7 @@ alias mvc='mvf cc c'
 
 alias .='source'
 alias ..='cd ..'
-alias h='history 0 | perl -pe "s/^ [0-9]+ //" | tail -100'
+alias h='history 0 | tail -n 100 | perl -pe "s/^\d+\*? +//"'
 alias \$=';'
 alias \#=';'
 
@@ -367,7 +395,8 @@ alias now='date +%F %T'
 alias year='printf "%d: %d\n" $(date +%Y) $(($(date +%Y)-1988))'
 alias hei=year
 alias wareki=year
-alias cp='cp -ir'
+alias cp='/bin/cp -ir'
+alias cpf='/bin/cp'
 alias mv='/bin/mv -i'
 alias rm='rm -i'
 alias mvf='/bin/mv -f'
@@ -418,7 +447,7 @@ alias dstat-cpu='$HOME/bin/dstat/dstat  -clr    --bits --nocolor'
 alias dstat-net='$HOME/bin/dstat/dstat  -clnd   --bits --nocolor'
 alias dstat-disk='$HOME/bin/dstat/dstat -cldr   --bits --nocolor'
 alias dstat='$HOME/bin/dstat/dstat --nocolor --load --cpu --disk --net --tcp --page --sys --proc --mem --swap --bits'
-alias sed='sed --regexp-extended --follow-symlinks'
+#alias sed='sed --regexp-extended --follow-symlinks'
 #alias sar='sar -q'
 alias tcpdump='tcpdump -nn'
 alias nkf='nkf -f80-0'
@@ -440,7 +469,7 @@ alias diff='diff -tbwrN --unified=1'
 alias clock='clear; xcal; echo; while :; do printf "%s\r" "$(date +%T)"; sleep 1 ; done'
 alias c='clock'
 alias pyser='ipa; python -m CGIHTTPServer'
-alias curl='curl --location --silent --show-error --max-time 3'
+alias mycurl='curl --location --silent --show-error --max-time 3'
 alias pso='ps -eo "user,pid,ppid,pgid,pcpu,pmem,vsz,rss,stat,lstart,command"'
 alias today='/bin/date +%Y%m%d'
 alias yesterday='date --date "1 day ago" +%Y%m%d'
@@ -564,28 +593,31 @@ alias -g A2='A 2'
 alias -g A3='A 3'
 alias -g M='| md5sum'
 alias -g D='| diff $_ -'
-alias -g PE='| perl -ple '
-alias -g P='| perl -pe '
-alias -g PP='| perl -nae '
-alias -g P0='| perl -00 -nae '
 alias -g CAT='|& cat -An'
 alias -g SIP='|& sort -n -t'.' -k1,1 -k2,2 -k3,3 -k4,4'
 
+# perl
+alias PI='perl -i.bak -ple'
+alias -g PE='| perl -ple'
+alias -g PN='| perl -nle'
+alias -g P0='| perl -00 -nae'
+
+# 文字コード変換
 alias -g e2s='|& lv -Ieuc -Osjis | cat'
 alias -g e2j='|& lv -Ieuc -Osjis | cat'
 alias -g e2u='|& lv -Ieuc -Ou8   | cat'
-
 alias -g u2s='|& lv -Iu8  -Osjis | cat'
 alias -g u2j='|& lv -Iu8  -Osjis | cat'
-
 alias -g j2u='|& lv -Is   -Ou8   | cat'
 alias -g s2u='|& lv -Is   -Ou8   | cat'
 
-
-alias -s 'gz'='tar zxvf'
-
+# 名前付きディレクトリ
 hash -d mm=~/.myenv
 hash -d ss=~/.ssh
+hash -d ilog=/cygdrive/c/Users/ikushin/Documents/LimeChatLog
+hash -d llog=/cygdrive/c/Users/ikushin/Documents/LimeChatLog
+hash -d plog=/cygdrive/c/Users/ikushin/Documents/putty_log
+hash -d tlog=/cygdrive/c/Users/ikushin/Documents/teraterm_log
 
 # for every OS
 case $OSTYPE in
@@ -594,7 +626,6 @@ case $OSTYPE in
       alias man='LC_ALL=ja_JP.UTF-8 man'
       alias su="/bin/su -m"
       alias msu="/bin/su -m -s `which zsh`"
-      alias sum='md5sum'
 
       which dpkg >/dev/null 2>&1
       if [ $? -eq 0 ]; then
@@ -614,22 +645,6 @@ case $OSTYPE in
           alias free='free -h'
           alias netstat='/bin/netstat  --numeric --tcp --inet --listen --program'
       fi
-
-      ;;
-  solaris*)
-      TERM=vt100
-      [ -x /usr/local/bin/less ] && alias man='LANG=ja man'
-      alias su="/bin/su"
-      alias msu="/bin/su root -c `which zsh`"
-      alias sum='/usr/bin/sum'
-      alias ping='ping -s'
-      alias df='df -h -F ufs'
-      alias rpmqa='pkginfo'
-      alias rpmql='pkgchk -vn'
-      alias rpmqf='pkgchk -lp'
-      alias rpmqi='pkginfo -l'
-      alias rpmqlp='pkgchk -vd'
-      alias rpmqip='pkginfo -l -d'
       ;;
   cygwin)
       LC_ALL=ja_JP.UTF8
@@ -639,7 +654,6 @@ case $OSTYPE in
       alias rpmql='cygcheck -l'
       alias rpmqf='cygcheck -f'
       alias rpmqi='cygcheck -p'
-      alias sum='md5sum'
       alias ls='ls --color=auto --show-control-chars --group-directories-first -1'
       alias exp='explorer . &'
       alias open='/usr/bin/cygstart'
@@ -658,18 +672,12 @@ case $OSTYPE in
       cdpath=( $cdpath /cygdrive/d/system/My\ Documents )
       path=( $path )
       alias vagrant='/cygdrive/c/HashiCorp/Vagrant/bin/vagrant'
-      alias sed='sed --regexp-extended'
+      #alias sed='sed --regexp-extended'
       alias ipa='ifconfig | /bin/egrep "Ethernet|IPv4 Address|Subnet Mask" | /bin/grep --color -P "(\d+\.){3}\d+|$"'
       alias t='tasklist  | /bin/egrep "[0-9,]{7}" | sort -k5 -r'
       alias tt='tasklist | /bin/egrep "[0-9,]{6}" | sort -k5 -r'
       alias p2u='LANG=ja_JP.UTF8 cygpath -am'
       alias p2w='LANG=ja_JP.UTF8 cygpath -aw'
-      ;;
-  minix)
-      alias -g L='|&less'
-      alias ls='ls --color=auto --show-control-chars'
-      bindkey "^Q" history-incremental-search-backward
-      manpath=( /usr/gnu/man /usr/local/man /usr/local/share/man /usr/man /usr/src/man )
       ;;
   *)
       echo "unknown OS"
@@ -680,7 +688,7 @@ esac
 if grep -q 'release 5' /etc/redhat-release 2>/dev/null
 then
     env ls --help 2>&1 | grep -q group-directories-first || alias ls='ls --color=auto'
-    alias sed='sed --regexp-extended'
+    #alias sed='sed --regexp-extended'
 fi
 
 # delete a repeating element automatically
@@ -713,11 +721,14 @@ if [[ $OSTYPE == "cygwin" ]]; then
     #mv -f instances.*(L0,a+1.) ~/Trash 2>/dev/null
     #find ~/sandbox -type f -atime +7 | xargs mv -t ~/sandbox/trash
     [[ -e ~/bin/puttylog_archive.sh ]] && bash ~/bin/puttylog_archive.sh
+    test -e ~/bin/puttylog_archive.sh && bash $_
+    test -e ~/bin/teraterm_archive.sh && bash $_
     [ `pwd` = "/usr/bin" ] && cd $HOME
     /bin/ls -d /tmp/*(m+7) 2>/dev/null | xargs -r /bin/rm -r
     /bin/ls -d ~/sandbox/*(m+7) 2>/dev/null | xargs -r /bin/mv -t ~/sandbox/.trash
     chcp 437 >/dev/null
     #/bin/rm /cygdrive/c/Users/ikushin/Downloads/*(L0,a+7.)
+    zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 fi
 
 [[ -e ~/.localrc ]] && $source ~/.localrc

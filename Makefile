@@ -6,9 +6,11 @@ cp:
 	[ -e ~/.ssh/config ] || /bin/cp ssh_config ~/.ssh/config; chmod 600 ~/.ssh/config
 	cmp -s ssh_config_my ~/.ssh/config_my || cp ssh_config_my ~/.ssh/config_my
 
+.PHONY: cygwin
 cygwin:
-	mkdir -p ~/bin/; [ -f ~/bin/puttylog_archive.sh ] || cp puttylog_archive.sh ~/bin/puttylog_archive.sh
-	if [[ ! -e /usr/local/bin/perl ]]; then make perl; fi
+	mkdir -p ~/bin
+	/bin/cp ./scripts/*_archive.sh ~/bin/
+	#if [[ ! -e /usr/local/bin/perl ]]; then make perl; fi
 
 ssh:
 	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config
@@ -149,7 +151,7 @@ clone_https:
 test:
 	sudo id
 
-cygwin_perl:
+perl:
 	wget http://www.cpan.org/src/5.0/perl-5.22.1.tar.gz -O /tmp/perl.tar.gz && tar zxf /tmp/perl.tar.gz -C /tmp
 	cd /tmp/perl-5.22.1 && ./Configure -des -Dprefix=/usr/local/perl && make && make install
 
@@ -184,4 +186,14 @@ net:
 	/usr/bin/cygstart ncpa.cpl
 
 term:
-	if /bin/grep -q '^#.*putty_067.exe' /bin/cygterm.cfg; then /bin/sed -i -e '3s/^#T/T/' -e '4s/^T/#T/' /bin/cygterm.cfg; else /bin/sed -i -e '3s/^T/#T/' -e '4s/^#//' /bin/cygterm.cfg; fi
+	i=f /bin/grep -q '^#.*putty_067.exe' /bin/cygterm.cfg; then /bin/sed -i -e '3s/^#T/T/' -e '4s/^T/#T/' /bin/cygterm.cfg; else /bin/sed -i -e '3s/^T/#T/' -e '4s/^#//' /bin/cygterm.cfg; fi
+
+diff-so-fancy:
+	cd /usr/local/share/git-core/contrib && git clone https://github.com/so-fancy/diff-so-fancy.git
+	sed -i '1i #!/usr/local/perl/bin/perl' /usr/local/share/git-core/contrib/diff-so-fancy/libexec/diff-so-fancy.pl
+	git config --global alias.dsf '!f() { [ -z "$GIT_PREFIX" ] || cd "$GIT_PREFIX" && git diff -b -w --ignore-blank-lines --ignore-space-at-eol --color "$@" | diff-so-fancy  | less --tabs=4 -RFX; }; f'
+	git config --global color.diff-highlight.oldNormal    "red bold"
+	git config --global color.diff-highlight.oldHighlight "red bold 52"
+	git config --global color.diff-highlight.newNormal    "green bold"
+	git config --global color.diff-highlight.newHighlight "green bold 22"
+

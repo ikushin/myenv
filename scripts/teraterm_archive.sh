@@ -2,7 +2,7 @@
 
 lastdate=1      # この日数分はアーカイブしない
 extension=log
-logdir=/home/ikushin/putty_log
+logdir=/cygdrive/c/Users/ikushin/Documents/teraterm_log
 [[ ! -d $logdir ]] && exit 1
 
 logs=$(find $logdir/ -maxdepth 1 -mtime +$lastdate -name \*.$extension)
