@@ -1,0 +1,9 @@
+
+alias rpmqa='dpkg -l'
+alias rpmql='dpkg -L'
+alias rpmqf='dpkg -S'
+alias rpmqi='dpkg -s'
+alias rpmqlp='dpkg -c'
+alias rpmqip='dpkg -I'
+alias free='free -h'
+alias netstat='/bin/netstat  --numeric --tcp -4 --listen --program'

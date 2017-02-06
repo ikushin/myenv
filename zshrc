@@ -7,7 +7,6 @@ compinit -u
 #colors
 #setopt hist_ignoreall_dups
 setopt hist_save_nodups
-setopt share_history
 
 autoload -U edit-command-line
 zle -N edit-command-line
@@ -20,7 +19,7 @@ colors
 
 autoload -Uz add-zsh-hook
 
-zstyle ':completion:*:default' menu select=1
+zstyle ':completion:*:default' menu select=2
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*:cd:*' tag-order local-directories path-directories
 #zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
@@ -59,6 +58,7 @@ unsetopt prompt_cr
 # cdr, add-zsh-hook を有効にする
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 add-zsh-hook chpwd chpwd_recent_dirs
+
 # cdr の設定
 zstyle ':completion:*' recent-dirs-insert both
 zstyle ':chpwd:*' recent-dirs-max 500
@@ -72,19 +72,19 @@ bindkey '^J' edit-command-line
 bindkey "^[H"  backward-kill-word
 bindkey "^[h"  backward-kill-word
 #bindkey "^[^H" run-help
+bindkey -s "^[g"  '| egrep -v "\^[[:space:]]*(#|$)" '
+bindkey -s "^[f"  "| fgrep -v ?"
+bindkey -s "^[q"  "ps -eo uname,lstart,pid,rss,vsz,args | egrep"
+bindkey "^I" menu-complete   # 展開する前に補完候補を出させる(Ctrl-iで補完するようにする)
 
 # 単語区切り文字指定
 autoload -Uz select-word-style
 select-word-style default
-zstyle ':zle:*' word-chars ':"/*?[]~&;!#$%^{}<>| '\'
+zstyle ':zle:*' word-chars ':"/*?[]~&;!#$%^{}<>| '\' #"
 zstyle ':zle:*' word-style unspecified
 
 #ファイル補完候補に色を付ける
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-
-bindkey -s "^[g"  '| egrep -v "\^[[:space:]]*(#|$)" '
-bindkey -s "^[f"  "| fgrep -v ?"
-bindkey -s "^[q"  "ps -eo uname,lstart,pid,rss,vsz,args | egrep"
 
 # 補完関数の表示を強化する
 zstyle ':completion:*' verbose yes
@@ -110,55 +110,8 @@ setopt magic_equal_subst     # コマンドラインの引数で --prefix=/usr �
 setopt complete_in_word      # 語の途中でもカーソル位置で補完
 setopt always_last_prompt    # カーソル位置は保持したままファイル名一覧を順次その場で表示
 
-setopt print_eight_bit  #日本語ファイル名等8ビットを通す
-setopt extended_glob  # 拡張グロブで補完(~とか^とか。例えばless *.txt~memo.txt ならmemo.txt 以外の *.txt にマッチ)
-
-bindkey "^I" menu-complete   # 展開する前に補完候補を出させる(Ctrl-iで補完するようにする)
-
-
-# Git key binds
-bindkey -s '^G^S' "git status --short --branch "
-bindkey -s "^[s"  "git status --short --branch "
-bindkey -s "^[b"  "git branch "
-bindkey -s "^G^B" "git branch "
-bindkey -s "^[f"  "git diff  --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --color=auto "
-bindkey -s "^[p"  "git pull "
-bindkey -s "^G^P" "git push origin master "
-bindkey -s "^G."  'cd $(git rev-parse --show-toplevel) '
-bindkey -s "^G^R" "git reset --hard "
-bindkey -s "^[a"  "git add "
-bindkey -s "^G^A" "git add "
-bindkey -s "^G^T" "git cat-file -p HEAD:file "
-bindkey -s "^G^I" "test -d .git || git init; echo '.*' >.gitignore "
-
-bindkey -s "^[c"    'git checkout '
-bindkey -s "^[c^[c" 'git commit -m "Update" '
-bindkey -s "^[v"    "git checkout "
-
-bindkey -s "^[l"    'git log --color=always --oneline --decorate --no-merges -$((LINES-10)) '
-bindkey -s "^G^L"   'git log --color=always --name-status --no-merges '
-bindkey -s "^G^L^L" 'git log --color=always -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges '
-
-# Vagrant key binds
-bindkey -s "^V^S"   "vagrant status "
-bindkey -s "^V^S^S" "vagrant ssh "
-bindkey -s "^V^U"   "vagrant up "
-bindkey -s "^V^V"   "cd ~/vagrant/"
-
-# Git aliases
-alias gitdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index --color=auto'
-alias gdiff='gitdiff'
-alias gd='git dsf'
-alias wgd='gitdiff --word-diff'
-alias gc='git checkout'
-alias gcm='git checkout master'
-alias gcd='git checkout dev'
-alias gl='git log --color=always --name-status --no-merges'
-alias gll='git log --color=always -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges'
-alias gp='git push origin master'
-alias gb='git branch --verbose --all'
-alias ga='git add -u'
-alias gs='git status --short --branch .'
+setopt print_eight_bit       # 日本語ファイル名等8ビットを通す
+setopt extended_glob         # 拡張グロブで補完(~とか^とか。例えばless *.txt~memo.txt ならmemo.txt 以外の *.txt にマッチ)
 
 # not end of word
 #WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
@@ -167,10 +120,11 @@ WORDCHARS='*?[]~&;!#$%^{}<>|'
 export WORDCHARS
 
 # history
+setopt share_history
 setopt extended_history
 HISTFILE=$HOME/.zhistory
-HISTSIZE=100000
-SAVEHIST=100000
+HISTSIZE=100000                 # メモリに保存される履歴の件数
+SAVEHIST=100000                 # 履歴ファイルに保存される履歴の件数
 DIRSTACKSIZE=200
 
 # prompts
@@ -200,506 +154,29 @@ export MANPATH
 nc='\033[0m'
 red='\033[0;31m'
 green='\033[0;32m'
-function echo_red
-{
-    printf "${red}$*${nc}\n"
-}
-function echo_green
-{
-    printf "${green}$*${nc}\n"
-}
-# こんなのもあり
-#echo aaa | perl -MTerm::ANSIColor -ne 'print colored($_,"red")'
-
-function col {
-  awk -v col=$1 '{print $col}'
-}
-
-function subnet2cidr ()
-{
-    # Assumes there's no "255." after a non-255 byte in the mask
-    local x=${1##*255.}
-    set -- 0^^^128^192^224^240^248^252^254^ $(( (${#1} - ${#x})*2 )) ${x%%.*}
-    x=${1%%$3*}
-    echo $(( $2 + (${#x}/4) ))
-}
-
-function cidr2subnet ()
-{
-    # Number of args to shift, 255..255, first non-255 byte, zeroes
-    set -- $(( 5 - ($1 / 8) )) 255 255 255 255 $(( (255 << (8 - ($1 % 8))) & 255 )) 0 0 0
-    [ $1 -gt 1 ] && shift $1 || shift
-    echo ${1-0}.${2-0}.${3-0}.${4-0}
-}
-
-function org() {
-  cp -a $1{,.org}
-}
-
-function pass() {
-    cat $1 >/dev/clipboard 2>&1
-}
-
-function bak() {
-  cp $1{,.bak}
-}
-
-function day_bak() {
-  cp $1{,.$today}
-}
-
-function commit() {
-  svn commit -m"kim"
-  sleep 1
-  svn update
-}
-
-function myip() {
-    curl http://inet-ip.info   ||
-    curl http://ifconfig.me    ||
-    curl http://httpbin.org/ip
-}
-
-pmver () {
-  perl -M${1} -le "print \$$1::VERSION"
-}
-
-pmver2 () {
-  echo "perl -M${1} -e 'print \$$1::VERSION . \"\\\n\"'"
-  perl -M${1} -le "print \$$1::VERSION"
-}
-
-path () {
-  for i ; do
-      case "$i" in
-          /* )
-              echo $i ;;
-          .|.. )
-              ( cd $i; echo `pwd` ) ;;
-          * )
-              echo `pwd`/$i ;;
-      esac
-  done
-}
-
-__path () {
-  case "$i" in
-      /* )
-          echo $i ;;
-      .|.. )
-          ( cd $i; echo `pwd` ) ;;
-      * )
-          echo `pwd`/$i ;;
-  esac
-}
-
-function pcflow() {
-    cflow --tree --print-level --depth=$1 --main=zzz *.c \
-        | sed -e 's/\({   0} +-\([^ ]*\).*\)/\n\n\2\n\1/'
-}
-
-function pdf() {
-	sudo du -d 1 | perl -nle 'my %a;($a{u},$a{d})=split(/\s/);push(@a,\%a);END{map{printf "%.2f %16d %s\n",$_->{u}/$a[-1]->{u},$_->{u},$_->{d}}@a}'
-}
-
-function sa()
-{
-    (
-        d=$(mktemp -d -p ~/.sandbox tmp_XXXXXXXX) && cd "$d" || exit 1
-        zsh
-        s=$?
-        if [[ $s == 0 ]]; then
-            rm -rf "$d"
-        else
-            echo "Directory '$d' still exists." >&2
-        fi
-        exit $s
-    )
-}
-
-function grep_keyword() {
-        /bin/grep -i -P --color "$|$@"
-}
-
-function make
-{
-    echo_green "START: make $@"
-    /usr/bin/make $@
-    rc=$?
-    [[ $rc != 0 ]] && echo_red "EROOR: make $@" || echo_green "END: make $@"
-    return $rc
-}
-
-function dig
-{
-    $(type -p dig | awk '{print $3}') $@ | /bin/egrep --color '$|.*SECTION.*'
-}
 
 # PATH
 path=( $HOME/*bin(N-/) /usr{/local,}/bin(N-/) /opt/*/*bin(N-/) /opt/*/*/*bin(N-/) \
     /usr/local/*bin(N-/) /usr/*bin(N-/) /*bin(N-/) /usr/ucb(N-/) )
 
-# aliases
-which vim  >/dev/null 2>&1  && alias vi=`which vim`
-alias fvi='vi $(mktemp --tmpdir=./ vi.XXXXXXXXXX)'
-alias vv='fvi'
-alias via='vi -c startinsert a'
-alias vib='vi -c startinsert b'
-alias vic='vi -c startinsert c'
-alias viaa='vi -c startinsert aa'
-alias vibb='vi -c startinsert bb'
-alias vicc='vi -c startinsert cc'
-alias vif='vi -c startinsert f'
-alias vii='vi -c startinsert'
-
-alias mva='mvf aa a'
-alias mvb='mvf bb b'
-alias mvc='mvf cc c'
-
-alias .='source'
-alias ..='cd ..'
-alias h='history 0 | tail -n 100 | perl -pe "s/^\d+\*? +//"'
-alias \$=';'
-alias \#=';'
-
-# grep aliases
-alias grep='/bin/grep --color'
-alias egrep='/bin/egrep --color'
-alias xgrep='/bin/grep -P --color'
-alias ipgrep='xgrep "(\d+\.){3}\d+"'
-alias fgrep='/bin/fgrep --color'
-alias g='xgrep'
-alias go='xgrep -o'
-alias igrep='g -i'
-alias rgrep='g -v "^#|^$"'
-
-alias -g G='|& grep -aP'
-alias -g GF='|& grep -af'
-alias -g GFV='|& grep -avf'
-alias -g GVF='|& grep -avf'
-alias -g GI='G -i'
-alias -g GV='G -v'
-alias -g GVV='|& egrep -v "^[[:space:]]*(#|$)"'
-alias -g GO='G -o'
-alias -g Go='G -o'
-alias -g GK='|& grep_keyword'
-alias -g Key='|& grep_keyword'
-alias -g KEY='|& grep_keyword'
-alias -g G-='|&/bin/grep -P -a "^-(?!-)"'
-alias -g G+='|&/bin/grep -P -a "^\+(?!\+)"'
-alias -g G++='|&/bin/egrep -a "^[+-][^+-]"'
-alias -g G+++='G++ PE "s/^.//"'
-alias -g FG='|& fgrep -a'
-
-alias now='date +%F %T'
-alias year='printf "%d: %d\n" $(date +%Y) $(($(date +%Y)-1988))'
-alias hei=year
-alias wareki=year
-alias cp='/bin/cp -ir'
-alias cpf='/bin/cp'
-alias mv='/bin/mv -i'
-alias rm='rm -i'
-alias mvf='/bin/mv -f'
-alias rmf='rm -rf'
-alias ls='ls --color=auto --group-directories-first'
-alias sl='ls'
-alias ll='ls -lh --time-style=long-iso'
-alias lll='ll -tr'
-alias llll='lll -i --time-style=full-iso'
-alias l4='llll'
-alias lsstat='stat -c "%A %a %U %G %N"'
-alias s='lsstat'
-alias la='ll -A'
-alias lld='ll -d'
-alias ip='/sbin/ip -4 -oneline'
-alias ipa='/sbin/ip -4 -oneline addr | /bin/grep -vw lo | /bin/sed "s@/@ /@" | column -t | /bin/grep --color -P "(\d+\.){3}\d+" '
-alias ips='/sbin/ip -stats link show'
-alias locate='locate -r'
-alias df='df -PTh'
-alias df.='df .'
-alias dfx='df -x tmpfs -x devtmpfs'
-alias view='vi -R'
-alias scp='scp -r'
-alias mci='ci -u -m"kim"'
-alias mrlog='rlog -L -R RCS/*'
-alias cscope='cscope -b'
-alias ssh='ssh -C -o "StrictHostKeyChecking no"'
-alias wget='wget -c'
-alias zsh='exec zsh'
-alias viz='vi ~/.zshrc'
-alias .viz='source ~/.zshrc'
-alias watch='watch -d'
-alias pstree='pstree -p'
-alias emacs='LANG=ja_JP.UTF8 emacs -nw'
-alias tejun='emacs -l ~/.emacs_tejun'
-alias femacs='emacs $(mktemp --tmpdir=./ emacs.XXXXXXXXXX)'
-alias em='emacs'
-alias ema='emacs a'
-alias emb='emacs b'
-alias fe='femacs'
-alias ff='femacs'
-alias ee='femacs'
-alias md5sum='md5sum --text'
-alias m='md5sum'
-alias dstat-full='$HOME/bin/dstat/dstat -clmdrn --bits --nocolor'
-alias dstat-mem='$HOME/bin/dstat/dstat  -clm    --bits --nocolor'
-alias dstat-cpu='$HOME/bin/dstat/dstat  -clr    --bits --nocolor'
-alias dstat-net='$HOME/bin/dstat/dstat  -clnd   --bits --nocolor'
-alias dstat-disk='$HOME/bin/dstat/dstat -cldr   --bits --nocolor'
-alias dstat='$HOME/bin/dstat/dstat --nocolor --load --cpu --disk --net --tcp --page --sys --proc --mem --swap --bits'
-#alias sed='sed --regexp-extended --follow-symlinks'
-#alias sar='sar -q'
-alias tcpdump='tcpdump -nn'
-alias nkf='nkf -f80-0'
-alias netstat='/bin/netstat  --numeric --tcp --listen --program'
-alias unetstat='/bin/netstat --numeric --udp --listen --program'
-alias fmt='fmt -s -w $(($COLUMNS))'
-alias ct='cut -c -$(($COLUMNS-10))'
-alias less='LANG=ja_JP.UTF8 less -iR'
-alias time='/usr/bin/time -p'
-alias jq='jq -r'
-alias crm_mon='crm_mon -rAf'
-alias which='which -a'
-alias fdate='date "+%Y-%m-%d %H:%M:%S"'
-alias free='free -m'
-#alias pkill='pkill -f'
-alias weeklyreport='em ~/sandbox/WeeklyReport'
-alias cata='cat -A'
-alias diff='diff -tbwrN --unified=1'
-alias clock='clear; xcal; echo; while :; do printf "%s\r" "$(date +%T)"; sleep 1 ; done'
-alias c='clock'
-alias pyser='ipa; python -m CGIHTTPServer'
-alias mycurl='curl --location --silent --show-error --max-time 3'
-alias pso='ps -eo "user,pid,ppid,pgid,pcpu,pmem,vsz,rss,stat,lstart,command"'
-alias today='/bin/date +%Y%m%d'
-alias yesterday='date --date "1 day ago" +%Y%m%d'
-alias DU='du -sh * | sort -h'
-
-alias asu='cat a SU'
-alias asc='cat a SC'
-alias sua='su_file a'
-alias sca='cat a SC'
-
-alias bsu='cat b SU'
-alias bsc='cat b SC'
-alias sub='su_file b'
-alias scb='cat b SC'
-
-alias csu='cat c SU'
-alias csc='cat c SC'
-alias suc='cat c SU'
-alias scc='cat c SC'
-
-function su_file() {
-    [[ $# != 1 ]] && return
-    [[ ! -f $@ ]] && return
-
-    mkdir -p ./.trash
-    /bin/mv -f -t ./.trash $@
-    cat ./.trash/$@ |&/bin/egrep -av '^(#|$)' |&sort |uniq | tee $@
-}
-
-function d() {
-	a=${1:-"a"}
-	b=${2:-"b"}
-	gdiff $a $b
-}
-alias myd='d'
-
-function d0() {
-	a=${1:-"a"}
-	b=${2:-"b"}
-	gdiff -U100 $a $b
-}
-
-function rd() {
-	a=${1:-"a"}
-	b=${2:-"b"}
-	gdiff $b $a
-}
-
-function rd0() {
-	a=${1:-"a"}
-	b=${2:-"b"}
-	gdiff -U100 $b $a
-}
-
-function winstat() {
-
-    wmic="/cygdrive/c/Windows/System32/wbem/wmic"
-
-    # CPU
-    cpu_load=$($wmic cpu get LoadPercentage | /bin/grep -Po '\d+' )
-    printf "CpuUsage = %02.1f%%\n" $cpu_load
-
-    # MEM
-    _mem_total=$( $wmic ComputerSystem get TotalPhysicalMemory | /bin/grep -Po '\d+' )
-    mem_total=$(( $_mem_total / 1024 ))
-    mem_free=$( $wmic OS get FreePhysicalMemory | /bin/grep -Po '\d+' )
-    mem_used=$(( $mem_total - $mem_free ))
-    printf "MemUsage = %.1f%%\n" $(( ($mem_used.0 / $mem_total) * 100 ))
-
-    # PAGE
-    $wmic pagefile \
-        | /bin/sed -n '2p' \
-        | /bin/perl -ane 'printf "PageUsage = %.1f%%\nPeakPageUsage = %.1f%%\n",$F[2]/$F[0]*100,$F[6]/$F[0]*100'
-}
-alias ws='winstat'
-
-function cdw() {
-    cdpath=$(p2u "$1")
-    cd $cdpath
-}
-
-# pgrep
-\pgrep -af init |& grep -q 'init|systemd'
-  [[ $? != 0 ]] && alias pgrep='pgrep -lf' || alias pgrep='pgrep -af'
-
-# end-alias
-
-# LANG
-alias eng='LANG=C LANGUAGE=C LC_ALL=C'
-alias euc='LANG=ja_JP.eucJP'
-alias utf='LANG=ja_JP.UTF-8'
-alias jap='LANG=C LANGUAGE=C LC_ALL=ja_JP.UTF8'
-alias sjis='LANG=ja_JP.UTF-8 LC_ALL=ja_JP.sjis'
-alias fuck='eval $(thefuck $(fc -ln -1))'
-
-# RPM
-alias rpmqa='rpm -qa --queryformat="%-30{NAME} %-30{VERSION} %-30{RELEASE}\n"'
-alias rpmql='rpm -ql'
-alias rpmqf='rpm -qf'
-alias rpmqi='rpm -qi'
-alias rpmqlp='rpm -qlp'
-alias rpmqip='rpm -qip'
-
-# galiases
-alias -g L='|&less -SLRi'
-alias -g H='|&head'
-alias -g TEE='|&tee'
-alias -g T='|&tail'
-alias -g WC='|&wc -l'
-
-alias -g FGV='FG -v'
-alias -g S='GVV |&sort'
-alias -g SC='S |uniq -c |sort -n'
-alias -g SU='S |uniq'
-alias -g CUT='|& cut -c -$(($COLUMNS-10))'
-alias -g J='2>/dev/null |jq .'
-alias -g COL='| LANG=ja_JP.UTF8 column -t'
-alias -g A='| col'
-alias -g A1='A 1'
-alias -g A2='A 2'
-alias -g A3='A 3'
-alias -g M='| md5sum'
-alias -g D='| diff $_ -'
-alias -g CAT='|& cat -An'
-alias -g SIP='|& sort -n -t'.' -k1,1 -k2,2 -k3,3 -k4,4'
-
-# perl
-alias PI='perl -i.bak -ple'
-alias -g PE='| perl -ple'
-alias -g PN='| perl -nle'
-alias -g P0='| perl -00 -nae'
-
-# 文字コード変換
-alias -g e2s='|& lv -Ieuc -Osjis | cat'
-alias -g e2j='|& lv -Ieuc -Osjis | cat'
-alias -g e2u='|& lv -Ieuc -Ou8   | cat'
-alias -g u2s='|& lv -Iu8  -Osjis | cat'
-alias -g u2j='|& lv -Iu8  -Osjis | cat'
-alias -g j2u='|& lv -Is   -Ou8   | cat'
-alias -g s2u='|& lv -Is   -Ou8   | cat'
-
-# 名前付きディレクトリ
-hash -d mm=~/.myenv
-hash -d ss=~/.ssh
-hash -d ilog=/cygdrive/c/Users/ikushin/Documents/LimeChatLog
-hash -d llog=/cygdrive/c/Users/ikushin/Documents/LimeChatLog
-hash -d plog=/cygdrive/c/Users/ikushin/Documents/putty_log
-hash -d tlog=/cygdrive/c/Users/ikushin/Documents/teraterm_log
-
-# for every OS
-case $OSTYPE in
-  linux-gnu)
-      TERM=linux
-      alias man='LC_ALL=ja_JP.UTF-8 man'
-      alias su="/bin/su -m"
-      alias msu="/bin/su -m -s `which zsh`"
-
-      which dpkg >/dev/null 2>&1
-      if [ $? -eq 0 ]; then
-          # Debian
-          alias rpmqa='dpkg -l'
-          alias rpmql='dpkg -L'
-          alias rpmqf='dpkg -S'
-          alias rpmqi='dpkg -s'
-          alias rpmqlp='dpkg -c'
-          alias rpmqip='dpkg -I'
-          alias free='free -h'
-          alias netstat='/bin/netstat  --numeric --tcp -4 --listen --program'
-      fi
-      grep -q "release 7" /etc/redhat-release >/dev/null 2>&1
-      if [ $? -eq 0 ]; then
-          # RHEL 7.x
-          alias free='free -h'
-          alias netstat='/bin/netstat  --numeric --tcp --inet --listen --program'
-      fi
-      ;;
-  cygwin)
-      LC_ALL=ja_JP.UTF8
-      TERM=linux  # yes, not cygwin!
-      path=( $path $(cygpath -W) $(cygpath -S){,/wbem} )
-      alias rpmqa='cygcheck -c -d'
-      alias rpmql='cygcheck -l'
-      alias rpmqf='cygcheck -f'
-      alias rpmqi='cygcheck -p'
-      alias ls='ls --color=auto --show-control-chars --group-directories-first -1'
-      alias exp='explorer . &'
-      alias open='/usr/bin/cygstart'
-      alias ifconfig='/cygdrive/c/WINDOWS/system32/ipconfig j2u'
-      alias sudo=''
-      #alias ping='ping -t'
-      #alias ping='/cygdrive/c/Windows/System32/ping -t'
-      alias -g CL='|& tee /dev/clipboard'
-      alias -g CLIP='CL'
-      alias -g SCL='s2u CLIP'
-      alias -g CLS='SCLIP'
-      #export LC_ALL=ja_JP.sjis
-      #export LANG=ja_JP.sjis
-      export OUTPUT_CHARSET=ja_JP.sjis
-      export SHELL=/bin/bash
-      cdpath=( $cdpath /cygdrive/d/system/My\ Documents )
-      path=( $path )
-      alias vagrant='/cygdrive/c/HashiCorp/Vagrant/bin/vagrant'
-      #alias sed='sed --regexp-extended'
-      alias ipa='ifconfig | /bin/egrep "Ethernet|IPv4 Address|Subnet Mask" | /bin/grep --color -P "(\d+\.){3}\d+|$"'
-      alias t='tasklist  | /bin/egrep "[0-9,]{7}" | sort -k5 -r'
-      alias tt='tasklist | /bin/egrep "[0-9,]{6}" | sort -k5 -r'
-      alias p2u='LANG=ja_JP.UTF8 cygpath -am'
-      alias p2w='LANG=ja_JP.UTF8 cygpath -aw'
-      ;;
-  *)
-      echo "unknown OS"
-      ;;
-esac
-
-# for CentOS5
-if grep -q 'release 5' /etc/redhat-release 2>/dev/null
-then
-    env ls --help 2>&1 | grep -q group-directories-first || alias ls='ls --color=auto'
-    #alias sed='sed --regexp-extended'
-fi
-
 # delete a repeating element automatically
 typeset -U path cdpath fpath manpath
 
-# rc
+######
+# rc #
+######
+TERM=linux
+
+hash -d mm=~/.myenv
+hash -d ss=~/.ssh
+
 mkdir -p $HOME/.{trash,sandbox}
 which dircolors  >/dev/null 2>&1  && eval `dircolors --bourne-shell`
-[[ -e $HOME/.zprompt ]] && source $HOME/.zprompt
-[[ -e $HOME/.localrc ]] && source $HOME/.localrc
-source="source"
+
+for i in .zshrc.func .zshrc.alias .zshrc.git .zshrc.cygwin .zprompt .localrc
+do
+    test -e ~/$i && source $_
+done
 
 # for emacs
 if [[ $EMACS = t ]] ;then
@@ -711,26 +188,3 @@ if [[ $EMACS = t ]] ;then
   PROMPT='[(zsh)%~]%(#.#.$) '
   source=true
 fi
-
-# for cygwin
-if [[ $OSTYPE == "cygwin" ]]; then
-    # mv系
-    #rm -f ~/sandbox/emacs.*(L0,m+7) ~/\#*
-    #mv -f *~Makefile~localrc~user* ~/Trash 2>/dev/null
-    #mv -f *~Makefile~localrc(L0,a+7.)~user* ~/Trash 2>/dev/null
-    #mv -f instances.*(L0,a+1.) ~/Trash 2>/dev/null
-    #find ~/sandbox -type f -atime +7 | xargs mv -t ~/sandbox/trash
-    [[ -e ~/bin/puttylog_archive.sh ]] && bash ~/bin/puttylog_archive.sh
-    test -e ~/bin/puttylog_archive.sh && bash $_
-    test -e ~/bin/teraterm_archive.sh && bash $_
-    [ `pwd` = "/usr/bin" ] && cd $HOME
-    /bin/ls -d /tmp/*(m+7) 2>/dev/null | xargs -r /bin/rm -r
-    /bin/ls -d ~/sandbox/*(m+7) 2>/dev/null | xargs -r /bin/mv -t ~/sandbox/.trash
-    chcp 437 >/dev/null
-    #/bin/rm /cygdrive/c/Users/ikushin/Downloads/*(L0,a+7.)
-    zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-fi
-
-[[ -e ~/.localrc ]] && $source ~/.localrc
-
-#export {HTTP{,S}_PROXY,http{,s}_proxy}="http://example.com:8080"

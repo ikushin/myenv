@@ -1,6 +1,7 @@
 
 cp:
-	for i in zshrc emacs inputrc screenrc vimrc; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
+	for i in zshrc emacs inputrc screenrc vimrc zshrc.alias zshrc.git zshrc.func  ; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
+	test -d /cygdrive/c && /bin/cp -a zshrc.cygwin ~/.zshrc.cygwin
 	[ -e ~/.localrc ] || /bin/cp localrc ~/.localrc
 	[ -d ~/.ssh ] || mkdir -p ~/.ssh && chmod 700 ~/.ssh
 	[ -e ~/.ssh/config ] || /bin/cp ssh_config ~/.ssh/config; chmod 600 ~/.ssh/config

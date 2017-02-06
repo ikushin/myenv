@@ -341,3 +341,8 @@
 ;(setq split-height-threshold nil)
 ;(setq split-width-threshold 0)
 
+;;; shell mode でzshを使用する
+(setq shell-file-name "zsh")
+(setenv "SHELL" shell-file-name)
+(setq explicit-shell-file-name shell-file-name)
+

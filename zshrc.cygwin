@@ -1,0 +1,95 @@
+
+# zstyle
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+# 名前付きディレクトリ
+hash -d ilog=/cygdrive/c/Users/ikushin/Documents/LimeChatLog
+hash -d llog=/cygdrive/c/Users/ikushin/Documents/LimeChatLog
+hash -d plog=/cygdrive/c/Users/ikushin/Documents/putty_log
+hash -d tlog=/cygdrive/c/Users/ikushin/Documents/teraterm_log
+
+# path
+path=( $path $(cygpath -W) $(cygpath -S){,/wbem} )
+cdpath=( $cdpath /cygdrive/d/system/My\ Documents )
+
+# 変数
+TERM=linux  # yes, not cygwin!
+LC_ALL=ja_JP.UTF8
+export OUTPUT_CHARSET=ja_JP.sjis
+export SHELL=/bin/bash
+
+# alias
+#alias ping='ping -t'
+#alias ping='/cygdrive/c/Windows/System32/ping -t'
+#alias sed='sed --regexp-extended'
+alias rpmqa='cygcheck -c -d'
+alias rpmql='cygcheck -l'
+alias rpmqf='cygcheck -f'
+alias rpmqi='cygcheck -p'
+alias ls='ls --color=auto --show-control-chars --group-directories-first -1'
+alias exp='explorer . &'
+alias open='/usr/bin/cygstart'
+alias ifconfig='/cygdrive/c/WINDOWS/system32/ipconfig j2u'
+alias sudo=''
+alias -g CL='|& tee /dev/clipboard'
+alias -g CLIP='CL'
+alias -g SCL='s2u CLIP'
+alias -g CLS='SCLIP'
+alias ipa='ifconfig | /bin/egrep "Ethernet|IPv4 Address|Subnet Mask" | /bin/grep --color -P "(\d+\.){3}\d+|$"'
+alias t='tasklist  | /bin/egrep "[0-9,]{7}" | sort -k5 -r'
+alias tt='tasklist | /bin/egrep "[0-9,]{6}" | sort -k5 -r'
+alias p2u='LANG=ja_JP.UTF8 cygpath -am'
+alias p2w='LANG=ja_JP.UTF8 cygpath -aw'
+
+# function
+function winstat() {
+
+    wmic="/cygdrive/c/Windows/System32/wbem/wmic"
+
+    # CPU
+    cpu_load=$($wmic cpu get LoadPercentage | /bin/grep -Po '\d+' )
+    printf "CpuUsage = %02.1f%%\n" $cpu_load
+
+    # MEM
+    _mem_total=$( $wmic ComputerSystem get TotalPhysicalMemory | /bin/grep -Po '\d+' )
+    mem_total=$(( $_mem_total / 1024 ))
+    mem_free=$( $wmic OS get FreePhysicalMemory | /bin/grep -Po '\d+' )
+    mem_used=$(( $mem_total - $mem_free ))
+    printf "MemUsage = %.1f%%\n" $(( ($mem_used.0 / $mem_total) * 100 ))
+
+    # PAGE
+    $wmic pagefile \
+        | /bin/sed -n '2p' \
+        | /bin/perl -ane 'printf "PageUsage = %.1f%%\nPeakPageUsage = %.1f%%\n",$F[2]/$F[0]*100,$F[6]/$F[0]*100'
+}
+alias ws='winstat'
+
+function cdw() {
+    cdpath=$(p2u "$1")
+    cd $cdpath
+}
+
+# Vagrant
+alias vagrant='/cygdrive/c/HashiCorp/Vagrant/bin/vagrant'
+bindkey -s "^V^S"   "vagrant status "
+bindkey -s "^V^S^S" "vagrant ssh "
+bindkey -s "^V^U"   "vagrant up "
+bindkey -s "^V^V"   "cd ~/vagrant/"
+
+# mv系
+#rm -f ~/sandbox/emacs.*(L0,m+7) ~/\#*
+#mv -f *~Makefile~localrc~user* ~/Trash 2>/dev/null
+#mv -f *~Makefile~localrc(L0,a+7.)~user* ~/Trash 2>/dev/null
+#mv -f instances.*(L0,a+1.) ~/Trash 2>/dev/null
+#find ~/sandbox -type f -atime +7 | xargs mv -t ~/sandbox/trash
+#/bin/rm /cygdrive/c/Users/ikushin/Downloads/*(L0,a+7.)
+/bin/ls -d /tmp/*(m+7) 2>/dev/null | xargs -r /bin/rm -r
+/bin/ls -d ~/sandbox/*(m+7) 2>/dev/null | xargs -r /bin/mv -t ~/sandbox/.trash
+
+# ログアーカイブ
+test -e ~/bin/puttylog_archive.sh && bash $_
+test -e ~/bin/teraterm_archive.sh && bash $_
+
+# rc
+[ `pwd` = "/usr/bin" ] && cd $HOME
+chcp 437 >/dev/null

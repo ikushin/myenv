@@ -1,0 +1,137 @@
+#!/bin/bash
+
+function echo_red
+{
+    printf "${red}$*${nc}\n"
+}
+function echo_green
+{
+    printf "${green}$*${nc}\n"
+}
+# こんなのもあり
+#echo aaa | perl -MTerm::ANSIColor -ne 'print colored($_,"red")'
+
+function col {
+    awk -v col=$1 '{print $col}'
+}
+
+function subnet2cidr ()
+{
+    # Assumes there's no "255." after a non-255 byte in the mask
+    local x=${1##*255.}
+    set -- 0^^^128^192^224^240^248^252^254^ $(( (${#1} - ${#x})*2 )) ${x%%.*}
+    x=${1%%$3*}
+    echo $(( $2 + (${#x}/4) ))
+}
+
+function cidr2subnet ()
+{
+    # Number of args to shift, 255..255, first non-255 byte, zeroes
+    set -- $(( 5 - ($1 / 8) )) 255 255 255 255 $(( (255 << (8 - ($1 % 8))) & 255 )) 0 0 0
+    [ $1 -gt 1 ] && shift $1 || shift
+    echo ${1-0}.${2-0}.${3-0}.${4-0}
+}
+
+function org() {
+    cp -a $1{,.org}
+}
+
+function bak() {
+    cp $1{,.bak}
+}
+
+function day_bak() {
+    cp $1{,.$today}
+}
+
+function myip() {
+    curl http://inet-ip.info   ||
+        curl http://ifconfig.me    ||
+        curl http://httpbin.org/ip
+}
+
+pmver () {
+    echo "perl -M${1} -e 'print \$$1::VERSION . \"\\\n\"'"
+    perl -M${1} -le "print \$$1::VERSION"
+}
+
+function pcflow() {
+    cflow --tree --print-level --depth=$1 --main=zzz *.c \
+        | sed -e 's/\({   0} +-\([^ ]*\).*\)/\n\n\2\n\1/'
+}
+
+function pdf() {
+    du --max-depth=1 |
+        perl -nle 'my %a;($a{u},$a{d})=split(/\s/);push(@a,\%a);END{map{printf "%.2f %16d %s\n",$_->{u}/$a[-1]->{u},$_->{u},$_->{d}}@a}'
+}
+
+function sa() {
+    (
+        d=$(mktemp -d -p ~/.sandbox tmp_XXXXXXXX) && cd "$d" || exit 1
+        zsh
+        s=$?
+        if [[ $s == 0 ]]; then
+            rm -rf "$d"
+        else
+            echo "Directory '$d' still exists." >&2
+        fi
+        exit $s
+    )
+}
+
+function grep_keyword() {
+    /bin/grep -i -P --color "$|$@"
+}
+alias -g GK='|& grep_keyword'
+alias -g Key='|& grep_keyword'
+alias -g KEY='|& grep_keyword'
+
+function make
+{
+    echo_green "START: make $@"
+    /usr/bin/make $@
+    rc=$?
+    [[ $rc != 0 ]] && echo_red "EROOR: make $@" || echo_green "END: make $@"
+    return $rc
+}
+
+function dig
+{
+    $(type -p dig | awk '{print $3}') $@ | /bin/egrep --color '$|.*SECTION.*'
+}
+
+
+function su_file() {
+    [[ $# != 1 ]] && return
+    [[ ! -f $@ ]] && return
+
+    mkdir -p ./.trash
+    /bin/mv -f -t ./.trash $@
+    cat ./.trash/$@ |&/bin/egrep -av '^(#|$)' |&sort |uniq | tee $@
+}
+alias su_file='sufile'
+
+function d() {
+    a=${1:-"a"}
+    b=${2:-"b"}
+    gdiff $a $b
+}
+alias myd='d'
+
+function d0() {
+    a=${1:-"a"}
+    b=${2:-"b"}
+    gdiff -U100 $a $b
+}
+
+function rd() {
+    a=${1:-"a"}
+    b=${2:-"b"}
+    gdiff $b $a
+}
+
+function rd0() {
+    a=${1:-"a"}
+    b=${2:-"b"}
+    gdiff -U100 $b $a
+}
