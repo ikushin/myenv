@@ -1,7 +1,7 @@
 
 cp:
 	for i in zshrc emacs inputrc screenrc vimrc zshrc.alias zshrc.git zshrc.func  ; do /bin/cp -a ~/.myenv/$$i ~/.$$i; done
-	test -d /cygdrive/c && /bin/cp -a zshrc.cygwin ~/.zshrc.cygwin
+	test -d /cygdrive/c && /bin/cp -a zshrc.cygwin ~/.zshrc.cygwin || true
 	[ -e ~/.localrc ] || /bin/cp localrc ~/.localrc
 	[ -d ~/.ssh ] || mkdir -p ~/.ssh && chmod 700 ~/.ssh
 	[ -e ~/.ssh/config ] || /bin/cp ssh_config ~/.ssh/config; chmod 600 ~/.ssh/config
@@ -192,7 +192,7 @@ term:
 diff-so-fancy:
 	cd /usr/local/share/git-core/contrib && git clone https://github.com/so-fancy/diff-so-fancy.git
 	sed -i '1i #!/usr/local/perl/bin/perl' /usr/local/share/git-core/contrib/diff-so-fancy/libexec/diff-so-fancy.pl
-	git config --global alias.dsf '!f() { [ -z "$GIT_PREFIX" ] || cd "$GIT_PREFIX" && git diff -b -w --ignore-blank-lines --ignore-space-at-eol --color "$@" | diff-so-fancy  | less --tabs=4 -RFX; }; f'
+	git config --global alias.dsf '!f() { [ -z "$GIT_PREFIX" ] || cd "$GIT_PREFIX" && git diff -b -w --ignore-blank-lines --ignore-space-at-eol --color "$@" | /usr/local/share/git-core/contrib/diff-so-fancy/diff-so-fancy | less --tabs=4 -RFX; }; f'
 	git config --global color.diff-highlight.oldNormal    "red bold"
 	git config --global color.diff-highlight.oldHighlight "red bold 52"
 	git config --global color.diff-highlight.newNormal    "green bold"

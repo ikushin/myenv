@@ -110,28 +110,3 @@ function su_file() {
     cat ./.trash/$@ |&/bin/egrep -av '^(#|$)' |&sort |uniq | tee $@
 }
 alias su_file='sufile'
-
-function d() {
-    a=${1:-"a"}
-    b=${2:-"b"}
-    gdiff $a $b
-}
-alias myd='d'
-
-function d0() {
-    a=${1:-"a"}
-    b=${2:-"b"}
-    gdiff -U100 $a $b
-}
-
-function rd() {
-    a=${1:-"a"}
-    b=${2:-"b"}
-    gdiff $b $a
-}
-
-function rd0() {
-    a=${1:-"a"}
-    b=${2:-"b"}
-    gdiff -U100 $b $a
-}
