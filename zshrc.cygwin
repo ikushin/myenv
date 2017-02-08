@@ -1,45 +1,44 @@
 
-# zstyle
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-
 # 名前付きディレクトリ
 hash -d ilog=/cygdrive/c/Users/ikushin/Documents/LimeChatLog
 hash -d llog=/cygdrive/c/Users/ikushin/Documents/LimeChatLog
 hash -d plog=/cygdrive/c/Users/ikushin/Documents/putty_log
 hash -d tlog=/cygdrive/c/Users/ikushin/Documents/teraterm_log
+hash -d desktop=/cygdrive/c/Users/ikushin/Desktop
+hash -d download=/cygdrive/c/Users/ikushin/Downloads
+hash -d macro=/cygdrive/c/teraterm/macro
 
 # path
 path=( $path $(cygpath -W) $(cygpath -S){,/wbem} )
 cdpath=( $cdpath /cygdrive/d/system/My\ Documents )
 
 # 変数
-TERM=linux  # yes, not cygwin!
 LC_ALL=ja_JP.UTF8
 export OUTPUT_CHARSET=ja_JP.sjis
 export SHELL=/bin/bash
 
 # alias
-#alias ping='ping -t'
+#alias ls='ls --color=auto --show-control-chars --group-directories-first -1'
 #alias ping='/cygdrive/c/Windows/System32/ping -t'
+#alias ping='ping -t'
 #alias sed='sed --regexp-extended'
-alias rpmqa='cygcheck -c -d'
-alias rpmql='cygcheck -l'
-alias rpmqf='cygcheck -f'
-alias rpmqi='cygcheck -p'
-alias ls='ls --color=auto --show-control-chars --group-directories-first -1'
 alias exp='explorer . &'
-alias open='/usr/bin/cygstart'
 alias ifconfig='/cygdrive/c/WINDOWS/system32/ipconfig j2u'
-alias sudo=''
-alias -g CL='|& tee /dev/clipboard'
-alias -g CLIP='CL'
-alias -g SCL='s2u CLIP'
-alias -g CLS='SCLIP'
 alias ipa='ifconfig | /bin/egrep "Ethernet|IPv4 Address|Subnet Mask" | /bin/grep --color -P "(\d+\.){3}\d+|$"'
-alias t='tasklist  | /bin/egrep "[0-9,]{7}" | sort -k5 -r'
-alias tt='tasklist | /bin/egrep "[0-9,]{6}" | sort -k5 -r'
+alias open='/usr/bin/cygstart'
 alias p2u='LANG=ja_JP.UTF8 cygpath -am'
 alias p2w='LANG=ja_JP.UTF8 cygpath -aw'
+alias sudo=''
+alias t='tasklist  | /bin/egrep "[0-9,]{7}" | sort -k5 -r'
+alias tt='tasklist | /bin/egrep "[0-9,]{6}" | sort -k5 -r'
+alias rpmqa='cygcheck -c -d'
+alias rpmqf='cygcheck -f'
+alias rpmqi='cygcheck -p'
+alias rpmql='cygcheck -l'
+
+# galias
+alias -g CL='>& /dev/clipboard'
+alias -g CLIP='CL'
 
 # function
 function winstat() {

@@ -4,7 +4,7 @@ bindkey -s '^G^S' "git status --short --branch "
 bindkey -s "^[s"  "git status --short --branch "
 bindkey -s "^[b"  "git branch "
 bindkey -s "^G^B" "git branch "
-bindkey -s "^[f"  "git diff  --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --color=auto "
+bindkey -s "^[f"  "gitdiff "
 bindkey -s "^[p"  "git pull "
 bindkey -s "^G^P" "git push origin master "
 bindkey -s "^G."  'cd $(git rev-parse --show-toplevel) '
@@ -23,8 +23,7 @@ bindkey -s "^G^L"   'git log --color=always --name-status --no-merges '
 bindkey -s "^G^L^L" 'git log --color=always -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges '
 
 # Git aliases
-alias gitdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --no-index --color=auto'
-alias gdiff='gitdiff'
+alias gitdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --color=auto'
 alias gd='git dsf'
 alias wgd='gitdiff --word-diff'
 alias gc='git checkout'
@@ -37,27 +36,28 @@ alias gb='git branch --verbose --all'
 alias ga='git add -u'
 alias gs='git status --short --branch .'
 
+alias _gdiff='gitdiff --no-index'
 function d() {
     a=${1:-"a"}
     b=${2:-"b"}
-    gdiff $a $b
+    _gdiff $a $b
 }
 alias myd='d'
 
 function d0() {
     a=${1:-"a"}
     b=${2:-"b"}
-    gdiff -U100 $a $b
+    _gdiff -U100 $a $b
 }
 
 function rd() {
     a=${1:-"a"}
     b=${2:-"b"}
-    gdiff $b $a
+    _gdiff $b $a
 }
 
 function rd0() {
     a=${1:-"a"}
     b=${2:-"b"}
-    gdiff -U100 $b $a
+    _gdiff -U100 $b $a
 }

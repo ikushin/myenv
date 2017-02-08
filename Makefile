@@ -6,6 +6,7 @@ cp:
 	[ -d ~/.ssh ] || mkdir -p ~/.ssh && chmod 700 ~/.ssh
 	[ -e ~/.ssh/config ] || /bin/cp ssh_config ~/.ssh/config; chmod 600 ~/.ssh/config
 	cmp -s ssh_config_my ~/.ssh/config_my || cp ssh_config_my ~/.ssh/config_my
+	[ -e ~/.dir_colors ] || curl -s 'https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-dark' | sed 's/^LINK.*/LINK 01;36/' >~/.dir_colors
 
 .PHONY: cygwin
 cygwin:
@@ -197,4 +198,3 @@ diff-so-fancy:
 	git config --global color.diff-highlight.oldHighlight "red bold 52"
 	git config --global color.diff-highlight.newNormal    "green bold"
 	git config --global color.diff-highlight.newHighlight "green bold 22"
-
