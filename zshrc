@@ -11,7 +11,6 @@ zstyle ':completion:*:default' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 #zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'r:|[._-]=** r:|=**' '+m:{a-zA-Z}={A-Za-z} l:|=* r:|=*' # 補完強化
 zstyle ':completion:*:cd:*' tag-order local-directories path-directories # cwd にない場合cdpathを検索する
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} # 補完候補を色付けする
 zstyle ':completion:*' group-name ''                  # 補完候補をグループ分けする
 
 # コマンドライン編集できるようにする
@@ -142,6 +141,10 @@ export MANPATH
 # delete a repeating element automatically
 typeset -U path cdpath fpath manpath
 
+# 補完候補を色付けする
+eval $(dircolors ~/.dir_colors --bourne-shell)
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
 # color echo
 nc='\033[0m'
 red='\033[0;31m'
@@ -159,9 +162,6 @@ hash -d ss=~/.ssh
 # mkdir
 mkdir -p $HOME/.cache/shell
 mkdir -p $HOME/.{trash,sandbox}
-
-# dircolors
-eval $(dircolors ~/.dir_colors --bourne-shell)
 
 for i in .zshrc.{func,alias,git,cygwin} .zprompt .localrc
 do
