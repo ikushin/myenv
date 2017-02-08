@@ -163,7 +163,7 @@ hash -d ss=~/.ssh
 mkdir -p $HOME/.cache/shell
 mkdir -p $HOME/.{trash,sandbox}
 
-for i in .zshrc.{func,alias,git,cygwin} .zprompt .localrc
+for i in .zshrc.{func,alias,git,cygwin,ubuntu} .zprompt .localrc
 do
     test -e ~/$i && source $_
 done

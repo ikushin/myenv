@@ -57,9 +57,6 @@ alias -g WC='|&wc -l'
 alias -g S='GVV |&sort'
 alias -g SC='S |uniq -c |sort -n'
 alias -g SU='S |uniq'
-alias -g CU='|& cut -c -$(($COLUMNS-10))'
-alias -g CL='| LANG=ja_JP.UTF8 column -t'
-alias -g CT='|& cat -An'
 alias -g M='| md5sum'
 alias -g D='| diff $_ -'
 alias -g J='2>/dev/null |jq .'
@@ -67,6 +64,11 @@ alias -g A='| col'
 alias -g A1='A 1'
 alias -g A2='A 2'
 alias -g A3='A 3'
+
+# 紛らわしいもの
+alias -g Cut='|& cut -c -$(($COLUMNS-10))'
+alias -g Col='| LANG=ja_JP.UTF8 column -t'
+alias -g Cat='|& cat -An'
 
 # 文字コード変換
 alias -g e2s='|& lv -Ieuc -Osjis | cat'

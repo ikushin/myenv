@@ -7,6 +7,7 @@ cp:
 	[ -e ~/.ssh/config ] || /bin/cp ssh_config ~/.ssh/config; chmod 600 ~/.ssh/config
 	cmp -s ssh_config_my ~/.ssh/config_my || cp ssh_config_my ~/.ssh/config_my
 	#[ -e ~/.dir_colors ] || curl -s 'https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-dark' | sed 's/^LINK.*/LINK 01;36/' >~/.dir_colors
+	uname -a | grep -qi 'ubuntu' && /bin/cp zshrc.ubuntu ~/.zshrc.ubuntu
 
 .PHONY: cygwin
 cygwin:
@@ -42,6 +43,7 @@ git:
 	/bin/rm -rf /tmp/git*
 	if git --version 2>&1 | grep -q $(shell curl --max-time 3 -Ls https://www.kernel.org/pub/software/scm/git | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1); then false; fi
 	egrep -q 'CentOS' /etc/issue 2>/dev/null  &&  { rpm --quiet -q $(PKG)  ||  sudo yum --disablerepo=updates install -y $(PKG); } || true
+	egrep -q 'Ubuntu' /etc/issue 2>/dev/null  &&  aptitude install -y gettext autoconf gettext asciidoc libcurl4-openssl-dev || true
 	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/$(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po 'git-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/git.tar.gz
 	tar zxf /tmp/git.tar.gz -C /tmp
 	[ ! -e /etc/issue ] && [ ! -e /usr/local/perl/bin/perl ] && make perl || true
@@ -60,6 +62,7 @@ git_config:
 	git config --global http.sslVerify false
 	git config --global core.quotepath false
 	git config --global status.showuntrackedfiles all
+	make diff-so-fancy
 
 openssh:
 	SSH_PKG="bash"
