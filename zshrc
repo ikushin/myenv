@@ -142,7 +142,7 @@ export MANPATH
 typeset -U path cdpath fpath manpath
 
 # 補完候補を色付けする
-eval $(dircolors ~/.dir_colors --bourne-shell)
+eval $(dircolors --bourne-shell)
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 # color echo
