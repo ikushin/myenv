@@ -80,6 +80,8 @@ bindkey -e
 bindkey '^O'   accept-line-and-down-history
 bindkey "^[H"  backward-kill-word
 bindkey "^[h"  backward-kill-word
+bindkey -s "^X^F" '**/*(.) '
+
 
 # 単語区切り文字指定
 WORDCHARS='*?[]~&;!#$%^{}<>|'

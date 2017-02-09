@@ -6,8 +6,7 @@ cp:
 	[ -d ~/.ssh ] || mkdir -p ~/.ssh && chmod 700 ~/.ssh
 	[ -e ~/.ssh/config ] || /bin/cp ssh_config ~/.ssh/config; chmod 600 ~/.ssh/config
 	cmp -s ssh_config_my ~/.ssh/config_my || cp ssh_config_my ~/.ssh/config_my
-	#[ -e ~/.dir_colors ] || curl -s 'https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.ansi-dark' | sed 's/^LINK.*/LINK 01;36/' >~/.dir_colors
-	uname -a | grep -qi 'ubuntu' && /bin/cp zshrc.ubuntu ~/.zshrc.ubuntu
+	uname -a | grep -qi 'ubuntu' && /bin/cp zshrc.ubuntu ~/.zshrc.ubuntu || true
 
 .PHONY: cygwin
 cygwin:

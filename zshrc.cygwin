@@ -14,6 +14,7 @@ cdpath=( $cdpath /cygdrive/d/system/My\ Documents )
 
 # 変数
 LC_ALL=ja_JP.UTF8
+LANG=ja_JP.UTF8
 export OUTPUT_CHARSET=ja_JP.sjis
 export SHELL=/bin/bash
 

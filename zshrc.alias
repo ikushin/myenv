@@ -52,9 +52,8 @@ alias rpmqip='rpm -qip'
 alias -g L='|&less -SLRi'
 alias -g H='|&head'
 alias -g T='|&tail'
-alias -g TE='|&tee'
 alias -g WC='|&wc -l'
-alias -g S='GVV |&sort'
+alias -g S='GVV PE "s/\s+/ /g" PE "s/^\s*//" PE "s/\s*$//" |& sort'
 alias -g SC='S |uniq -c |sort -n'
 alias -g SU='S |uniq'
 alias -g M='| md5sum'
@@ -67,8 +66,9 @@ alias -g A3='A 3'
 
 # 紛らわしいもの
 alias -g Cut='|& cut -c -$(($COLUMNS-10))'
-alias -g Col='| LANG=ja_JP.UTF8 column -t'
+alias -g Col='|& LANG=ja_JP.UTF8 column -t'
 alias -g Cat='|& cat -An'
+alias -g Tee='|&tee'
 
 # 文字コード変換
 alias -g e2s='|& lv -Ieuc -Osjis | cat'
@@ -90,14 +90,11 @@ alias viz='vi ~/.zshrc'
 alias .viz='source ~/.zshrc'
 
 # date
-alias now='date +%F %T'
-alias year='printf "%d: %d\n" $(date +%Y) $(($(date +%Y)-1988))'
-alias hei=year
-alias wareki=year
-alias locate='locate -r'
-alias fdate='date "+%Y-%m-%d %H:%M:%S"'
-alias today='/bin/date +%Y%m%d'
-alias yesterday='date --date "1 day ago" +%Y%m%d'
+alias date_heisei='printf "%d: H.%d\n" $(/bin/date +%Y) $(($(/bin/date +%Y)-1988))'
+alias date_now='/bin/date +%F_%T'
+alias date_full='/bin/date +%F_%T_%N'
+alias date_today='/bin/date +%Y%m%d'
+alias date_yesterday='/bin/date --date "1 day ago" +%Y%m%d'
 
 # cp, mv
 alias cp='/bin/cp -ir'
@@ -155,7 +152,7 @@ fi
 # alias
 #alias sar='sar -q'
 #alias sed='sed --regexp-extended --follow-symlinks'
-alias Du'du -sh * | sort -rh'
+alias Du='du -sh * | sort -h'
 alias cata='cat -A'
 alias cscope='cscope -b'
 alias ct='cut -c -$(($COLUMNS-10))'
@@ -164,6 +161,7 @@ alias fmt='fmt -s -w $(($COLUMNS))'
 alias free='free -m'
 alias jq='jq -r'
 alias less='LANG=ja_JP.UTF8 less -iR'
+alias locate='locate -r'
 alias m='md5sum'
 alias md5sum='md5sum --text'
 alias nkf='nkf -f80-0'
