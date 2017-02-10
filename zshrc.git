@@ -9,7 +9,7 @@ bindkey -s "^[p"  "git pull "
 bindkey -s "^G^P" "git push origin master "
 bindkey -s "^G."  'cd $(git rev-parse --show-toplevel) '
 bindkey -s "^G^R" "git reset --hard "
-bindkey -s "^[a"  "git add "
+bindkey -s "^[a"  "git add -u "
 bindkey -s "^G^A" "git add "
 bindkey -s "^G^T" "git cat-file -p HEAD:file "
 bindkey -s "^G^I" "test -d .git || git init; echo '.*' >.gitignore "

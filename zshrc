@@ -171,7 +171,7 @@ do
 done
 
 # for emacs
-if [[ $EMACS ]] ;then
+if [[ -n $EMACS ]] ;then
   unsetopt zle
   unsetopt transient_rprompt
   alias ls='/bin/ls -F -w 100 --group-directories-first'
