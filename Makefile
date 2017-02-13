@@ -40,14 +40,15 @@ PKG=libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUti
 git:
 	if [ ! -e /etc/issue ]; then true; else if [ `id -u` -eq 0 ]; then true; else false; fi; fi
 	/bin/rm -rf /tmp/git*
-	if git --version 2>&1 | grep -q $(shell curl --max-time 3 -Ls https://www.kernel.org/pub/software/scm/git | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1); then false; fi
+	if git --version 2>&1 | grep -q $(shell curl --max-time 3 -Ls https://www.kernel.org/pub/software/scm/git/ | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1); then false; fi
 	egrep -q 'CentOS' /etc/issue 2>/dev/null  &&  { rpm --quiet -q $(PKG)  ||  sudo yum --disablerepo=updates install -y $(PKG); } || true
 	egrep -q 'Ubuntu' /etc/issue 2>/dev/null  &&  aptitude install -y gettext autoconf gettext asciidoc libcurl4-openssl-dev || true
-	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/$(shell curl -Ls https://www.kernel.org/pub/software/scm/git | grep -Po 'git-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/git.tar.gz
+	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/$(shell curl -Ls https://www.kernel.org/pub/software/scm/git/ | grep -Po 'git-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/git.tar.gz
 	tar zxf /tmp/git.tar.gz -C /tmp
 	[ ! -e /etc/issue ] && [ ! -e /usr/local/perl/bin/perl ] && make perl || true
 	[ ! -e /etc/issue ] && { cd /tmp/git-*; ./configure --without-tcltk && PERL_PATH=/usr/local/perl/bin/perl make && PERL_PATH=/usr/local/perl/bin/perl make install; } || true
-	[ -e /etc/issue ]   && { cd /tmp/git-*; ./configure --without-tcltk && make && make install && /bin/cp -a contrib /usr/local/share/git-core/; } || true
+	[ -e /etc/issue ]   && { cd /tmp/git-*; ./configure --without-tcltk && make && make install } || true
+	/bin/cp -a /tmp/git-*/contrib /usr/local/share/git-core/
 	/bin/rm -rf /tmp/git*
 	make git_config
 
@@ -158,6 +159,7 @@ test:
 perl:
 	wget http://www.cpan.org/src/5.0/perl-5.22.1.tar.gz -O /tmp/perl.tar.gz && tar zxf /tmp/perl.tar.gz -C /tmp
 	cd /tmp/perl-5.22.1 && ./Configure -des -Dprefix=/usr/local/perl && make && make install
+	/bin/rm -r /tmp/perl*.gz /tmp/perl-*
 
 autoconf:
 	rpm --quiet -q texinfo || sudo yum -y --disablerepo=updates install texinfo

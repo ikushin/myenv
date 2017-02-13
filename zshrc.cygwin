@@ -34,7 +34,7 @@ alias rpmqa='cygcheck -c -d'
 alias rpmqf='cygcheck -f'
 alias rpmqi='cygcheck -p'
 alias rpmql='cygcheck -l'
-alias "win_mem=tasklist | tail -n +5 | tr -d , | sort -k5n PE 's@(\d+) K@sprintf \"%.1fM\", \$1/1024@e' | awk '{print \$1,\$5}' Col"
+alias win_mem="tasklist | tail -n +5 | tr -d , PN '\$h{\$F[0]}+=\$F[4];END{while((\$p,\$m)=each %h){print\"\$p \$m\"}}' | sort -k2,2n PE 's@\d+\$@sprintf \"%.1fM\", \$&/1024@e' Col Key '.*\d{3}.\dM'"
 
 # galias
 alias -g CL='>& /dev/clipboard'
