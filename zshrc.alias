@@ -28,7 +28,8 @@ alias -g FG='|& fgrep -a'
 alias -g FGV='FG -v'
 
 # perl
-alias PI='perl -i.bak -ple'
+alias perl_iple='perl -i -ple'
+alias perl_inle='perl -i -nle'
 alias -g PE='| perl -ple'
 alias -g PN='| perl -nle'
 alias -g P0='| perl -00 -nae'
@@ -126,7 +127,7 @@ alias unetstat='/bin/netstat --numeric --udp --listen --program'
 # df
 alias df='df -PTh'
 alias df.='df .'
-alias dfx='df -x tmpfs -x devtmpfs'
+alias dfx='df -x tmpfs -x devtmpfs GV "/root"'
 
 # emacs
 alias emacs='LANG=ja_JP.UTF8 emacs -nw'
