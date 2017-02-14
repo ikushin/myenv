@@ -1,4 +1,4 @@
-;; basic options
+;; 基本設定
 (setq inhibit-startup-message t)
 (global-font-lock-mode t)
 (menu-bar-mode -1)
@@ -16,36 +16,34 @@
 (column-number-mode 1)  ;keta hyouji
 
 (global-set-key (kbd "C-x C-b") 'bs-show)
-;; possible values for the configuration are:
-;;    ("all"                . bs-config--all)
-;;    ("files"              . bs-config--only-files)
-;;    ("files-and-scratch"  . bs-config--files-and-scratch)
-;;    ("all-intern-last"    . bs-config--all-intern-last)
+; possible values for the configuration are:
+;    ("all"                . bs-config--all)
+;    ("files"              . bs-config--only-files)
+;    ("files-and-scratch"  . bs-config--files-and-scratch)
+;    ("all-intern-last"    . bs-config--all-intern-last)
 (setq bs-default-configuration "all")
 
-;; new
 (global-hl-line-mode 0)
 (line-number-mode 1)
 (column-number-mode 1)
 (savehist-mode 1)
 
+;; diff オプション
 (setq diff-switches "-ubtw")
-
-
 
 ;; dired ls option
 (setq dired-listing-switches "-ltrh --group-directories-first --time-style=long-iso")
 ;(setq dired-listing-switches "-lh --group-directories-first --time-style=long-iso")
 
-;; yes -> SPC
+;; スペースで yes を入力する
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; region color
+;; リージョンに色を付ける
 (setq transient-mark-mode t)
 (set-face-foreground 'region "black")
 (set-face-background 'region "white")
 
-;; scroll
+;; スクロール設定
 (defun scroll-up-one () "Scroll up 1 line." (interactive)
   (scroll-up (prefix-numeric-value current-prefix-arg)))
 (defun scroll-down-one () "Scroll down 1 line." (interactive)
@@ -56,10 +54,10 @@
 (defun line-to-top-of-window () "Move the line point is on to top of window." (interactive)
   (recenter 5))
 (define-key global-map "\M-p" 'line-to-top-of-window)
-;;(define-key global-map "\M-n" 'line-to-top-of-window)
+;(define-key global-map "\M-n" 'line-to-top-of-window)
 
-;; key bindes
-;;(keyboard-translate ?\C-\\ ?\C-h)
+;; Key バインド
+;(keyboard-translate ?\C-\\ ?\C-h)
 (keyboard-translate ?\C-h ?\C-?)
 (keyboard-translate ?\C-t ?\M-/)
 (define-key mode-specific-map "c" 'compile)
@@ -119,7 +117,6 @@
 ;; minibuffer isearch
 ;(require 'minibuf-isearch)
 
-
 ;; scratch buffer
 (defun my-make-scratch (&optional arg)
   (interactive)
@@ -161,7 +158,6 @@
 (setq list-matching-lines-face 'color-occur-face)
 ;(setq list-matching-lines-face "light steel blue")
 
-;;
 ;(require 'color-moccur)
 
 
@@ -193,29 +189,28 @@
 
 
 
-;; indent=8, tab -> space
+;; インデント設定と tab->SPC 変換
 (add-hook 'c-mode-common-hook
             '(lambda ()
              (progn
                (c-toggle-hungry-state 1)
-               (setq c-basic-offset 8 indent-tabs-mode nil))))
+               (setq c-basic-offset 4 indent-tabs-mode nil))))
 
 
 (set-language-environment 'Japanese)
 (prefer-coding-system 'utf-8)
 
-;;; *.~ とかのバックアップファイルを作らない
+;; バックアップファイルを作らない
 (setq make-backup-files nil)
-;;; .#* とかのバックアップファイルを作らない
 (setq auto-save-default nil)
 
-;;; 自動インデント無効
+;; 自動インデント無効
 (electric-indent-mode -1)
 
-;;; 行末の空白をハイライト
-(setq-default show-trailing-whitespace t)
+;; 行末の空白をハイライト
+;(setq-default show-trailing-whitespace t)
 
-;;; タブをハイライト
+;; タブをハイライトする
 ;(add-hook 'font-lock-mode-hook
 ;          (lambda ()
 ;            (font-lock-add-keywords
@@ -241,17 +236,17 @@
 ;;ウィンドウを左右に分割したとき用の設定
 (setq-default truncate-partial-width-windows t)
 
-;;; redo+
+;; redo+ の設定
 (require 'redo+)
 (global-set-key (kbd "C-M-_") 'redo)
 (setq undo-no-redo t) ; 過去のundoがredoされないようにする
 (setq undo-limit 600000)
 (setq undo-strong-limit 900000)
 
-;; 行末の空白を削除
+;; 行末の空白を削除する
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-; M-% for query-replace-regexp
+;; M-% for query-replace-regexp
 (define-key global-map "\M-%" 'query-replace-regexp)
 
 ;; disable emacs here document completion
@@ -259,7 +254,7 @@
           (lambda ()
             (sh-electric-here-document-mode -1)))
 
-;; 画面入替え
+;; F2で画面入替えする
 (defun swap-screen()
   "Swap two screen,leaving cursor at current window."
   (interactive)
@@ -286,7 +281,7 @@
 ;; 設定ファイルの色付けをする
 (require 'generic-x)
 
-;; 最初から*Occur*を選択させる
+;; 最初から *Occur* を選択させる
 (defun occur-and-select (regexp &optional nlines)
   (interactive (occur-read-primary-args))
   (occur regexp nlines)
@@ -296,8 +291,7 @@
 
 ;; 最近のファイル500個を保存する
 (setq recentf-max-saved-items 500)
-;; 最近使ったファイルに加えないファイルを
-;; 正規表現で指定する
+;; 最近使ったファイルに加えないファイルを正規表現で指定する
 (setq recentf-exclude
       '("/TAGS$" "/var/tmp/"))
 (require 'recentf-ext)
@@ -306,43 +300,42 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 
-;;;; コンパイルに成功したら*compilation*バッファを閉じる
-;;; 指定したバッファに警告の文字列があるか
-;; (defun my-compilation-warning-bufferp (buf)
-;;   (save-current-buffer
-;;     (set-buffer buf)
-;;     (save-excursion
-;;         (goto-char (point-min))
-;;           (if (or (search-forward "warning:" nil t)
-;;                     (search-forward "警告:" nil t)) t nil))))
-;; ;;; バッファに"abnormally"や警告メッセージがなければウィンドウを閉じる
-;; (defun my-close-compilation-buffer-if-succeeded (buf str)
-;;   (cond ((string-match "abnormally" str)
-;;           (message "Error!"))
-;;         ((if (my-compilation-warning-bufferp buf)
-;;               (message "Warning!")))
-;;         (t
-;;           (delete-window (get-buffer-window buf))
-;;            (message "Succeeded"))))
-;; ;;; compile終了時の実行関数に追加する
-;; (if compilation-finish-functions
-;;   (append compilation-finish-functions
-;;             '(my-close-compilation-buffer-if-succeeded))
-;;   (setq compilation-finish-functions
-;;         '(my-close-compilation-buffer-if-succeeded)))
+;; コンパイルに成功したら *compilation* バッファを閉じる
+; 指定したバッファに警告の文字列があるか
+; (defun my-compilation-warning-bufferp (buf)
+;   (save-current-buffer
+;     (set-buffer buf)
+;     (save-excursion
+;         (goto-char (point-min))
+;           (if (or (search-forward "warning:" nil t)
+;                     (search-forward "警告:" nil t)) t nil))))
+; ;;; バッファに"abnormally"や警告メッセージがなければウィンドウを閉じる
+; (defun my-close-compilation-buffer-if-succeeded (buf str)
+;   (cond ((string-match "abnormally" str)
+;           (message "Error!"))
+;         ((if (my-compilation-warning-bufferp buf)
+;               (message "Warning!")))
+;         (t
+;           (delete-window (get-buffer-window buf))
+;            (message "Succeeded"))))
+; ;;; compile終了時の実行関数に追加する
+; (if compilation-finish-functions
+;   (append compilation-finish-functions
+;             '(my-close-compilation-buffer-if-succeeded))
+;   (setq compilation-finish-functions
+;         '(my-close-compilation-buffer-if-succeeded)))
 
-;;; サーチをループしない
+;; サーチをループしない
 (setq isearch-wrap-function '(lambda nil))
 
-;;; コンパイル時に出力を追って表示する
+;; コンパイル時に出力を追って表示する
 (setq compilation-scroll-output t)
 
-;;; 縦分割を強制する
+;; 縦分割を強制する
 ;(setq split-height-threshold nil)
 ;(setq split-width-threshold 0)
 
-;;; shell mode でzshを使用する
+;; shell mode でzshを使用する
 (setq shell-file-name "zsh")
 (setenv "SHELL" shell-file-name)
 (setq explicit-shell-file-name shell-file-name)
-

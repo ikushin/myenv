@@ -86,14 +86,16 @@ alias -g GK='|& grep_keyword'
 alias -g Key='|& grep_keyword'
 alias -g KEY='|& grep_keyword'
 
-function make
+function _make
 {
+    LANG=C
     echo_green "START: make $@"
     /usr/bin/make $@
     rc=$?
     [[ $rc != 0 ]] && echo_red "EROOR: make $@" || echo_green "END: make $@"
     return $rc
 }
+alias make='_make'
 
 function dig
 {

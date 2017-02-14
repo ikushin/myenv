@@ -133,8 +133,8 @@ emacs:
 	if [ ! -e /etc/issue ]; then true; else if [ `id -u` -eq 0 ]; then true; else false; fi; fi
 	/bin/rm -rf /tmp/emacs-*
 	make emacs_lisp
-	if emacs --version 2>&1 | grep -q $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | /bin/grep -Po '(?<=emacs-)\d+\.\d+' | tail -n1); then false; fi
-	wget --no-check-certificate https://mirror.jre655.com/GNU/emacs/$(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | /bin/grep -Po 'emacs-\d+\.\d+\.tar\.gz' | tail -n1) -O /tmp/emacs.tar.gz
+	if emacs --version 2>&1 | grep -q $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | /bin/grep -Po '(?<=emacs-)24\.\d+' | tail -n1); then false; fi
+	wget --no-check-certificate https://mirror.jre655.com/GNU/emacs/$(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | /bin/grep -Po 'emacs-24\.\d+\.tar\.gz' | tail -n1) -O /tmp/emacs.tar.gz
 	tar zxf /tmp/emacs.tar.gz -C /tmp
 	cd /tmp/emacs-* && ./configure --without-x && make && make install
 	/bin/rm -rf /tmp/emacs-*
@@ -202,3 +202,7 @@ diff-so-fancy:
 	git config --global color.diff-highlight.oldHighlight "red bold 52"
 	git config --global color.diff-highlight.newNormal    "green bold"
 	git config --global color.diff-highlight.newHighlight "green bold 22"
+
+man:
+	yum install -y man man-pages man-pages-ja
+
