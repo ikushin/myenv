@@ -71,13 +71,10 @@ alias -g Cat='|& cat -An'
 alias -g Tee='|&tee'
 
 # 文字コード変換
-alias -g e2s='|& lv -Ieuc -Osjis | cat'
-alias -g e2j='|& lv -Ieuc -Osjis | cat'
-alias -g e2u='|& lv -Ieuc -Ou8   | cat'
-alias -g u2s='|& lv -Iu8  -Osjis | cat'
-alias -g u2j='|& lv -Iu8  -Osjis | cat'
-alias -g j2u='|& lv -Is   -Ou8   | cat'
-alias -g s2u='|& lv -Is   -Ou8   | cat'
+alias -g lv_EUC2SJIS='|& lv -Ieuc -Osjis | cat'
+alias -g lv_EUC2UTF=' |& lv -Ieuc -Ou8   | cat'
+alias -g lv_UTF2SJIS='|& lv -Iu8  -Osjis | cat'
+alias -g lv_SJIS2UTF='|& lv -Is   -Ou8   | cat'
 
 # vi
 which vim  >/dev/null 2>&1  && alias vi=`which vim`
@@ -88,6 +85,7 @@ alias vii='vi -c startinsert'
 alias view='vi -R'
 alias viz='vi ~/.zshrc'
 alias .viz='source ~/.zshrc'
+alias vie='vi ~/.emacs'
 
 # date
 alias date_heisei='printf "%d: H.%d\n" $(/bin/date +%Y) $(($(/bin/date +%Y)-1988))'

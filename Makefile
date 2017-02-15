@@ -7,12 +7,13 @@ cp:
 	[ -e ~/.ssh/config ] || /bin/cp ssh_config ~/.ssh/config; chmod 600 ~/.ssh/config
 	cmp -s ssh_config_my ~/.ssh/config_my || cp ssh_config_my ~/.ssh/config_my
 	uname -a | grep -qi 'ubuntu' && /bin/cp zshrc.ubuntu ~/.zshrc.ubuntu || true
+	wget -q -nc https://raw.githubusercontent.com/maskedw/dotfiles/master/.gdbinit -P $$HOME
 
 .PHONY: cygwin
 cygwin:
 	mkdir -p ~/bin
 	/bin/cp ./scripts/*_archive.sh ~/bin/
-	#if [[ ! -e /usr/local/bin/perl ]]; then make perl; fi
+	if [[ ! -e /usr/local/bin/perl ]]; then make perl; fi
 
 ssh:
 	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config
@@ -38,12 +39,13 @@ dstat:
 
 PKG=libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
 git:
+	$(eval V := $(shell curl --max-time 3 -Ls https://www.kernel.org/pub/software/scm/git/ | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1))
 	if [ ! -e /etc/issue ]; then true; else if [ `id -u` -eq 0 ]; then true; else false; fi; fi
 	/bin/rm -rf /tmp/git*
-	if git --version 2>&1 | grep -q $(shell curl --max-time 3 -Ls https://www.kernel.org/pub/software/scm/git/ | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1); then false; fi
+	if git --version 2>&1 | grep -q $(V); then false; fi
 	egrep -q 'CentOS' /etc/issue 2>/dev/null  &&  { rpm --quiet -q $(PKG)  ||  sudo yum --disablerepo=updates install -y $(PKG); } || true
 	egrep -q 'Ubuntu' /etc/issue 2>/dev/null  &&  aptitude install -y gettext autoconf gettext asciidoc libcurl4-openssl-dev || true
-	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/$(shell curl -Ls https://www.kernel.org/pub/software/scm/git/ | grep -Po 'git-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/git.tar.gz
+	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz -O /tmp/git.tar.gz
 	tar zxf /tmp/git.tar.gz -C /tmp
 	[ ! -e /etc/issue ] && [ ! -e /usr/local/perl/bin/perl ] && make perl || true
 	[ ! -e /etc/issue ] && { cd /tmp/git-*; ./configure --without-tcltk && PERL_PATH=/usr/local/perl/bin/perl make && PERL_PATH=/usr/local/perl/bin/perl make install; } || true
@@ -63,6 +65,14 @@ git_config:
 	git config --global core.quotepath false
 	git config --global status.showuntrackedfiles all
 	make diff-so-fancy
+diff-so-fancy:
+	cd /usr/local/share/git-core/contrib && git clone https://github.com/so-fancy/diff-so-fancy.git
+	test -d /cygdrive/c && sed -i '1i #!/usr/local/perl/bin/perl' /usr/local/share/git-core/contrib/diff-so-fancy/libexec/diff-so-fancy.pl || true
+	git config --global alias.dsf '!f() { [ -z "$$GIT_PREFIX" ] || cd "$$GIT_PREFIX" && git diff -b -w --ignore-blank-lines --ignore-space-at-eol --color "$$@" | /usr/local/share/git-core/contrib/diff-so-fancy/diff-so-fancy | less --tabs=4 -RFX; }; f'
+	git config --global color.diff-highlight.oldNormal    "red bold"
+	git config --global color.diff-highlight.oldHighlight "red bold 52"
+	git config --global color.diff-highlight.newNormal    "green bold"
+	git config --global color.diff-highlight.newHighlight "green bold 22"
 
 openssh:
 	SSH_PKG="bash"
@@ -130,31 +140,29 @@ git_clone:
 
 .PHONY : emacs
 emacs:
-	if [ ! -e /etc/issue ]; then true; else if [ `id -u` -eq 0 ]; then true; else false; fi; fi
+	-test -d /cygdrive/c && make _emacs
+	-[[ -e /etc/issue ]] && [[ $(id -u) == 0 ]] && make _emacs
+_emacs:
+	$(eval V := $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | /bin/grep -Po '(?<=emacs-)24\.\d+' | tail -n1))
+	/bin/rm -rf /tmp/emacs-*
+	emacs --version | grep -q $(V) && false
+	wget --no-check-certificate https://mirror.jre655.com/GNU/emacs/emacs-$(V).tar.gz -O /tmp/emacs.tar.gz; tar zxf /tmp/emacs.tar.gz -C /tmp
+	cd /tmp/emacs-* && ./configure --without-x && LANG=C make && make install
 	/bin/rm -rf /tmp/emacs-*
 	make emacs_lisp
-	if emacs --version 2>&1 | grep -q $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | /bin/grep -Po '(?<=emacs-)24\.\d+' | tail -n1); then false; fi
-	wget --no-check-certificate https://mirror.jre655.com/GNU/emacs/$(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | /bin/grep -Po 'emacs-24\.\d+\.tar\.gz' | tail -n1) -O /tmp/emacs.tar.gz
-	tar zxf /tmp/emacs.tar.gz -C /tmp
-	cd /tmp/emacs-* && ./configure --without-x && make && make install
-	/bin/rm -rf /tmp/emacs-*
-
 emacs_lisp:
 	mkdir -p ~/.lisp
-	wget -nc --no-check-certificate -O ~/.lisp/minibuffer-complete-cycle.el https://raw.githubusercontent.com/knu/minibuffer-complete-cycle/master/minibuffer-complete-cycle.el; :
-	wget -nc --no-check-certificate -O ~/.lisp/browse-kill-ring.el https://raw.githubusercontent.com/T-J-Teru/browse-kill-ring/master/browse-kill-ring.el; :
-	wget -nc --no-check-certificate -O ~/.lisp/redo+.el            http://www.emacswiki.org/emacs/download/redo%2b.el; :
-	wget -nc --no-check-certificate -O ~/.lisp/point-undo.el       https://www.emacswiki.org/emacs/download/point-undo.el; :
-	wget -nc --no-check-certificate -O ~/.lisp/recentf-ext.el      https://www.emacswiki.org/emacs/download/recentf-ext.el; :
+	-wget -q -nc --no-check-certificate -O ~/.lisp/minibuffer-complete-cycle.el  https://raw.githubusercontent.com/knu/minibuffer-complete-cycle/master/minibuffer-complete-cycle.el
+	-wget -q -nc --no-check-certificate -O ~/.lisp/browse-kill-ring.el           https://raw.githubusercontent.com/T-J-Teru/browse-kill-ring/master/browse-kill-ring.el
+	-wget -q -nc --no-check-certificate -O ~/.lisp/redo+.el                      http://www.emacswiki.org/emacs/download/redo%2b.el
+	-wget -q -nc --no-check-certificate -O ~/.lisp/point-undo.el                 https://www.emacswiki.org/emacs/download/point-undo.el
+	-wget -q -nc --no-check-certificate -O ~/.lisp/recentf-ext.el                https://www.emacswiki.org/emacs/download/recentf-ext.el
 
 clone_https:
 	mkdir -p ~/.ssh; chmod 700 ~/.ssh
 	git clone https://github.com/ikushin/myenv.git ~/.myenv
 	cd ~/.myenv && git config --global push.default simple && make cp
 	usermod -s /bin/zsh root
-
-test:
-	sudo id
 
 perl:
 	wget http://www.cpan.org/src/5.0/perl-5.22.1.tar.gz -O /tmp/perl.tar.gz && tar zxf /tmp/perl.tar.gz -C /tmp
@@ -194,15 +202,8 @@ net:
 term:
 	i=f /bin/grep -q '^#.*putty_067.exe' /bin/cygterm.cfg; then /bin/sed -i -e '3s/^#T/T/' -e '4s/^T/#T/' /bin/cygterm.cfg; else /bin/sed -i -e '3s/^T/#T/' -e '4s/^#//' /bin/cygterm.cfg; fi
 
-diff-so-fancy:
-	cd /usr/local/share/git-core/contrib && git clone https://github.com/so-fancy/diff-so-fancy.git
-	test -d /cygdrive/c && sed -i '1i #!/usr/local/perl/bin/perl' /usr/local/share/git-core/contrib/diff-so-fancy/libexec/diff-so-fancy.pl || true
-	git config --global alias.dsf '!f() { [ -z "$$GIT_PREFIX" ] || cd "$$GIT_PREFIX" && git diff -b -w --ignore-blank-lines --ignore-space-at-eol --color "$$@" | /usr/local/share/git-core/contrib/diff-so-fancy/diff-so-fancy | less --tabs=4 -RFX; }; f'
-	git config --global color.diff-highlight.oldNormal    "red bold"
-	git config --global color.diff-highlight.oldHighlight "red bold 52"
-	git config --global color.diff-highlight.newNormal    "green bold"
-	git config --global color.diff-highlight.newHighlight "green bold 22"
-
 man:
 	yum install -y man man-pages man-pages-ja
-
+test:
+	-false
+	true
