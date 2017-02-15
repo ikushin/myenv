@@ -7,7 +7,7 @@ cp:
 	[ -e ~/.ssh/config ] || /bin/cp ssh_config ~/.ssh/config; chmod 600 ~/.ssh/config
 	cmp -s ssh_config_my ~/.ssh/config_my || cp ssh_config_my ~/.ssh/config_my
 	uname -a | grep -qi 'ubuntu' && /bin/cp zshrc.ubuntu ~/.zshrc.ubuntu || true
-	wget -q -nc https://raw.githubusercontent.com/maskedw/dotfiles/master/.gdbinit -P $$HOME
+	wget -q -nc "https://raw.githubusercontent.com/maskedw/dotfiles/master/.gdbinit" -P $$HOME
 
 .PHONY: cygwin
 cygwin:
@@ -35,7 +35,7 @@ date:
 	sudo ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 dstat:
-	[ -d $$HOME/bin ] && git -C $$HOME/bin/dstat pull || { mkdir -p $$HOME/bin; git clone https://github.com/dagwieers/dstat.git $$HOME/bin/dstat; }
+	[ -d $$HOME/bin ] && git -C $$HOME/bin/dstat pull || { mkdir -p $$HOME/bin; git clone "https://github.com/dagwieers/dstat.git" $$HOME/bin/dstat; }
 
 PKG=libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
 git:
@@ -45,7 +45,7 @@ git:
 	if git --version 2>&1 | grep -q $(V); then false; fi
 	egrep -q 'CentOS' /etc/issue 2>/dev/null  &&  { rpm --quiet -q $(PKG)  ||  sudo yum --disablerepo=updates install -y $(PKG); } || true
 	egrep -q 'Ubuntu' /etc/issue 2>/dev/null  &&  aptitude install -y gettext autoconf gettext asciidoc libcurl4-openssl-dev || true
-	wget --no-check-certificate https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz -O /tmp/git.tar.gz
+	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O /tmp/git.tar.gz
 	tar zxf /tmp/git.tar.gz -C /tmp
 	[ ! -e /etc/issue ] && [ ! -e /usr/local/perl/bin/perl ] && make perl || true
 	[ ! -e /etc/issue ] && { cd /tmp/git-*; ./configure --without-tcltk && PERL_PATH=/usr/local/perl/bin/perl make && PERL_PATH=/usr/local/perl/bin/perl make install; } || true
@@ -66,7 +66,7 @@ git_config:
 	git config --global status.showuntrackedfiles all
 	make diff-so-fancy
 diff-so-fancy:
-	cd /usr/local/share/git-core/contrib && git clone https://github.com/so-fancy/diff-so-fancy.git
+	cd /usr/local/share/git-core/contrib && git clone "https://github.com/so-fancy/diff-so-fancy.git"
 	test -d /cygdrive/c && sed -i '1i #!/usr/local/perl/bin/perl' /usr/local/share/git-core/contrib/diff-so-fancy/libexec/diff-so-fancy.pl || true
 	git config --global alias.dsf '!f() { [ -z "$$GIT_PREFIX" ] || cd "$$GIT_PREFIX" && git diff -b -w --ignore-blank-lines --ignore-space-at-eol --color "$$@" | /usr/local/share/git-core/contrib/diff-so-fancy/diff-so-fancy | less --tabs=4 -RFX; }; f'
 	git config --global color.diff-highlight.oldNormal    "red bold"
@@ -80,7 +80,7 @@ openssh:
 	/bin/rm -rf /tmp/openssh*
 	if ssh -V 2>&1 | /bin/grep -q $(shell curl --max-time 3 -Ls http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/ | /bin/grep -Po '(?<=openssh-)\d+.*?(?=.tar.gz)' | tail -n1); then false; fi
 	/bin/egrep -q 'CentOS' /etc/issue 2>/dev/null  &&  { rpm --quiet -q $(SSH_PKG)  ||  sudo yum --disablerepo=updates install -y $(SSH_PKG); } || true
-	wget --no-check-certificate http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/$(shell curl -Ls http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/ | /bin/grep -Po 'openssh-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/openssh.tar.gz
+	wget --no-check-certificate "http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/$(shell curl -Ls http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/" | /bin/grep -Po 'openssh-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/openssh.tar.gz
 	tar zxf /tmp/openssh.tar.gz -C /tmp
 	{ cd /tmp/openssh-*; ./configure && make && make install; } || true
 	/bin/rm -rf /tmp/openssh*
@@ -89,7 +89,7 @@ zsh:
 	if [ ! -e /etc/issue ]; then true; else if [ `id -u` -eq 0 ]; then true; else false; fi; fi
 	/bin/rm -rf /tmp/zsh*
 	rpm --quiet -q ncurses-devel || sudo yum -y --disablerepo=updates install ncurses-devel; true
-	wget https://sourceforge.net/projects/zsh/files/latest/download?source=files -O /tmp/zsh.tar.gz
+	wget "https://sourceforge.net/projects/zsh/files/latest/download?source=files" -O /tmp/zsh.tar.gz
 	tar zxf /tmp/zsh.tar.gz -C /tmp
 	cd /tmp/zsh-* && ./configure && make && make install
 	sed -i 's/^clear/#&/' /etc/*/zlogout 2>/dev/null; true
@@ -99,8 +99,8 @@ user_zsh:
 	[ -e /etc/issue ] && sudo /usr/sbin/usermod -s /usr/local/bin/zsh $(shell id -un) || true
 
 epel:
-	grep -q 'release 6' /etc/issue && rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm; true
-	grep -q 'release 5' /etc/issue && rpm -Uvh http://dl.fedoraproject.org/pub/epel/5/x86_64/epel-release-5-4.noarch.rpm; true
+	-grep -q 'release 6' /etc/issue && rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+	-grep -q 'release 5' /etc/issue && rpm -Uvh http://dl.fedoraproject.org/pub/epel/5/x86_64/epel-release-5-4.noarch.rpm
 
 apt_proxy:
 	echo 'Acquire::ftp::proxy   "ftp://example.com:8080/"  ;' | sudo tee -a /etc/apt/apt.conf
@@ -115,11 +115,11 @@ yum_proxy:
 	echo 'proxy=http://example.com:8080/' >>/etc/yum.conf
 
 git_proxy:
-	git config --global http.proxy  http://example.com:8080
-	git config --global https.proxy http://example.com:8080
+	git config --global http.proxy  "http://example.com:8080"
+	git config --global https.proxy "http://example.com:8080"
 
 parallel:
-	wget --no-check-certificate http://ftp.gnu.org/gnu/parallel/parallel-20150422.tar.bz2 -O /tmp/parallel-20150422.tar.bz2
+	wget --no-check-certificate "http://ftp.gnu.org/gnu/parallel/parallel-20150422.tar.bz2" -O /tmp/parallel-20150422.tar.bz2
 	tar jxf /tmp/parallel-20150422.tar.bz2 -C /tmp
 	cd /tmp/parallel-20150422/; ./configure && make && make install
 
@@ -134,7 +134,7 @@ adduser:
 
 git_clone:
 	echo 'IdentityFile=~/.ssh/ikushin.id_rsa' >.ssh/config
-	git clone git@github.com:ikushin/myenv.git ~/.myenv
+	git clone "git@github.com:ikushin/myenv.git" ~/.myenv
 	rm -f ~/.ssh/config ~/Makefile
 	cd ~/.myenv && git config --global push.default simple && make cp
 
@@ -145,7 +145,7 @@ emacs:
 	egrep $(V) <<<"$(T)" && false
 	egrep "cygwin|root" <<<"$(T)"
 	/bin/rm -rf /tmp/emacs-*
-	wget --no-check-certificate https://mirror.jre655.com/GNU/emacs/emacs-$(V).tar.gz -O /tmp/emacs.tar.gz; tar zxf /tmp/emacs.tar.gz -C /tmp
+	wget --no-check-certificate "https://mirror.jre655.com/GNU/emacs/emacs-$(V).tar.gz" -O /tmp/emacs.tar.gz; tar zxf /tmp/emacs.tar.gz -C /tmp
 	cd /tmp/emacs-* && ./configure --without-x && LANG=C make && make install
 	/bin/rm -rf /tmp/emacs-*
 	make emacs_lisp
@@ -159,26 +159,25 @@ emacs_lisp:
 
 clone_https:
 	mkdir -p ~/.ssh; chmod 700 ~/.ssh
-	git clone https://github.com/ikushin/myenv.git ~/.myenv
+	git clone "https://github.com/ikushin/myenv.git" ~/.myenv
 	cd ~/.myenv && git config --global push.default simple && make cp
 	usermod -s /bin/zsh root
 
 perl:
-	wget http://www.cpan.org/src/5.0/perl-5.22.1.tar.gz -O /tmp/perl.tar.gz && tar zxf /tmp/perl.tar.gz -C /tmp
+	wget "http://www.cpan.org/src/5.0/perl-5.22.1.tar.gz" -O /tmp/perl.tar.gz && tar zxf /tmp/perl.tar.gz -C /tmp
 	cd /tmp/perl-5.22.1 && ./Configure -des -Dprefix=/usr/local/perl && make && make install
 	/bin/rm -r /tmp/perl*.gz /tmp/perl-*
 
 autoconf:
 	rpm --quiet -q texinfo || sudo yum -y --disablerepo=updates install texinfo
-	git clone http://git.sv.gnu.org/r/autoconf.git /tmp/autoconf
+	git clone "http://git.sv.gnu.org/r/autoconf.git" /tmp/autoconf
 	cd /tmp/autoconf && git checkout -b 100f26c
 	cd /tmp/autoconf && ./configure && make && sudo make install
 	which autoconf
 	autoconf --version
 
 coreutils:
-	wget http://ftp.jaist.ac.jp/pub/GNU/coreutils/coreutils-8.13.tar.gz
-	wget --no-check-certificate http://ftp.jaist.ac.jp/pub/GNU/coreutils/coreutils-8.13.tar.gz -O /tmp/coreutils-8.13.tar.gz
+	wget --no-check-certificate "http://ftp.jaist.ac.jp/pub/GNU/coreutils/coreutils-8.13.tar.gz" -O /tmp/coreutils-8.13.tar.gz
 	tar xf /tmp/coreutils-8.13.tar.gz -C /tmp
 	cd /tmp/coreutils-8.13/; ./configure && make && make install
 
