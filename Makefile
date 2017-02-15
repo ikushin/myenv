@@ -140,12 +140,11 @@ git_clone:
 
 .PHONY : emacs
 emacs:
-	-test -d /cygdrive/c && make _emacs
-	-[[ -e /etc/issue ]] && [[ $(id -u) == 0 ]] && make _emacs
-_emacs:
 	$(eval V := $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | /bin/grep -Po '(?<=emacs-)24\.\d+' | tail -n1))
+	$(eval T := $(shell echo $${OSTYPE}_$$(id -un)_$$(emacs --version 2>/dev/null | head -n1)))
+	egrep $(V) <<<"$(T)" && false
+	egrep "cygwin|root" <<<"$(T)"
 	/bin/rm -rf /tmp/emacs-*
-	emacs --version | grep -q $(V) && false
 	wget --no-check-certificate https://mirror.jre655.com/GNU/emacs/emacs-$(V).tar.gz -O /tmp/emacs.tar.gz; tar zxf /tmp/emacs.tar.gz -C /tmp
 	cd /tmp/emacs-* && ./configure --without-x && LANG=C make && make install
 	/bin/rm -rf /tmp/emacs-*
@@ -205,5 +204,5 @@ term:
 man:
 	yum install -y man man-pages man-pages-ja
 test:
-	-false
-	true
+	$(eval T := $(shell echo $${OSTYPE}_$$(id -un)_$$(emacs --version 2>/dev/null | head -n1)))
+	echo $(T)

@@ -76,11 +76,18 @@ function cpw() {
 }
 
 # Vagrant
-alias vagrant='/cygdrive/c/HashiCorp/Vagrant/bin/vagrant'
 bindkey -s "^V^S"   "vagrant status "
 bindkey -s "^V^S^S" "vagrant ssh "
 bindkey -s "^V^U"   "vagrant up "
 bindkey -s "^V^V"   "cd ~/vagrant/"
+
+alias vagrant='/cygdrive/c/HashiCorp/Vagrant/bin/vagrant'
+alias vagrant_destroy='vagrant destroy'
+alias vagrant_halt='vagrant halt'
+alias vagrant_port='vagrant port'
+alias vagrant_reload='vagrant reload'
+alias vagrant_resume='vagrant resume'
+alias vagrant_suspend='vagrant suspend'
 
 # mv系
 #rm -f ~/sandbox/emacs.*(L0,m+7) ~/\#*
