@@ -39,19 +39,27 @@ dstat:
 
 PKG=libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
 git:
+    # 最新バージョン取得
 	$(eval V := $(shell curl --max-time 3 -Ls https://www.kernel.org/pub/software/scm/git/ | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1))
-	if [ ! -e /etc/issue ]; then true; else if [ `id -u` -eq 0 ]; then true; else false; fi; fi
+
+    # ホストの情報収集
+	$(eval T := $(shell echo $${OSTYPE}_$$(id -un)_$$(git --version 2>/dev/null)_$$(head -1 /etc/issue 2>/dev/null)))
+
+    # 続行判定
+	egrep $(V) <<<"$(T)" && false
+	egrep "cygwin|root" <<<"$(T)"
+
+    # 前準備
+	-egrep -q 'cygwin' <<<"$(T)" && [ ! -e /usr/local/perl/bin/perl ] && make perl
+	-egrep -q 'CentOS' <<<"$(T)" && { rpm --quiet -q $(PKG) || yum --disablerepo=updates install -y $(PKG); }
+	-egrep -q 'Ubuntu' <<<"$(T)" && aptitude install -y gettext autoconf gettext asciidoc libcurl4-openssl-dev
+
+    # コンパイル
 	/bin/rm -rf /tmp/git*
-	if git --version 2>&1 | grep -q $(V); then false; fi
-	egrep -q 'CentOS' /etc/issue 2>/dev/null  &&  { rpm --quiet -q $(PKG)  ||  sudo yum --disablerepo=updates install -y $(PKG); } || true
-	egrep -q 'Ubuntu' /etc/issue 2>/dev/null  &&  aptitude install -y gettext autoconf gettext asciidoc libcurl4-openssl-dev || true
-	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O /tmp/git.tar.gz
-	tar zxf /tmp/git.tar.gz -C /tmp
-	[ ! -e /etc/issue ] && [ ! -e /usr/local/perl/bin/perl ] && make perl || true
-	[ ! -e /etc/issue ] && { cd /tmp/git-*; ./configure --without-tcltk && PERL_PATH=/usr/local/perl/bin/perl make && PERL_PATH=/usr/local/perl/bin/perl make install; } || true
-	[ -e /etc/issue ]   && { cd /tmp/git-*; ./configure --without-tcltk && make && make install } || true
-	/bin/cp -a /tmp/git-*/contrib /usr/local/share/git-core/
-	/bin/rm -rf /tmp/git*
+	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O /tmp/git.tar.gz; ar zxf /tmp/git.tar.gz -C /tmp
+	(export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl); cd /tmp/git-*; ./configure --without-tcltk && make && make in
+
+    # ユーティリティインストール
 	make git_config
 
 git_config:
@@ -129,9 +137,6 @@ fuck_dpkg:
 ansible:
 	sudo aptitude install -y ansible
 
-adduser:
-	useradd -m -s /bin/zsh -p '$$6$$XYCe4cG6$$T/Is4TiopXaf8E06g6AKStbze2ENmhEsmOkC0mVacSWxHHLdff1kNF1EfSsKQpuvaniVwrdzZAOaKrgXagbjC1' ikushin
-
 git_clone:
 	echo 'IdentityFile=~/.ssh/ikushin.id_rsa' >.ssh/config
 	git clone "git@github.com:ikushin/myenv.git" ~/.myenv
@@ -202,6 +207,7 @@ term:
 
 man:
 	yum install -y man man-pages man-pages-ja
+
 test:
 	$(eval T := $(shell echo $${OSTYPE}_$$(id -un)_$$(emacs --version 2>/dev/null | head -n1)))
 	echo $(T)
