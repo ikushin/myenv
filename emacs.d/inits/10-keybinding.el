@@ -12,14 +12,14 @@
 ;; 鉄板
 (global-set-key "\C-h" 'delete-backward-char)
 (global-set-key "\M-g" 'goto-line)
-(global-set-key "\M-n" 'scroll-up-line)
-(global-set-key "\M-p" 'scroll-down-line)
 
 (define-key global-map "\C-x\C-o" 'other-window)
 (define-key global-map "\M-w" 'kill-region)
 (define-key global-map "\C-s" 'isearch-forward-regexp)
 (define-key global-map "\C-r" 'isearch-backward-regexp)
 (define-key global-map "\M-h" 'backward-kill-word)
+(define-key global-map "\C-\M-z" 'scroll-up-line)
+(define-key global-map "\C-\M-v" 'scroll-down-line)
 
 (define-key global-map [f1] 'woman)
 (define-key global-map [f3] 'previous-error)
@@ -41,6 +41,8 @@
 (global-set-key "\C-\M-b" 'scroll-other-window-down)
 (define-key global-map [f14] 'previous-error)
 (define-key global-map "\C-x\C-l" 'toggle-truncate-lines)
+;(global-set-key "\M-n" 'scroll-up-line)
+;(global-set-key "\M-p" 'scroll-down-line)
 
 ;; 不要っぽかったら削除すること。
 ; (add-hook 'c-mode-common-hook
