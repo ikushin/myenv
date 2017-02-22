@@ -12,20 +12,26 @@ alias rgrep='g -v "^#|^$"'
 
 # -g grep
 alias -g G='|& grep -aP'
-alias -g GF='|& grep -af'
-alias -g GFV='|& grep -avf'
-alias -g GVF='|& grep -avf'
 alias -g GI='G -i'
 alias -g GV='G -v'
 alias -g GVV='|& /bin/grep -Pv "^\s*(#|$)"'
+alias -g Gw='GI -w'
+
+alias -g FG='|& fgrep -a'
+alias -g FGV='FG -v'
+
+alias -g GF='G -f'
+alias -g GFV='G -vf'
+alias -g GVF='GFV'
+
 alias -g GO='G -o'
-alias -g Go='G -o'
+alias -g Go='GO'
+alias -g GIO='GO -i'
+
 alias -g G-='|&/bin/grep -P -a "^-(?!-)"'
 alias -g G+='|&/bin/grep -P -a "^\+(?!\+)"'
 alias -g G++='|&/bin/egrep -a "^[+-][^+-]"'
 alias -g G+++='G++ PE "s/^.//"'
-alias -g FG='|& fgrep -a'
-alias -g FGV='FG -v'
 
 # perl
 alias perl_iple='perl -i -ple'
@@ -71,10 +77,11 @@ alias -g Cat='|& cat -An'
 alias -g Tee='|&tee'
 
 # 文字コード変換
-alias -g lv_EUC2SJIS='|& lv -Ieuc -Osjis | cat'
-alias -g lv_EUC2UTF=' |& lv -Ieuc -Ou8   | cat'
-alias -g lv_UTF2SJIS='|& lv -Iu8  -Osjis | cat'
-alias -g lv_SJIS2UTF='|& lv -Is   -Ou8   | cat'
+alias -g e2s='|& lv -Ieuc -Osjis | cat'
+alias -g e2u=' |& lv -Ieuc -Ou8   | cat'
+alias -g u2s='|& lv -Iu8  -Osjis | cat'
+alias -g s2u='|& lv -Is   -Ou8   | cat'
+alias -g j2u='s2u'
 
 # vi
 which vim  >/dev/null 2>&1  && alias vi=`which vim`

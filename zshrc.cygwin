@@ -6,7 +6,7 @@ hash -d plog=/cygdrive/c/Users/ikushin/Documents/putty_log
 hash -d tlog=/cygdrive/c/Users/ikushin/Documents/teraterm_log
 hash -d desktop=/cygdrive/c/Users/ikushin/Desktop
 hash -d download=/cygdrive/c/Users/ikushin/Downloads
-hash -d macro=/cygdrive/c/teraterm/macro
+hash -d tmacro=/cygdrive/c/teraterm/macro
 
 # path
 path=( $path $(cygpath -W) $(cygpath -S){,/wbem} )
@@ -18,24 +18,38 @@ LANG=ja_JP.UTF8
 export OUTPUT_CHARSET=ja_JP.sjis
 export SHELL=/bin/bash
 
+
+
 # alias
+## 削除するかも
 #alias ls='ls --color=auto --show-control-chars --group-directories-first -1'
 #alias ping='/cygdrive/c/Windows/System32/ping -t'
 #alias ping='ping -t'
 #alias sed='sed --regexp-extended'
-alias exp='explorer . &'
+
+## system
 alias ifconfig='/cygdrive/c/WINDOWS/system32/ipconfig j2u'
-alias ipa='ifconfig | /bin/egrep "Ethernet|IPv4 Address|Subnet Mask" | /bin/grep --color -P "(\d+\.){3}\d+|$"'
+alias _ipa='ifconfig | /bin/egrep "Ethernet|IPv4 Address|Subnet Mask"'
+alias ipa="_ipa PE 's/^\w/\n$&/' P0 'next if grep {/VMware|VirtualBox/} @F;print'"
+alias netstat="/cygdrive/c/Windows/System32/netstat -n -p TCP"
+alias win_mem="tasklist | tail -n +5 | tr -d , PN '\$h{\$F[0]}+=\$F[4];END{while((\$p,\$m)=each %h){printf \"%s %.1fM\n\",\$p,\$m/1024}}' S -hk2 Col Key '.*\d{3}.\dM'"
+alias tt="win_mem"
+
+## misc
+alias exp='explorer . &'
 alias open='/usr/bin/cygstart'
-alias p2u='LANG=ja_JP.UTF8 cygpath -am'
-alias p2w='LANG=ja_JP.UTF8 cygpath -aw'
 alias sudo=''
+
+## rpm
 alias rpmqa='cygcheck -c -d'
 alias rpmqf='cygcheck -f'
 alias rpmqi='cygcheck -p'
 alias rpmql='cygcheck -l'
-#alias win_mem="tasklist | tail -n +5 | tr -d , PN '\$h{\$F[0]}+=\$F[4];END{while((\$p,\$m)=each %h){print\"\$p \$m\"}}' | sort -k2,2n PE 's@\d+\$@sprintf \"%.1fM\", \$&/1024@e' Col Key '.*\d{3}.\dM'"
-alias win_mem="tasklist | tail -n +5 | tr -d , PN '\$h{\$F[0]}+=\$F[4];END{while((\$p,\$m)=each %h){printf \"%s %.1fM\n\",\$p,\$m/1024}}' S -hk2 Col Key '.*\d{3}.\dM'"
+
+# path alias
+alias p2u='LANG=ja_JP.UTF8 cygpath -am'
+alias path_to_unix='LANG=ja_JP.UTF8 cygpath -au'
+alias p2w='LANG=ja_JP.UTF8 cygpath -aw'
 
 # galias
 alias -g CL='>& /dev/clipboard'

@@ -22,7 +22,7 @@ bindkey '^J' edit-command-line
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 add-zsh-hook chpwd chpwd_recent_dirs
 zstyle ':completion:*' recent-dirs-insert both # always, fallback, both
-zstyle ':chpwd:*' recent-dirs-max 20
+zstyle ':chpwd:*' recent-dirs-max 10
 zstyle ':chpwd:*' recent-dirs-default true
 zstyle ':chpwd:*' recent-dirs-file "${XDG_CACHE_HOME:-$HOME/.cache}/shell/chpwd-recent-dirs"
 zstyle ':chpwd:*' recent-dirs-pushd true
@@ -136,6 +136,9 @@ path=( $HOME/*bin(N-/) /usr{/local,}/bin(N-/) /opt/*/*bin(N-/) /opt/*/*/*bin(N-/
 # cdpath
 cdpath=( .. $HOME )
 
+# fpath
+fpath=(~/.zsh-completions /usr/local/share/zsh/site-functions /usr/local/share/zsh/*/functions $fpath)
+
 # manpath
 manpath=( /usr/local/share/man(N-/) /usr/local/man(N-/) /usr/share/man/ja(N-/) /usr/share/man(N-/) )
 export MANPATH
@@ -164,6 +167,8 @@ hash -d ss=~/.ssh
 # mkdir
 mkdir -p $HOME/.cache/shell
 mkdir -p $HOME/.{trash,sandbox}
+
+export no_proxy="127.0.0.1,localhost"
 
 for i in .zshrc.{func,alias,git,cygwin,ubuntu} .zprompt .localrc
 do
