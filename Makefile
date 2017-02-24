@@ -43,10 +43,10 @@ git:
 	$(eval V := $(shell curl --max-time 3 -Ls https://www.kernel.org/pub/software/scm/git/ | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1))
 
     # ホストの情報収集
-	$(eval T := $(shell echo $${OSTYPE}_$$(id -un)_$$(git --version 2>/dev/null)_$$(head -1 /etc/issue 2>/dev/null)))
+	$(eval T := $(shell echo $${OSTYPE}_$$(id -un)_$$(/usr/local/bin/git --version 2>/dev/null)_$$(head -1 /etc/issue 2>/dev/null)))
 
     # 続行判定
-	egrep $(V) <<<"$(T)" && false
+	egrep -v $(V) <<<"$(T)"
 	egrep "cygwin|root" <<<"$(T)"
 
     # 前準備
