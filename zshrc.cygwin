@@ -48,6 +48,7 @@ alias rpmql='cygcheck -l'
 
 # path alias
 alias p2u='LANG=ja_JP.UTF8 cygpath -am'
+alias win_p2u='p2u'
 alias path_to_unix='LANG=ja_JP.UTF8 cygpath -au'
 alias p2w='LANG=ja_JP.UTF8 cygpath -aw'
 
