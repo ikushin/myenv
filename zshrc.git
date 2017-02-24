@@ -31,11 +31,21 @@ alias gcm='git checkout master'
 alias gl='git log --color=always --name-status --no-merges'
 alias gll='git log --color=always -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges'
 alias gp='git push origin master'
+alias ga='git add .'
+
+alias git_unstage='git reset HEAD'
+alias git_modify_message='git commit --amend'
+alias git_rename_branch='git branch -m'
+alias git_clean_dryrun='git clean -n'
+alias git_clean_force='git clean -n'
+alias git_reference_log='git reflog'
+alias git_cat_object='git cat-file -p'
+alias git_config_list='git config --list'
+alias git_config_edit='git config -ef ~/.gitconfig'
 
 # あまり使わないもの
 #alias gs='git status --short --branch .'
 #alias wgd='gitdiff --word-diff'
-#alias ga='git add -u'
 #alias gb='git branch --verbose --all'
 
 alias _gdiff='gitdiff --no-index'
@@ -62,4 +72,17 @@ function rd0() {
     a=${1:-"a"}
     b=${2:-"b"}
     _gdiff -U100 $b $a
+}
+
+function git_init_bare() {
+    [[ $# != 1 ]] && {echo "リポジトリ名入れて!"; return;}
+    local repo=$1
+    mkdir $repo.git
+    git init --bare $repo.git
+}
+
+function git_clone_bare() {
+    [[ $# != 1 ]] && {echo "リポジトリ名入れて!"; return;}
+    local repo=$1
+    git clone --bare $repo{,.git}
 }
