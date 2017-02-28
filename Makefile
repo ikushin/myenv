@@ -56,8 +56,8 @@ git:
 
     # コンパイル
 	/bin/rm -rf /tmp/git*
-	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O /tmp/git.tar.gz; ar zxf /tmp/git.tar.gz -C /tmp
-	(export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl); cd /tmp/git-*; ./configure --without-tcltk && make && make in
+	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O /tmp/git.tar.gz; tar zxf /tmp/git.tar.gz -C /tmp
+	export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl); cd /tmp/git-*; ./configure --without-tcltk && make && make install
 
     # ユーティリティインストール
 	make git_config
