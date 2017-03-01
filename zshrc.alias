@@ -146,12 +146,9 @@ alias ee='femacs'
 
 # dstat
 if which dstat >&/dev/null; then
-   alias dstat-full='$HOME/bin/dstat/dstat -clmdrn --bits --nocolor'
-   alias dstat-mem='$HOME/bin/dstat/dstat  -clm    --bits --nocolor'
-   alias dstat-cpu='$HOME/bin/dstat/dstat  -clr    --bits --nocolor'
-   alias dstat-net='$HOME/bin/dstat/dstat  -clnd   --bits --nocolor'
-   alias dstat-disk='$HOME/bin/dstat/dstat -cldr   --bits --nocolor'
-   alias dstat='$HOME/bin/dstat/dstat --nocolor --load --cpu --disk --net --tcp --page --sys --proc --mem --swap --bits'
+   alias dstat='$HOME/bin/dstat/dstat --nocolor --load --cpu --disk --net --page --sys --proc --mem --swap --bits'
+   alias dstat_cpu='$HOME/bin/dstat/dstat --cpu-use --float'
+   alias dstat_full='$HOME/bin/dstat/dstat --nocolor --full'
 fi
 
 # alias
