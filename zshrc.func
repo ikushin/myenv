@@ -45,9 +45,9 @@ function day_bak() {
 }
 
 function myip() {
-    curl http://inet-ip.info   ||
-        curl http://ifconfig.me    ||
-        curl http://httpbin.org/ip
+    curl http://inet-ip.info \
+        || curl http://ifconfig.me \
+        || curl http://httpbin.org/ip
 }
 
 pmver () {

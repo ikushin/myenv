@@ -147,14 +147,14 @@ alias ee='femacs'
 # dstat
 if which dstat >&/dev/null; then
    alias dstat='$HOME/bin/dstat/dstat --nocolor --load --cpu --disk --net --page --sys --proc --mem --swap --bits'
-   alias dstat_cpu='$HOME/bin/dstat/dstat --cpu-use --float'
+   alias dstat_cpu='$HOME/bin/dstat/dstat --load --cpu --cpu-use --float'
    alias dstat_full='$HOME/bin/dstat/dstat --nocolor --full'
 fi
 
 # alias
 #alias sar='sar -q'
 #alias sed='sed --regexp-extended --follow-symlinks'
-alias Du='du -sh * | sort -h'
+alias Du='du -sh * .* | sort -h'
 alias cata='cat -A'
 alias cscope='cscope -b'
 alias ct='cut -c -$(($COLUMNS-10))'
@@ -167,7 +167,7 @@ alias locate='locate -r'
 alias m='md5sum'
 alias md5sum='md5sum --text'
 alias nkf='nkf -f80-0'
-alias pso='ps -eo "user,pid,ppid,pgid,pcpu,pmem,vsz,rss,stat,lstart,command"'
+alias ps_full='ps -eo "user,pid,ppid,pgid,pcpu,pmem,vsz,rss,stat,min_flt,maj_flt,lstart,command"'
 alias pstree='pstree -p'
 alias scp='scp -r'
 alias ssh='ssh -C -o "StrictHostKeyChecking no"'

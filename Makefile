@@ -55,13 +55,12 @@ git:
 	-egrep -q 'Ubuntu' <<<"$(T)" && aptitude install -y gettext autoconf gettext asciidoc libcurl4-openssl-dev
 
     # コンパイル
-	/bin/rm -rf /tmp/git*
+	/bin/rm -rf /tmp/git-*/
 	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O /tmp/git.tar.gz; tar zxf /tmp/git.tar.gz -C /tmp
 	export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl); cd /tmp/git-*; ./configure --without-tcltk && make && make install
 
     # ユーティリティインストール
 	make git_config
-
 git_config:
 	git config --global pager.log  '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less'
 	git config --global pager.show '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less'
@@ -72,9 +71,9 @@ git_config:
 	git config --global http.sslVerify false
 	git config --global core.quotepath false
 	git config --global status.showuntrackedfiles all
-	make diff-so-fancy
+	-test -d /usr/local/share/git-core/contrib/diff-so-fancy/ || make diff-so-fancy
 diff-so-fancy:
-	cd /usr/local/share/git-core/contrib && git clone "https://github.com/so-fancy/diff-so-fancy.git"
+	cd /usr/local/share/git-core/contrib && git clone "https://github.com/so-fancy/diff-so-fancy.git" 2>/dev/null
 	test -d /cygdrive/c && sed -i '1i #!/usr/local/perl/bin/perl' /usr/local/share/git-core/contrib/diff-so-fancy/libexec/diff-so-fancy.pl || true
 	git config --global alias.dsf '!f() { [ -z "$$GIT_PREFIX" ] || cd "$$GIT_PREFIX" && git diff -b -w --ignore-blank-lines --ignore-space-at-eol --color "$$@" | /usr/local/share/git-core/contrib/diff-so-fancy/diff-so-fancy | less --tabs=4 -RFX; }; f'
 	git config --global color.diff-highlight.oldNormal    "red bold"

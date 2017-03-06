@@ -1,4 +1,5 @@
 
+alias yum='aptitude'
 alias rpmqa='dpkg -l'
 alias rpmql='dpkg -L'
 alias rpmqf='dpkg -S'
