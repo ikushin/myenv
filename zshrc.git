@@ -42,6 +42,9 @@ alias git_reference_log='git reflog'
 alias git_cat_object='git cat-file -p'
 alias git_config_list='git config --list'
 alias git_config_edit='git config -ef ~/.gitconfig'
+alias git_stash_save='git stash save'
+alias git_stash_list='git stash list'
+alias git_stash_pop='git stash pop'
 
 # あまり使わないもの
 #alias gs='git status --short --branch .'
