@@ -18,8 +18,6 @@ LANG=ja_JP.UTF8
 export OUTPUT_CHARSET=ja_JP.sjis
 export SHELL=/bin/bash
 
-
-
 # alias
 ## 削除するかも
 #alias ls='ls --color=auto --show-control-chars --group-directories-first -1'
@@ -103,6 +101,11 @@ alias vagrant_port='vagrant port'
 alias vagrant_reload='vagrant reload'
 alias vagrant_resume='vagrant resume'
 alias vagrant_suspend='vagrant suspend'
+alias vagrant_box_list='vagrant box list'
+alias vagrant_plugin_list='vagrant plugin list'
+alias vagrant_snapshot_list='vagrant snapshot list'
+alias vagrant_snapshot_push='vagrant snapshot push'
+alias vagrant_snapshot_pop='vagrant snapshot pop'
 
 # mv系
 #rm -f ~/sandbox/emacs.*(L0,m+7) ~/\#*

@@ -1,8 +1,8 @@
 
 # grep
-alias grep='/bin/grep --color'
-alias egrep='/bin/egrep --color'
-alias xgrep='/bin/grep -P --color'
+alias grep='/bin/grep --color -a'
+alias egrep='grep -E'
+alias xgrep='grep -P'
 alias ipgrep='xgrep "(\d+\.){3}\d+"'
 alias fgrep='/bin/fgrep --color'
 alias g='xgrep'

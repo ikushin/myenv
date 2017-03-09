@@ -111,4 +111,4 @@ function su_file() {
     /bin/mv -f -t ./.trash $@
     cat ./.trash/$@ |&/bin/egrep -av '^(#|$)' |&sort |uniq | tee $@
 }
-alias su_file='sufile'
+#alias su_file='sufile'
