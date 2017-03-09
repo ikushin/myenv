@@ -37,13 +37,13 @@ date:
 dstat:
 	[ -d $$HOME/bin ] && git -C $$HOME/bin/dstat pull || { mkdir -p $$HOME/bin; git clone "https://github.com/dagwieers/dstat.git" $$HOME/bin/dstat; }
 
-PKG=libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
+PKG=libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker wget gcc
 git:
     # 最新バージョン取得
 	$(eval V := $(shell curl --max-time 3 -Ls https://www.kernel.org/pub/software/scm/git/ | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | tail -n1))
 
     # ホストの情報収集
-	$(eval T := $(shell echo $${OSTYPE}_$$(id -un)_$$(/usr/local/bin/git --version 2>/dev/null)_$$(head -1 /etc/issue 2>/dev/null)))
+	$(eval T := $(shell echo $${OSTYPE}_$$(id -un)_$$(/usr/local/bin/git --version 2>/dev/null)_$$(head -1 /etc/issue 2>/dev/null)_$$(cat /etc/redhat-release)))
 
     # 続行判定
 	egrep -v $(V) <<<"$(T)"
@@ -62,6 +62,7 @@ git:
     # ユーティリティインストール
 	make git_config
 git_config:
+	mkdir /usr/local/share/git-core/contrib; cp -a /tmp/git-*/contrib/diff-highlight /usr/local/share/git-core/contrib
 	git config --global pager.log  '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less'
 	git config --global pager.show '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less'
 	git config --global pager.diff '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less'
@@ -101,6 +102,7 @@ zsh:
 	cd /tmp/zsh-* && ./configure && make && make install
 	sed -i 's/^clear/#&/' /etc/*/zlogout 2>/dev/null; true
 	/bin/rm -rf /tmp/zsh*
+	usermod -s /usr/local/bin/zsh root
 
 user_zsh:
 	[ -e /etc/issue ] && sudo /usr/sbin/usermod -s /usr/local/bin/zsh $(shell id -un) || true
@@ -144,11 +146,18 @@ git_clone:
 
 .PHONY : emacs
 emacs:
+    # 最新バージョン取得
 	$(eval V := $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | /bin/grep -Po '(?<=emacs-)24\.\d+' | tail -n1))
+
+    # ホストの情報収集
 	$(eval T := $(shell echo $${OSTYPE}_$$(id -un)_$$(emacs --version 2>/dev/null | head -n1)))
-	egrep $(V) <<<"$(T)" && false
+
+    # 続行判定
+	egrep -v $(V) <<<"$(T)"
 	egrep "cygwin|root" <<<"$(T)"
 	/bin/rm -rf /tmp/emacs-*
+_emacs:
+	$(eval V := $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | /bin/grep -Po '(?<=emacs-)24\.\d+' | tail -n1))
 	wget --no-check-certificate "https://mirror.jre655.com/GNU/emacs/emacs-$(V).tar.gz" -O /tmp/emacs.tar.gz; tar zxf /tmp/emacs.tar.gz -C /tmp
 	cd /tmp/emacs-* && ./configure --without-x && LANG=C make && make install
 	/bin/rm -rf /tmp/emacs-*
@@ -161,11 +170,10 @@ emacs_lisp:
 	-wget -q -nc --no-check-certificate -O ~/.lisp/point-undo.el                 https://www.emacswiki.org/emacs/download/point-undo.el
 	-wget -q -nc --no-check-certificate -O ~/.lisp/recentf-ext.el                https://www.emacswiki.org/emacs/download/recentf-ext.el
 
-clone_https:
+clone:
 	mkdir -p ~/.ssh; chmod 700 ~/.ssh
 	git clone "https://github.com/ikushin/myenv.git" ~/.myenv
 	cd ~/.myenv && git config --global push.default simple && make cp
-	usermod -s /bin/zsh root
 
 perl:
 	wget "http://www.cpan.org/src/5.0/perl-5.22.1.tar.gz" -O /tmp/perl.tar.gz && tar zxf /tmp/perl.tar.gz -C /tmp
@@ -202,10 +210,13 @@ net:
 	/usr/bin/cygstart ncpa.cpl
 
 term:
-	i=f /bin/grep -q '^#.*putty_067.exe' /bin/cygterm.cfg; then /bin/sed -i -e '3s/^#T/T/' -e '4s/^T/#T/' /bin/cygterm.cfg; else /bin/sed -i -e '3s/^T/#T/' -e '4s/^#//' /bin/cygterm.cfg; fi
+	if /bin/grep -q '^#.*putty_067.exe' /bin/cygterm.cfg; then /bin/sed -i -e '3s/^#T/T/' -e '4s/^T/#T/' /bin/cygterm.cfg; else /bin/sed -i -e '3s/^T/#T/' -e '4s/^#//' /bin/cygterm.cfg; fi
 
 man:
 	yum install -y man man-pages man-pages-ja
+
+make:
+	@{ echo 'cat <<\EOF | base64 -di | tar zxvf -'; tar zcf - Makefile  | base64 -w120; echo EOF; } | tee /dev/clipboard
 
 test:
 	$(eval T := $(shell echo $${OSTYPE}_$$(id -un)_$$(emacs --version 2>/dev/null | head -n1)))
