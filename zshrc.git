@@ -31,7 +31,7 @@ alias gcm='git checkout master'
 alias gl='git log --color=always --name-status --no-merges'
 alias gll='git log --color=always -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges'
 alias gp='git push origin master'
-alias ga='git add '
+alias ga='git add .'
 
 alias git_unstage='git reset HEAD'
 alias git_modify_message='git commit --amend'

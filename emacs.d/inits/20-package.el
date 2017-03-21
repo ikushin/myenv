@@ -13,6 +13,7 @@
     point-undo
     browse-kill-ring
     recentf-ext
+    yaml-mode
     ))
 
 (let ((not-installed (loop for x in installing-package-list

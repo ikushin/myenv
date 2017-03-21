@@ -3,12 +3,15 @@
 alias grep='/bin/grep --color -a'
 alias egrep='grep -E'
 alias xgrep='grep -P'
-alias ipgrep='xgrep "(\d+\.){3}\d+"'
 alias fgrep='/bin/fgrep --color'
 alias g='xgrep'
 alias go='xgrep -o'
 alias igrep='g -i'
 alias rgrep='g -v "^#|^$"'
+
+# ipgrep
+alias ipgrep='xgrep "(\d+\.){3}\d+"'
+alias ipgrep2='xgrep "(\d+\.){3}\d+" **/*~*.db(.) GV "127.0.0.1|0.0.0.0|\.hint|\.zone" Key "(\d+\.){3}\d+|^.*?:"'
 
 # -g grep
 alias -g G='|& grep -aP'
