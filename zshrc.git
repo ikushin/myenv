@@ -9,7 +9,7 @@ bindkey -s "^[p"  "git pull "
 bindkey -s "^G^P" "git push origin master "
 bindkey -s "^G."  'cd $(git rev-parse --show-toplevel) '
 bindkey -s "^G^R" "git reset --hard "
-bindkey -s "^[a"  "git add -p "
+bindkey -s "^[a"  "git add "
 bindkey -s "^G^A" "git add "
 bindkey -s "^G^T" "git cat-file -p HEAD^:file "
 bindkey -s "^G^I" "test -d .git || git init; echo '.*' >.gitignore "
@@ -30,7 +30,7 @@ alias gcm='git checkout master'
 alias gl='git log --color=always --name-status --no-merges'
 alias gll='git log --color=always -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges'
 alias gp='git push origin master'
-alias ga='git add .'
+alias ga='git add '
 
 alias git_unstage='git reset HEAD'
 alias git_modify_message='git commit --amend'
@@ -45,6 +45,8 @@ alias git_stash_save='git stash save'
 alias git_stash_list='git stash list'
 alias git_stash_pop='git stash pop'
 alias git_squash_commit='git rebase -i HEAD~~~~~~~~~~'
+alias git_add_p='git add -p'
+alias git_add_dot='git add .'
 
 # あまり使わないもの
 #alias gs='git status --short --branch .'
