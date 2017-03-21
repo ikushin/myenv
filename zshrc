@@ -170,7 +170,7 @@ mkdir -p $HOME/.{trash,sandbox}
 
 export no_proxy="127.0.0.1,localhost"
 
-for i in .zshrc.{func,alias,git,cygwin,ubuntu} .zprompt .localrc
+for i in .zshrc.{func,alias,git,cygwin,ubuntu,centos7} .zprompt .localrc
 do
     test -e ~/$i && source $_
 done
