@@ -24,8 +24,7 @@ bindkey -s "^G^L^L" 'git log --color=always -p --ignore-space-change --ignore-al
 
 # Git aliases
 alias gitdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --color=auto'
-alias gd='gitdiff'
-alias gdd='git dsf'
+alias gd='git dsf'
 alias gc='git checkout'
 alias gcm='git checkout master'
 alias gl='git log --color=always --name-status --no-merges'

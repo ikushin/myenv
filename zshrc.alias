@@ -180,6 +180,7 @@ alias type='type -a'
 alias wget='wget -c'
 alias which='which -a'
 alias zsh='exec zsh'
+alias pgrep='pgrep -lf'
 
 # misc
 alias .='source'
