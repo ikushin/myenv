@@ -129,8 +129,8 @@ alias s='lsstat'
 alias ip='/sbin/ip -4 -oneline'
 alias ipa='/sbin/ip -4 -oneline addr | /bin/grep -vw lo | /bin/sed "s@/@ /@" | column -t | /bin/grep --color -P "(\d+\.){3}\d+" '
 alias ips='/sbin/ip -stats link show'
-alias netstat='/bin/netstat  --numeric --tcp --listen --program'
-alias unetstat='/bin/netstat --numeric --udp --listen --program'
+alias netstat='/bin/netstat  --numeric --tcp -4 --listen --program'
+alias unetstat='/bin/netstat --numeric --udp -4 --listen --program'
 
 # df
 alias df='df -PTh'

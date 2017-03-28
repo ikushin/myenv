@@ -9,6 +9,7 @@ cp:
 	uname -a | grep -qi 'ubuntu' && /bin/cp zshrc.ubuntu ~/.zshrc.ubuntu || true
 	wget -q -nc "https://raw.githubusercontent.com/maskedw/dotfiles/master/.gdbinit" -P $$HOME
 	grep -q 'release 7' /etc/redhat-release 2>/dev/null && /bin/cp -a zshrc.centos7 ~/.zshrc.centos7 || true
+	grep -q 'release 5' /etc/redhat-release 2>/dev/null && /bin/cp -a zshrc.centos5 ~/.zshrc.centos5 || true
 
 .PHONY: cygwin
 cygwin:
