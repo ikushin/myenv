@@ -1,4 +1,4 @@
 
-alias chkconfig="systemctl list-unit-files"
+alias chkconfig="systemctl --no-pager list-unit-files"
 alias pgrep="pgrep -la"
 
