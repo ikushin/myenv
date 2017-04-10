@@ -204,6 +204,7 @@ alias yum_group_list_hidden='yum group list hidden'
 alias yum_group_list_ja='LANG=ja_JP.UTF8 yum group list'
 alias yum_group_list_hidden_ja='LANG=ja_JP.UTF8 yum group list hidden'
 alias yum_group_info='yum group info'
+alias yum_group_install='yum group install'
 
 # a b c ファイル用
 alias via='vi -c startinsert a'
