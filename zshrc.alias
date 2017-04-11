@@ -72,6 +72,12 @@ alias -g A='| col'
 alias -g A1='A 1'
 alias -g A2='A 2'
 alias -g A3='A 3'
+alias -g A4='A 4'
+alias -g A5='A 5'
+alias -g A6='A 6'
+alias -g A7='A 7'
+alias -g A8='A 8'
+alias -g A9='A 9'
 
 # 紛らわしいもの
 alias -g Cut='|& cut -c -$(($COLUMNS-10))'
