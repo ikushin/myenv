@@ -1,15 +1,15 @@
 
 cp:
 	for i in zshrc inputrc screenrc vimrc zshrc.alias zshrc.git zshrc.func emacs.d; do /bin/cp -T -a ~/.myenv/$$i ~/.$$i; done
-	test -d /cygdrive/c && /bin/cp -a zshrc.cygwin ~/.zshrc.cygwin || true
+	-test -d /cygdrive/c && /bin/cp -a zshrc.cygwin ~/.zshrc.cygwin
 	[ -e ~/.localrc ] || /bin/cp localrc ~/.localrc
 	[ -d ~/.ssh ] || mkdir -p ~/.ssh && chmod 700 ~/.ssh
 	[ -e ~/.ssh/config ] || /bin/cp ssh_config ~/.ssh/config; chmod 600 ~/.ssh/config
 	cmp -s ssh_config_my ~/.ssh/config_my || cp ssh_config_my ~/.ssh/config_my
-	uname -a | grep -qi 'ubuntu' && /bin/cp zshrc.ubuntu ~/.zshrc.ubuntu || true
-	wget -q -nc "https://raw.githubusercontent.com/maskedw/dotfiles/master/.gdbinit" -P $$HOME
-	grep -q 'release 7' /etc/redhat-release 2>/dev/null && /bin/cp -a zshrc.centos7 ~/.zshrc.centos7 || true
-	grep -q 'release 5' /etc/redhat-release 2>/dev/null && /bin/cp -a zshrc.centos5 ~/.zshrc.centos5 || true
+	-uname -a | grep -qi 'ubuntu' && /bin/cp zshrc.ubuntu ~/.zshrc.ubuntu
+	-wget -q -nc "https://raw.githubusercontent.com/maskedw/dotfiles/master/.gdbinit" -P $$HOME
+	-grep -q 'release 7' /etc/redhat-release 2>/dev/null && /bin/cp -a zshrc.centos7 ~/.zshrc.centos7
+	-grep -q 'release 5' /etc/redhat-release 2>/dev/null && /bin/cp -a zshrc.centos5 ~/.zshrc.centos5
 
 .PHONY: cygwin
 cygwin:
@@ -99,7 +99,7 @@ zsh:
 	if [ ! -e /etc/issue ]; then true; else if [ `id -u` -eq 0 ]; then true; else false; fi; fi
 	/bin/rm -rf /tmp/zsh*
 	rpm --quiet -q ncurses-devel || sudo yum -y --disablerepo=updates install ncurses-devel; true
-	wget "https://sourceforge.net/projects/zsh/files/latest/download?source=files" -O /tmp/zsh.tar.gz
+	wget --no-check-certificate "https://sourceforge.net/projects/zsh/files/latest/download?source=files" -O /tmp/zsh.tar.gz
 	tar zxf /tmp/zsh.tar.gz -C /tmp
 	cd /tmp/zsh-* && ./configure && make && make install
 	sed -i 's/^clear/#&/' /etc/*/zlogout 2>/dev/null; true

@@ -47,6 +47,7 @@ alias git_stash_pop='git stash pop'
 alias git_squash_commit='git rebase -i HEAD~~~~~~~~~~'
 alias git_add_p='git add -p'
 alias git_add_dot='git add .'
+alias git_untrack='git update-index --skip-worktree'
 
 # あまり使わないもの
 #alias gs='git status --short --branch .'

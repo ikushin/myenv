@@ -17,14 +17,16 @@ alias ipgrep2='xgrep "(\d+\.){3}\d+" **/*~*.db(.) GV "127.0.0.1|0.0.0.0|\.hint|\
 alias -g G='|& grep -aP'
 alias -g GI='G -i'
 alias -g GV='G -v'
+alias -g Gv='GV'
 alias -g GVV='|& /bin/grep -Pv "^\s*(#|$|;)"'
 alias -g Gw='GI -w'
 
 alias -g FG='|& fgrep -a'
 alias -g FGV='FG -v'
 
-alias -g GF='G -f'
-alias -g GFV='G -vf'
+alias -g GF='|& egrep -f'
+alias -g Gf='GF'
+alias -g GFV='GF -v'
 alias -g GVF='GFV'
 
 alias -g GO='G -o'
@@ -33,7 +35,7 @@ alias -g GIO='GO -i'
 
 alias -g G-='|&/bin/grep -P -a "^-(?!-)"'
 alias -g G+='|&/bin/grep -P -a "^\+(?!\+)"'
-alias -g G++='|&/bin/egrep -a "^[+-][^+-]"'
+alias -g G++='|&/bin/egrep -a "^[+-][^+-]" GV "^.#"'
 alias -g G+++='G++ PE "s/^.//"'
 
 # perl
@@ -128,8 +130,9 @@ alias llll='lll -i --time-style=full-iso'
 alias l4='llll'
 alias la='ll -A'
 alias lld='ll -d'
-alias lsstat='stat -c "%A %a %U %G %N"'
-alias s='lsstat'
+alias stat_my='stat -c "%A %a %U %G %N"'
+alias s='stat_my'
+alias stat_my2='stat -c "%A %a %u %g %N"'
 
 # net
 alias ip='/sbin/ip -4 -oneline'
@@ -190,6 +193,7 @@ alias wget='wget -c'
 alias which='which -a'
 alias zsh='exec zsh'
 alias pgrep='pgrep -lf'
+alias tailf='tail -F'
 
 # misc
 alias .='source'
