@@ -113,8 +113,8 @@ alias date_today='/bin/date +%Y%m%d'
 alias date_yesterday='/bin/date --date "1 day ago" +%Y%m%d'
 
 # cp, mv
-alias cp='/bin/cp -ir'
-alias cpf='/bin/cp'
+alias cp='/bin/cp -a'
+alias cpf='cp -f'
 alias mv='/bin/mv -i'
 alias mvf='/bin/mv -f'
 alias rm='/bin/rm -i'

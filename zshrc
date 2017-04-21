@@ -84,7 +84,7 @@ bindkey -s "^X^F" '**/*(.) '
 
 
 # 単語区切り文字指定
-WORDCHARS='*?[]~&;!#$%^{}<>|'
+WORDCHARS='*?[]~&;!#$%{}<>|'
 export WORDCHARS
 
 # 補完強化
