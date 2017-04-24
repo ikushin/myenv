@@ -97,11 +97,10 @@ function _make
 }
 alias make='_make'
 
-function mydig
+function my_dig
 {
-    $(type -p dig | awk '{print $3}') $@ | /bin/egrep --color '$|.*SECTION.*'
+    dig $@ | /bin/egrep --color '$|.*SECTION.*'
 }
-
 
 function su_file() {
     [[ $# != 1 ]] && return

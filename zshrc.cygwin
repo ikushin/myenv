@@ -1,12 +1,11 @@
 
 # 名前付きディレクトリ
-hash -d ilog=/cygdrive/c/Users/ikushin/Documents/LimeChatLog
 hash -d llog=/cygdrive/c/Users/ikushin/Documents/LimeChatLog
 hash -d plog=/cygdrive/c/Users/ikushin/Documents/putty_log
 hash -d tlog=/cygdrive/c/Users/ikushin/Documents/teraterm_log
 hash -d desktop=/cygdrive/c/Users/ikushin/Desktop
 hash -d download=/cygdrive/c/Users/ikushin/Downloads
-hash -d tmacro=/cygdrive/c/teraterm/macro
+hash -d tmacro=/cygdrive/c/Users/ikushin/Documents/teraterm/macro
 
 # path
 path=( $path $(cygpath -W) $(cygpath -S){,/wbem} )
@@ -45,11 +44,11 @@ alias rpmqi='cygcheck -p'
 alias rpmql='cygcheck -l'
 
 # path alias
-alias p2u='LANG=ja_JP.UTF8 cygpath -am'
-alias win_p2u='p2u'
-alias path_to_unix='LANG=ja_JP.UTF8 cygpath -au'
+#alias p2u='LANG=ja_JP.UTF8 cygpath -am'
+#alias win_p2u='p2u'
+alias p2u='LANG=ja_JP.UTF8 cygpath -au'
 alias p2w='LANG=ja_JP.UTF8 cygpath -aw'
-alias path_to_win='p2w'
+#alias path_to_win='p2w'
 
 # galias
 alias -g CL='>& /dev/clipboard'

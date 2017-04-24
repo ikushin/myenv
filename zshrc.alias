@@ -40,6 +40,7 @@ alias -g G+++='G++ PE "s/^.//"'
 
 # perl
 alias perl_iple='perl -i -ple'
+alias perl_ple='perl -ple'
 alias perl_inle='perl -i -nle'
 alias -g PE='| perl -plae'
 alias -g PN='| perl -nlae'
