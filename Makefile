@@ -53,7 +53,7 @@ git:
 
     # 前準備
 	-egrep -q 'cygwin' <<<"$(T)" && [ ! -e /usr/local/perl/bin/perl ] && make perl
-	-egrep -q 'CentOS' <<<"$(T)" && { rpm --quiet -q $(PKG) || yum --disablerepo=updates install -y $(PKG); }
+	-egrep -iq 'centos|red hat' <<<"$(T)" && { rpm --quiet -q $(PKG) || yum --disablerepo=updates install -y $(PKG); }
 	-egrep -q 'Ubuntu' <<<"$(T)" && aptitude install -y gettext autoconf gettext asciidoc libcurl4-openssl-dev
 
     # コンパイル
