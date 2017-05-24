@@ -130,7 +130,7 @@ export PAGER=less
 export LESSCHARSET=utf-8
 
 # path
-path=( $HOME/bin{/*,}(N-/) /usr{/local,}/bin(N-/) /opt/*/*bin(N-/) /opt/*/*/*bin(N-/) \
+path=( $HOME{/local,}/bin{/*,}(N-/) /usr{/local,}/bin(N-/) /opt/*/*bin(N-/) /opt/*/*/*bin(N-/) \
     /usr/local/*bin(N-/) /usr/*bin(N-/) /*bin(N-/) /usr/ucb(N-/) )
 
 # cdpath

@@ -221,6 +221,11 @@ man:
 make:
 	@{ echo 'cat <<\EOF | base64 -di | tar zxvf -'; tar zcf - Makefile  | base64 -w120; echo EOF; } | tee /dev/clipboard
 
+email:
+	git clone "https://github.com/deanproxy/eMail.git" /tmp/eMail
+	git clone "https://github.com/deanproxy/dlib.git" /tmp/eMail/dlib
+	cd /tmp/eMail && ./configure && make && make install
+
 test:
 	$(eval T := $(shell echo $${OSTYPE}_$$(id -un)_$$(emacs --version 2>/dev/null | head -n1)))
 	echo $(T)
