@@ -114,7 +114,7 @@ alias date_today='/bin/date +%Y%m%d'
 alias date_yesterday='/bin/date --date "1 day ago" +%Y%m%d'
 
 # cp, mv
-alias cp='/bin/cp -a'
+alias cp='/bin/cp -ia'
 alias cpf='cp -f'
 alias mv='/bin/mv -i'
 alias mvf='/bin/mv -f'
@@ -136,7 +136,7 @@ alias s='stat_my'
 alias stat_my2='stat -c "%A %a %u %g %N"'
 
 # net
-alias ip='/sbin/ip -4 -oneline'
+#alias ip='/sbin/ip -4 -oneline'
 alias ipa='/sbin/ip -4 -oneline addr | /bin/grep -vw lo | /bin/sed "s@/@ /@" | column -t | /bin/grep --color -P "(\d+\.){3}\d+" '
 alias ips='/sbin/ip -stats link show'
 alias ipr='/sbin/ip route G ".*via\s+\S+"'
@@ -208,7 +208,7 @@ alias weeklyreport='em ~/sandbox/WeeklyReport'
 alias clock='clear; xcal; echo; while :; do printf "%s\r" "$(date +%T)"; sleep 1 ; done'
 alias c='clock'
 alias pyser='ipa; python -m CGIHTTPServer'
-alias mycurl='curl --location --silent --show-error --max-time 3'
+alias curl_my='curl --location --silent --show-error --max-time 3'
 alias path='readlink -f'
 
 # yum
