@@ -112,6 +112,7 @@ alias date_now='/bin/date +%F_%T'
 alias date_full='/bin/date +%F_%T_%N'
 alias date_today='/bin/date +%Y%m%d'
 alias date_yesterday='/bin/date --date "1 day ago" +%Y%m%d'
+alias date_MMDDhhmmYY='/bin/date +%m%d%H%M%y'
 
 # cp, mv
 alias cp='/bin/cp -ia'

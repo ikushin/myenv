@@ -1,0 +1,6 @@
+#
+proxy=http://10.0.0.1:8080
+export {HTTP{,S}_PROXY,http{,s}_proxy}=$proxy
+export no_proxy="127.0.0.1,localhost"
+no_proxy+=""
+
