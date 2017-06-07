@@ -1,9 +1,13 @@
+#
+SHELL := /bin/bash
 
 cp:
 	for i in zshrc inputrc screenrc vimrc zshrc.alias zshrc.git zshrc.func emacs.d; do /bin/cp -T -a ~/.myenv/$$i ~/.$$i; done
 	-test -d /cygdrive/c && /bin/cp -a zshrc.cygwin ~/.zshrc.cygwin
-	[ -e ~/.localrc ] || /bin/cp localrc ~/.localrc
-	[ -d ~/.ssh ] || mkdir -p ~/.ssh && chmod 700 ~/.ssh
+	#[ -e ~/.localrc ] || /bin/cp localrc ~/.localrc
+	[ -e ~/.zshrc.local ] || /bin/cp zshrc.local ~/.zshrc.local
+	#[ -d ~/.ssh ] || mkdir -p ~/.ssh && chmod 700 ~/.ssh
+	install -m 700 -d ~/.ssh
 	[ -e ~/.ssh/config ] || /bin/cp ssh_config ~/.ssh/config; chmod 600 ~/.ssh/config
 	cmp -s ssh_config_my ~/.ssh/config_my || cp ssh_config_my ~/.ssh/config_my
 	-uname -a | grep -qi 'ubuntu' && /bin/cp zshrc.ubuntu ~/.zshrc.ubuntu

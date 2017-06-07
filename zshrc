@@ -168,9 +168,7 @@ hash -d ss=~/.ssh
 mkdir -p $HOME/.cache/shell
 mkdir -p $HOME/.{trash,sandbox}
 
-export no_proxy="127.0.0.1,localhost"
-
-for i in .zshrc.{func,alias,git,cygwin,ubuntu,centos{5,7}} .zprompt .localrc .proxy
+for i in .zshrc.{func,alias,git,cygwin,ubuntu,centos{5,7},local,prompt} .proxy
 do
     test -e ~/$i && source $_
 done

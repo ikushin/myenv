@@ -45,6 +45,7 @@ alias perl_inle='perl -i -nle'
 alias -g PE='| perl -plae'
 alias -g PN='| perl -nlae'
 alias -g P0='| perl -00 -nae'
+alias -g SP='PE "s/\s+/ /"'
 
 # LANG
 alias lang_C='LANG=C LANGUAGE=C LC_ALL=C'
