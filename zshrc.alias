@@ -214,6 +214,7 @@ alias c='clock'
 alias pyser='ipa; python -m CGIHTTPServer'
 alias curl_my='curl --location --silent --show-error --max-time 3'
 alias path='readlink -f'
+alias delete_mailq='mailq Go "^\w+"|postsuper -d -'
 
 # yum
 alias yum_group_list='yum group list'
