@@ -168,7 +168,7 @@ hash -d ss=~/.ssh
 mkdir -p $HOME/.cache/shell
 mkdir -p $HOME/.{trash,sandbox}
 
-for i in .zshrc.{func,alias,git,cygwin,ubuntu,centos{5,7},local,prompt} .proxy
+for i in .zshrc.{func,alias,git,linux,cygwin,local,prompt} .proxy
 do
     test -e ~/$i && source $_
 done

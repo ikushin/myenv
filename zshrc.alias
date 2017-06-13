@@ -12,6 +12,9 @@ alias rgrep='g -v "^#|^$"'
 # ipgrep
 alias ipgrep='xgrep "(\d+\.){3}\d+"'
 alias ipgrep2='xgrep "(\d+\.){3}\d+" **/*~*.db(.) GV "127.0.0.1|0.0.0.0|\.hint|\.zone" Key "(\d+\.){3}\d+|^.*?:"'
+alias -g IP='|& ipgrep'
+alias -g IPO='IP -o'
+alias -g IPo='IPO'
 
 # -g grep
 alias -g G='|& grep -aP'
@@ -53,14 +56,6 @@ alias lang_EUC='LANG=ja_JP.eucJP'
 alias lang_UTF='LANG=ja_JP.UTF-8'
 alias lang_SJIS='LANG=ja_JP.UTF-8 LC_ALL=ja_JP.sjis'
 
-# RPM
-alias rpmqa='rpm -qa --queryformat="%{NAME}\t%{VERSION}-%{RELEASE}\n" SU Col'
-alias rpmql='rpm -ql'
-alias rpmqf='rpm -qf'
-alias rpmqi='rpm -qi'
-alias rpmqlp='rpm -qlp'
-alias rpmqip='rpm -qip'
-
 # galiases
 alias -g L='|&less -SLRi'
 alias -g H='|&head'
@@ -69,7 +64,7 @@ alias -g WC='|&wc -l'
 alias -g S='GVV PE "s/\s+/ /g" PE "s/^\s*//" PE "s/\s*$//" |& sort'
 alias -g SC='S |uniq -c |sort -n'
 alias -g SU='S |uniq'
-alias -g M='| md5sum'
+alias -g M='S| md5sum'
 alias -g D='| diff $_ -'
 alias -g J='2>/dev/null |jq .'
 alias -g A='| col'
@@ -137,20 +132,6 @@ alias stat_my='stat -c "%A %a %U %G %N"'
 alias s='stat_my'
 alias stat_my2='stat -c "%A %a %u %g %N"'
 
-# net
-#alias ip='/sbin/ip -4 -oneline'
-alias ipa='/sbin/ip -4 -oneline addr | /bin/grep -vw lo | /bin/sed "s@/@ /@" | column -t | /bin/grep --color -P "(\d+\.){3}\d+" '
-alias ips='/sbin/ip -stats link show'
-alias ipr='/sbin/ip route G ".*via\s+\S+"'
-#alias netstat='/bin/netstat  --numeric --tcp --inet --listen --program'
-#alias net='netstat'
-alias netstat_tcp='/bin/netstat -tlnp4'
-alias netstat_udp='/bin/netstat -ulnp4'
-alias n='/bin/netstat -tlnp4'
-alias nn='/bin/netstat -tlnp46'
-alias nnn='/bin/netstat -tulnp46'
-alias n4='nnn G "^.(cp|dp)" PE "s/p6/p/" PE "s/:(\d+\s)/ \$1/" PE "s/\s+/ /g" S -k1,1 -k5,5 Col'
-
 # df
 alias df='df -PTh'
 alias df.='df .'
@@ -215,14 +196,6 @@ alias pyser='ipa; python -m CGIHTTPServer'
 alias curl_my='curl --location --silent --show-error --max-time 3'
 alias path='readlink -f'
 alias delete_mailq='mailq Go "^\w+"|postsuper -d -'
-
-# yum
-alias yum_group_list='yum group list'
-alias yum_group_list_hidden='yum group list hidden'
-alias yum_group_list_ja='LANG=ja_JP.UTF8 yum group list'
-alias yum_group_list_hidden_ja='LANG=ja_JP.UTF8 yum group list hidden'
-alias yum_group_info='yum group info'
-alias yum_group_install='yum group install'
 
 # a b c ファイル用
 alias via='vi -c startinsert a'

@@ -1,0 +1,36 @@
+
+# RPM
+alias rpmqa2='rpm -qa --queryformat="%{NAME}\t%{VERSION}-%{RELEASE}\n" SU Col'
+alias rpmqa='rpm -qa --queryformat="%{NAME}\t%{VERSION}\t%{RELEASE}\n" SU Col'
+alias rpmql='rpm -ql'
+alias rpmqf='rpm -qf'
+alias rpmqi='rpm -qi'
+alias rpmqlp='rpm -qlp'
+alias rpmqip='rpm -qip'
+
+# net
+#alias ip='/sbin/ip -4 -oneline'
+alias ipa='/sbin/ip -4 -oneline addr | /bin/grep -vw lo | /bin/sed "s@/@ /@" | column -t | /bin/grep --color -P "(\d+\.){3}\d+" '
+alias ips='/sbin/ip -stats link show'
+alias ipr='/sbin/ip route G ".*via\s+\S+"'
+#alias netstat='/bin/netstat  --numeric --tcp --inet --listen --program'
+#alias net='netstat'
+alias netstat_tcp='/bin/netstat -tlnp4'
+alias netstat_udp='/bin/netstat -ulnp4'
+alias n='/bin/netstat -tlnp4'
+alias nn='/bin/netstat -tlnp46'
+alias nnn='/bin/netstat -tulnp46'
+alias n4='nnn G "^.(cp|dp)" PE "s/p6/p/" PE "s/:(\d+\s)/ \$1/" PE "s/\s+/ /g" S -k1,1 -k5,5 Col'
+
+# yum
+alias yum_group_list='yum group list'
+alias yum_group_list_hidden='yum group list hidden'
+alias yum_group_list_ja='LANG=ja_JP.UTF8 yum group list'
+alias yum_group_list_hidden_ja='LANG=ja_JP.UTF8 yum group list hidden'
+alias yum_group_info='yum group info'
+alias yum_group_install='yum group install'
+
+for i in .zshrc.{ubuntu,centos{5,7}}
+do
+    test -e ~/$i && source $_
+done
