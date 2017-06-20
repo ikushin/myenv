@@ -22,6 +22,7 @@ alias n='netstat_tcp'
 alias nn="n -6 |tail -n+2 PE 's/l Address/_Address Port/' PE 's/ Address/_Address/' PE 's/ name/_name/' PE 's/:(\d+\s)/ \$1/' PE 's/\s+/ /g' S -k5n,5 Col"
 #alias nnn='/bin/netstat -tulnp46'
 #alias n4='nnn G "^.(cp|dp)" PE "s/p6/p/" PE "s/:(\d+\s)/ \$1/" PE "s/\s+/ /g" S -k1,1 -k5n,5 Col'
+alias arp='arp -n'
 
 # yum
 alias yum_group_list='yum group list'
