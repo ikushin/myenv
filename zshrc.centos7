@@ -1,4 +1,4 @@
 
 alias chkconfig="systemctl --no-pager list-unit-files -t service --state=enabled --state=disabled"
-alias pgrep="pgrep -la"
+alias pgrep="pgrep -af"
 

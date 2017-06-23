@@ -229,6 +229,11 @@ email:
 	git clone "https://github.com/deanproxy/dlib.git" /tmp/eMail/dlib
 	cd /tmp/eMail && ./configure && make && make install
 
+email_local:
+	git clone "https://github.com/deanproxy/eMail.git" $$HOME/tmp/eMail
+	git clone "https://github.com/deanproxy/dlib.git" $$HOME/tmp/eMail/dlib
+	cd ~/tmp/eMail && ./configure --prefix=$$HOME/local && make && make install
+
 test:
 	$(eval T := $(shell echo $${OSTYPE}_$$(id -un)_$$(emacs --version 2>/dev/null | head -n1)))
 	echo $(T)
