@@ -162,7 +162,7 @@ TERM=linux
 
 # 名前付きdir
 hash -d mm=~/.myenv
-hash -d ss=~/.ssh
+hash -d sss=~/.ssh
 
 # mkdir
 mkdir -p $HOME/.cache/shell
