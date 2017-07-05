@@ -2,7 +2,7 @@
 SHELL := /bin/bash
 
 cp:
-	for i in zshrc inputrc screenrc vimrc zshrc.alias zshrc.git zshrc.func emacs.d; do /bin/cp -T -a ~/.myenv/$$i ~/.$$i; done
+	for i in zlogin zshrc inputrc screenrc vimrc zshrc.alias zshrc.git zshrc.func emacs.d; do /bin/cp -T -a ~/.myenv/$$i ~/.$$i; done
 	test -d /cygdrive/c && /bin/cp -a zshrc.cygwin ~/.zshrc.cygwin || true
 	[ -e ~/.zshrc.local ] || /bin/cp zshrc.local ~/.zshrc.local
 	install -m 700 -d ~/.ssh
