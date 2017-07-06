@@ -80,6 +80,7 @@ bindkey -e
 bindkey '^O'   accept-line-and-down-history
 bindkey "^[H"  backward-kill-word
 bindkey "^[h"  backward-kill-word
+bindkey '^[w'  kill-region
 bindkey -s "^X^F" '**/*(.) '
 
 
