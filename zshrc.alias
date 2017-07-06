@@ -132,7 +132,7 @@ alias l4='llll'
 alias la='ll -A'
 alias lld='ll -d'
 alias stat_my='stat -c "%A %a %U %G %N"'
-alias s='stat_my'
+alias lsstat='stat_my'
 alias stat_my2='stat -c "%A %a %u %g %N"'
 
 # df
