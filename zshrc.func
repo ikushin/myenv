@@ -89,6 +89,15 @@ alias -g GK='|& grep_keyword'
 alias -g Key='|& grep_keyword_i'
 alias -g KEY='|& grep_keyword'
 
+function grep_keyword__i() {
+    /bin/grep -i -P --color "$|.*$@.*"
+}
+function grep_keyword_() {
+    /bin/grep -P --color "$|.*$@.*"
+}
+alias -g KKey='|& grep_keyword__i'
+alias -g KKEY='|& grep_keyword_'
+
 function _make
 {
     LANG=C

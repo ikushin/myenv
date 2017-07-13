@@ -9,20 +9,22 @@ alias rpmqi='rpm -qi'
 alias rpmqlp='rpm -qlp'
 alias rpmqip='rpm -qip'
 
-# net
+# ip, iproute, arp
 alias ip='/sbin/ip -4'
 alias ipa='/sbin/ip -4 -oneline addr | /bin/grep -vw lo | /bin/sed "s@/@ /@" | column -t | /bin/grep --color -P "(\d+\.){3}\d+" '
 alias ips='/sbin/ip -stats link show'
 alias ipr='/sbin/ip route G ".*via\s+\S+"'
+alias arp='arp -n'
+
+# netstat
 #alias netstat='/bin/netstat  --numeric --tcp --inet --listen --program'
 #alias net='netstat'
 alias netstat_tcp='/bin/netstat -tlnp4'
 alias netstat_udp='/bin/netstat -ulnp4'
-alias n='netstat_tcp'
-alias nn="n -6 |tail -n+2 PE 's/l Address/_Address Port/' PE 's/ Address/_Address/' PE 's/ name/_name/' PE 's/:(\d+\s)/ \$1/' PE 's/\s+/ /g' S -k5n,5 Col"
-#alias nnn='/bin/netstat -tulnp46'
+alias n='netstat_tcp G "^tcp" PE "s/:/ /" | sort -k5n,5 Col'
+alias nn="/bin/netstat -tlnp46 |tail -n+2 PE 's/l Address/_Address Port/' PE 's/ Address/_Address/' PE 's/ name/_name/' PE 's/:(\d+\s)/ \$1/' PE 's/\s+/ /g' S -k5n,5 Col"
+alias nnn="/bin/netstat -tulnp4 PE 's/:/ /' | sort -k1,1 -k5n,5 Col"
 #alias n4='nnn G "^.(cp|dp)" PE "s/p6/p/" PE "s/:(\d+\s)/ \$1/" PE "s/\s+/ /g" S -k1,1 -k5n,5 Col'
-alias arp='arp -n'
 
 # yum
 alias yum_group_list='yum group list'

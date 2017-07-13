@@ -42,8 +42,9 @@ alias -g G++='|&/bin/egrep -a "^[+-][^+-]" GV "^.#"'
 alias -g G+++='G++ PE "s/^.//"'
 
 # perl
-alias perl_iple='perl -i -ple'
 alias perl_ple='perl -ple'
+alias perl_iple='perl -i -ple'
+alias perl_plei='perl -i -ple'
 alias perl_inle='perl -i -nle'
 alias -g PE='| perl -plae'
 alias -g PN='| perl -nlae'
@@ -115,7 +116,7 @@ alias date_MMDDhhmmYY='/bin/date +%m%d%H%M%y'
 
 # cp, mv
 alias cp='/bin/cp -ia'
-alias cpf='cp -f'
+alias cpf='/bin/cp -f'
 alias mv='/bin/mv -i'
 alias mvf='/bin/mv -f'
 alias rm='/bin/rm -i'
