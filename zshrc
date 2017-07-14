@@ -163,7 +163,7 @@ TERM=linux
 
 # 名前付きdir
 hash -d mm=~/.myenv
-hash -d sss=~/.ssh
+hash -d .s=~/.ssh
 
 # mkdir
 mkdir -p $HOME/.cache/shell
