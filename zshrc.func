@@ -80,20 +80,20 @@ function sa() {
 }
 
 function grep_keyword() {
-    /bin/grep -P --color "$|$@"
+    /bin/grep -P --color --line-buffered "$|$@"
 }
 function grep_keyword_i() {
-    /bin/grep -i -P --color "$|$@"
+    /bin/grep -i -P --color --line-buffered "$|$@"
 }
 alias -g GK='|& grep_keyword'
 alias -g Key='|& grep_keyword_i'
 alias -g KEY='|& grep_keyword'
 
 function grep_keyword__i() {
-    /bin/grep -i -P --color "$|.*$@.*"
+    /bin/grep -i -P --color --line-buffered "$|.*$@.*"
 }
 function grep_keyword_() {
-    /bin/grep -P --color "$|.*$@.*"
+    /bin/grep -P --color --line-buffered "$|.*$@.*"
 }
 alias -g KKey='|& grep_keyword__i'
 alias -g KKEY='|& grep_keyword_'
