@@ -1,4 +1,4 @@
-#!/usr/bin/python3 a.py example_20110708a.xlsx
+#!/usr/bin/python3
 #
 import sys
 import re
