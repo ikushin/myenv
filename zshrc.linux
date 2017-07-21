@@ -1,4 +1,20 @@
 
+# ps
+alias ps_full='ps -eo "user,pid,ppid,pgid,pcpu,pmem,vsz,rss,stat,min_flt,maj_flt,lstart,command"'
+alias ps_full_cpu='ps_full --sort -pcpu'
+alias ps_full_mem='ps_full --sort -pmem'
+alias pstree='pstree -p'
+alias free='free -m'
+alias locate='locate -r'
+alias pgrep='pgrep -lf'
+
+# dstat
+if which dstat >&/dev/null; then
+   alias dstat='dstat --load --cpu --disk --net --page --sys --proc --mem --swap --bits'
+   alias dstat_cpu='dstat --load --cpu --cpu-use --float'
+   alias dstat_full='dstat --nocolor --full'
+fi
+
 # RPM
 alias rpmqa2='rpm -qa --queryformat="%{NAME}\t%{VERSION}-%{RELEASE}\n" SU Col'
 alias rpmqa='rpm -qa --queryformat="%{NAME}\t%{VERSION}\t%{RELEASE}\n" SU Col'

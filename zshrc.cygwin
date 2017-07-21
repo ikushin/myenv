@@ -121,9 +121,11 @@ alias vagrant_snapshot_pop='vagrant snapshot pop'
 /bin/ls -d ~/sandbox/*(m+7) 2>/dev/null | xargs -r /bin/mv -t ~/sandbox/.trash
 
 # ログアーカイブ
-test -e ~/bin/puttylog_archive.sh && bash $_
-test -e ~/bin/teraterm_archive.sh && bash $_
+test -e $HOME/bin/puttylog_archive.sh && bash $_
+test -e $HOME/bin/teraterm_archive.sh && bash $_
+test -e $HOME/bin/dsp_archive.sh      && bash $_
 
 # rc
 [ `pwd` = "/usr/bin" ] && cd $HOME
 chcp 437 >/dev/null
+

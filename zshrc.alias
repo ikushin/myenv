@@ -152,31 +152,20 @@ alias fe='femacs'
 alias ff='femacs'
 alias ee='femacs'
 
-# dstat
-if which dstat >&/dev/null; then
-   alias dstat='dstat --nocolor --load --cpu --disk --net --page --sys --proc --mem --swap --bits'
-   alias dstat_cpu='dstat --load --cpu --cpu-use --float'
-   alias dstat_full='dstat --nocolor --full'
-fi
-
 # alias
 #alias sar='sar -q'
 #alias sed='sed --regexp-extended --follow-symlinks'
-alias Du='du -sh * .* | sort -h'
+alias Du='du -sh * .* 2>/dev/null | sort -h'
 alias cata='cat -A'
 alias cscope='cscope -b'
 alias ct='cut -c -$(($COLUMNS-10))'
 alias diff='diff -tbwrN --unified=1'
 alias fmt='fmt -s -w $(($COLUMNS))'
-alias free='free -m'
 alias jq='jq -r'
 alias less='LANG=ja_JP.UTF8 less -iR'
-alias locate='locate -r'
 alias m='md5sum'
 alias md5sum='md5sum --text'
 alias nkf='nkf -f80-0'
-alias ps_full='ps -eo "user,pid,ppid,pgid,pcpu,pmem,vsz,rss,stat,min_flt,maj_flt,lstart,command"'
-alias pstree='pstree -p'
 alias scp='scp -r'
 alias ssh='ssh -C -o "StrictHostKeyChecking no"'
 alias time='/usr/bin/time -p'
@@ -184,7 +173,6 @@ alias type='type -a'
 alias wget='wget -c'
 alias which='which -a'
 alias zsh='exec zsh'
-alias pgrep='pgrep -lf'
 alias tailf='tail -F'
 
 # misc
