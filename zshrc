@@ -151,6 +151,9 @@ typeset -U path cdpath fpath manpath
 eval $(dircolors --bourne-shell)
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
+# ヒストリサーチに色を付ける
+zle_highlight=(isearch:fg=red)
+
 # color echo
 nc='\033[0m'
 red='\033[0;31m'
