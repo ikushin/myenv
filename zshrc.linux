@@ -35,11 +35,12 @@ alias arp='arp -n'
 # netstat
 #alias netstat='/bin/netstat  --numeric --tcp --inet --listen --program'
 #alias net='netstat'
-alias netstat_tcp='/bin/netstat -tlnp4'
-alias netstat_udp='/bin/netstat -ulnp4'
-alias n='netstat_tcp G "^tcp" PE "s/:/ /" | sort -k5n,5 Col'
-alias nn="/bin/netstat -tlnp46 |tail -n+2 PE 's/l Address/_Address Port/' PE 's/ Address/_Address/' PE 's/ name/_name/' PE 's/:(\d+\s)/ \$1/' PE 's/\s+/ /g' S -k5n,5 Col"
-alias nnn="/bin/netstat -tulnp4 PE 's/:/ /' | sort -k1,1 -k5n,5 Col"
+alias netstat_tcp='/bin/netstat -tlnp --inet'
+alias netstat_udp='/bin/netstat -ulnp --inet'
+alias n='netstat_tcp | tail -n+3 PE "s/:/ /" | sort -k5n,5 Col'
+alias nn="netstat_tcp --inet6 |tail -n+2 PE 's/l Address/_Address Port/' PE 's/ Address/_Address/' PE 's/ name/_name/' PE 's/:(\d+\s)/ \$1/' PE 's/\s+/ /g' S -k5n,5 Col"
+alias nu='netstat_udp | tail -n+3 PE "s/:/ /" | sort -k5n,5 Col'
+#alias nnn="/bin/netstat -tulnp --inet --inet6 | tail -n+3 PE 's/:/ /' | sort -k1,1 -k5n,5 Col"
 #alias n4='nnn G "^.(cp|dp)" PE "s/p6/p/" PE "s/:(\d+\s)/ \$1/" PE "s/\s+/ /g" S -k1,1 -k5n,5 Col'
 
 # yum
