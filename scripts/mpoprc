@@ -1,0 +1,22 @@
+# Set default values for all following accounts.
+defaults
+auth user
+
+# Account1
+account alice
+host localhost
+user alice
+password alice
+delivery mbox ~/mbox_alice
+keep off
+
+# Account2
+account bob
+host localhost
+user bob
+password bob
+delivery mbox ~/mbox_bob
+keep on
+
+# Set a default account
+account default : alice
