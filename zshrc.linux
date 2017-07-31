@@ -26,7 +26,7 @@ alias rpmqlp='rpm -qlp'
 alias rpmqip='rpm -qip'
 
 # ip, iproute, arp
-alias ip='/sbin/ip -4'
+#alias ip='/sbin/ip -4'
 alias ipa='/sbin/ip -4 -oneline addr | /bin/grep -vw lo | /bin/sed "s@/@ /@" | column -t | /bin/grep --color -P "(\d+\.){3}\d+" '
 alias ips='/sbin/ip -stats link show'
 alias ipr='/sbin/ip route G ".*via\s+\S+"'
