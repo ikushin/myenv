@@ -21,8 +21,8 @@ bindkey -s "^[v"    "git checkout "
 bindkey -s "^[l"    'git log --color=always --oneline --decorate --no-merges -$((LINES-10)) '
 bindkey -s "^G^L"   'git log --color=always --name-status --no-merges '
 
-# Git aliases
-if git --version |& grep -q "1.8"; then
+# git diff
+if git --version |& grep -Pq "1.[78]"; then
     bindkey -s "^G^L^L" 'git log --color=always -p --ignore-space-change --ignore-all-space --ignore-space-at-eol --break-rewrites -t --no-merges '
     alias gitdiff='git diff --ignore-space-change --ignore-all-space --ignore-space-at-eol --color=auto'
     alias gll='git log --color=auto -p --ignore-space-change --ignore-all-space --ignore-space-at-eol --break-rewrites -t --no-merges'
@@ -31,6 +31,8 @@ else
     alias gitdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --color=auto'
     alias gll='git log --color=auto -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges'
 fi
+
+# Git aliases
 alias gd='git dsf'
 alias gc='git checkout'
 alias gcm='git checkout master'
