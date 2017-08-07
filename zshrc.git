@@ -31,6 +31,8 @@ else
     alias gitdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --color=auto'
     alias gll='git log --color=auto -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges'
 fi
+alias git_diff='gitdiff'
+alias git_diff_stage='gitdiff --cached'
 
 # Git aliases
 alias gd='git dsf'
@@ -40,7 +42,8 @@ alias gl='git log --color=always --name-status --no-merges'
 alias gp='git push origin master'
 alias ga='git add '
 
-alias git_unstage='git reset HEAD'
+#alias git_unstage='git reset HEAD'
+alias git_unstage='git rm --cached'
 alias git_modify_message='git commit --amend'
 alias git_rename_branch='git branch -m'
 alias git_clean_dryrun='git clean -nd'
