@@ -45,7 +45,7 @@ dstat:
 PKG=libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker wget gcc
 git:
     # 最新バージョン取得
-	$(eval V := $(shell curl --max-time 3 -Ls https://www.kernel.org/pub/software/scm/git/ | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | sort -V | tail -n1))
+	$(eval V := $(shell curl --max-time 3 -Lsk https://www.kernel.org/pub/software/scm/git/ | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | sort -V | tail -n1))
 
     # ホストの情報収集
 	$(eval T := $(shell echo $${OSTYPE}_$$(id -un)_$$(/usr/local/bin/git --version 2>/dev/null)_$$(head -1 /etc/issue 2>/dev/null)_$$(cat /etc/redhat-release)))
@@ -62,22 +62,25 @@ git:
     # コンパイル
 	/bin/rm -rf /tmp/git-*/
 	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O /tmp/git.tar.gz; tar zxf /tmp/git.tar.gz -C /tmp
-	export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl); cd /tmp/git-*; ./configure --without-tcltk && make && make install
+	export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl); cd /tmp/git-*; ./configure --prefix=/usr/local/git-$(V) --without-tcltk && make && make install
 
     # ユーティリティインストール
 	make git_config
+
 git_config:
-	mkdir /usr/local/share/git-core/contrib; cp -a /tmp/git-*/contrib/diff-highlight /usr/local/share/git-core/contrib
-	git config --global pager.log  '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less'
-	git config --global pager.show '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less'
-	git config --global pager.diff '/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less'
+	make -C /tmp/git-*/contrib/diff-highlight
+	mv /tmp/git-*/contrib/diff-highlight/diff-highlight /usr/local/bin
+	git config --global pager.log  'diff-highlight | less'
+	git config --global pager.show 'diff-highlight | less'
+	git config --global pager.diff 'diff-highlight | less'
 	git config --global diff.compactionHeuristic true
 	git config --global user.email "you@example.com"
 	git config --global user.name "ikushin"
 	git config --global http.sslVerify false
 	git config --global core.quotepath false
 	git config --global status.showuntrackedfiles all
-	-test -d /usr/local/share/git-core/contrib/diff-so-fancy/ || make diff-so-fancy
+	#-test -d /usr/local/share/git-core/contrib/diff-so-fancy/ || make diff-so-fancy
+
 diff-so-fancy:
 	cd /usr/local/share/git-core/contrib && git clone "https://github.com/so-fancy/diff-so-fancy.git" 2>/dev/null
 	test -d /cygdrive/c && sed -i '1i #!/usr/local/perl/bin/perl' /usr/local/share/git-core/contrib/diff-so-fancy/libexec/diff-so-fancy.pl || true
