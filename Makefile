@@ -64,31 +64,29 @@ git:
 	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O /tmp/git.tar.gz; tar zxf /tmp/git.tar.gz -C /tmp
 	export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl); cd /tmp/git-*; ./configure --prefix=/usr/local/git-$(V) --without-tcltk && make && make install
 
-    # ユーティリティインストール
-	make git_config
-
-git_config:
+    # diff-highlight
 	make -C /tmp/git-*/contrib/diff-highlight
-	mv /tmp/git-*/contrib/diff-highlight/diff-highlight /usr/local/bin
+	/bin/mv /tmp/git-*/contrib/diff-highlight/diff-highlight /usr/local/bin
 	git config --global pager.log  'diff-highlight | less'
 	git config --global pager.show 'diff-highlight | less'
 	git config --global pager.diff 'diff-highlight | less'
 	git config --global diff.compactionHeuristic true
+	git config --global color.diff-highlight.oldNormal    "red   bold"
+	git config --global color.diff-highlight.oldHighlight "red   bold 52"
+	git config --global color.diff-highlight.newNormal    "green bold"
+	git config --global color.diff-highlight.newHighlight "green bold 22"
+
+    # Config
 	git config --global user.email "you@example.com"
 	git config --global user.name "ikushin"
 	git config --global http.sslVerify false
 	git config --global core.quotepath false
 	git config --global status.showuntrackedfiles all
-	#-test -d /usr/local/share/git-core/contrib/diff-so-fancy/ || make diff-so-fancy
 
 diff-so-fancy:
 	cd /usr/local/share/git-core/contrib && git clone "https://github.com/so-fancy/diff-so-fancy.git" 2>/dev/null
 	test -d /cygdrive/c && sed -i '1i #!/usr/local/perl/bin/perl' /usr/local/share/git-core/contrib/diff-so-fancy/libexec/diff-so-fancy.pl || true
 	git config --global alias.dsf '!f() { [ -z "$$GIT_PREFIX" ] || cd "$$GIT_PREFIX" && git --no-pager diff -b -w --ignore-blank-lines --ignore-space-at-eol --color "$$@" | /usr/local/share/git-core/contrib/diff-so-fancy/diff-so-fancy; }; f'
-	git config --global color.diff-highlight.oldNormal    "red bold"
-	git config --global color.diff-highlight.oldHighlight "red bold 52"
-	git config --global color.diff-highlight.newNormal    "green bold"
-	git config --global color.diff-highlight.newHighlight "green bold 22"
 
 openssh:
 	SSH_PKG="bash"
