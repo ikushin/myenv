@@ -1,7 +1,13 @@
 
 # Git key binds
-bindkey -s '^G^S' "git status --short --branch . "
-bindkey -s "^[s"  "git status --short --branch "
+if git --version |& grep -Pq "1.[7]"; then
+    bindkey -s '^G^S' "git status --short . "
+    bindkey -s "^[s"  "git status --short "
+else
+    bindkey -s '^G^S' "git status --short --branch . "
+    bindkey -s "^[s"  "git status --short --branch "
+fi
+
 bindkey -s "^[b"  "git branch --verbose --all "
 bindkey -s "^G^B" "git branch --verbose --all"
 bindkey -s "^[f"  "gitdiff "
