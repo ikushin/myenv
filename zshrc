@@ -75,6 +75,9 @@ unsetopt flow_control   # ignore ctrl-s
 unsetopt list_types
 unsetopt prompt_cr
 
+autoload -Uz is-at-least
+is-at-least 5.2 && setopt glob_star_short  # **.c で **/*.c と同じ展開をする
+
 # key binds
 bindkey -e
 bindkey '^O'   accept-line-and-down-history
