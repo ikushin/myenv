@@ -24,6 +24,8 @@
 (define-key global-map [f1] 'woman)
 (define-key global-map [f3] 'previous-error)
 (define-key global-map [f4] 'next-error)
+(bind-key "M-o r" 'previous-error)
+(bind-key "M-o s" 'next-error)
 ;(define-key global-map [f7] 'compile)
 (define-key global-map [f8] 'YaCompile)
 

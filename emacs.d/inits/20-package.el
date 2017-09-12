@@ -14,6 +14,7 @@
     browse-kill-ring
     recentf-ext
     yaml-mode
+    bind-key
     ))
 
 (let ((not-installed (loop for x in installing-package-list

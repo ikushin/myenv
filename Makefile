@@ -154,7 +154,7 @@ git_clone:
 .PHONY : emacs
 emacs:
     # 最新バージョン取得
-	$(eval V := $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | /bin/grep -Po '(?<=emacs-)24\.\d+' | tail -n1))
+	$(eval V := $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | /bin/grep -Po '(?<=emacs-)25\.\d+' | tail -n1))
 
     # ホストの情報収集
 	$(eval T := $(shell echo $${OSTYPE}_$$(id -un)_$$(emacs --version 2>/dev/null | head -n1)))
@@ -166,7 +166,7 @@ emacs:
 	make _emacs
 _emacs:
 	make package
-	$(eval V := $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | /bin/grep -Po '(?<=emacs-)24\.\d+' | tail -n1))
+	$(eval V := $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | /bin/grep -Po '(?<=emacs-)25\.\d+' | tail -n1))
 	wget --no-check-certificate "https://mirror.jre655.com/GNU/emacs/emacs-$(V).tar.gz" -O /tmp/emacs.tar.gz; tar zxf /tmp/emacs.tar.gz -C /tmp
 	cd /tmp/emacs-* && ./configure --without-x && LANG=C make && make install
 	/bin/rm -rf /tmp/emacs-*
