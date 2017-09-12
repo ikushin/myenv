@@ -63,6 +63,7 @@ git:
 	/bin/rm -rf /tmp/git-*/
 	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O /tmp/git.tar.gz; tar zxf /tmp/git.tar.gz -C /tmp
 	export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl); cd /tmp/git-*; ./configure --prefix=/usr/local/git-$(V) --without-tcltk && make && make install
+	ln -snf /usr/local/git-$(V) /usr/local/git
 
     # diff-highlight
 	make -C /tmp/git-*/contrib/diff-highlight
@@ -164,6 +165,7 @@ emacs:
 	/bin/rm -rf /tmp/emacs-*
 	make _emacs
 _emacs:
+	make package
 	$(eval V := $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | /bin/grep -Po '(?<=emacs-)24\.\d+' | tail -n1))
 	wget --no-check-certificate "https://mirror.jre655.com/GNU/emacs/emacs-$(V).tar.gz" -O /tmp/emacs.tar.gz; tar zxf /tmp/emacs.tar.gz -C /tmp
 	cd /tmp/emacs-* && ./configure --without-x && LANG=C make && make install

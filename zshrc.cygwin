@@ -42,6 +42,7 @@ alias sudo=''
 
 ## rpm
 alias rpmqa='cygcheck -c -d'
+alias rpmq='rpmqa'
 alias rpmqf='cygcheck -f'
 alias rpmqi='cygcheck -p'
 alias rpmql='cygcheck -l'
