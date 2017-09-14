@@ -5,9 +5,9 @@
 ;;;; 遅延時間
 (setq show-paren-delay 0)
 ;;;; 括弧の中をすべて強調表示
-(setq show-paren-style 'expression)
+;(setq show-paren-style 'expression)
 ;;;; 括弧だけを強調表示
-;(setq show-paren-style 'parenthesis)
+(setq show-paren-style 'parenthesis)
 ;;;; 対応する括弧が画面内にあるかどうかで強調を変える
 ;(setq show-paren-style 'mixed)
 
@@ -21,4 +21,14 @@
 (setq bs-default-configuration "all")
 
 ;; 単語単位で補完する (e.g. p_h -> public_htmlm, _.-)
-(partial-completion-mode 1)
+;(partial-completion-mode 1)
+
+;; smart-tab
+; nilならばdabbrev-expand, tならばhippie-expandで補完する
+(setq smart-tab-using-hippie-expand t)
+; モードごとの補完コマンドの設定
+(setq smart-tab-completion-functions-alist
+      '((emacs-lisp-mode . lisp-complete-symbol)
+        (text-mode       . dabbrev-completion)))
+; プログラミング言語のモードのみ有効にする
+(add-hook 'prog-mode-hook 'smart-tab-mode)

@@ -15,6 +15,8 @@
     recentf-ext
     yaml-mode
     bind-key
+    smart-tab
+    auto-shell-command
     ))
 
 (let ((not-installed (loop for x in installing-package-list
@@ -24,4 +26,3 @@
     (package-refresh-contents)
     (dolist (pkg not-installed)
         (package-install pkg))))
-
