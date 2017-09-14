@@ -1,5 +1,9 @@
 #
 SHELL := /bin/bash
+HOST := $(shell echo $$(uname -s)_$$EUID )
+USER := $(shell if egrep -qi 'cygwin|_0$$' <<<$(HOST); then echo "root"; else echo "non_root"; fi )
+PREFIX := $(shell if [[ ${USER} == "root" ]]; then echo "/usr/local"; else echo "$$HOME/local"; fi )
+GIT_VERSION := $(shell git --version 2>/dev/null )
 
 cp:
 	for i in zlogin zshrc inputrc screenrc vimrc zshrc.alias zshrc.git zshrc.func emacs.d; do /bin/cp -T -a ~/.myenv/$$i ~/.$$i; done
@@ -13,6 +17,13 @@ cp:
 	uname -a |& grep -qi "linux" && /bin/cp -a zshrc.linux ~/.zshrc.linux || true
 	grep -q 'release 7' /etc/redhat-release 2>/dev/null && /bin/cp -a zshrc.centos7 ~/.zshrc.centos7 || true
 	grep -q 'release 5' /etc/redhat-release 2>/dev/null && /bin/cp -a zshrc.centos5 ~/.zshrc.centos5 || true
+
+test:
+	@echo $(HOST)
+	@echo $(USER)
+	@echo $(PREFIX)
+	@echo $(GIT_VERSION)
+	#if [[ ${USER} == "root" ]]; then echo "/usr/local"; else echo "$$HOME/local"; fi
 
 .PHONY: cygwin
 cygwin:
@@ -44,30 +55,28 @@ dstat:
 
 PKG=libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker wget gcc
 git:
-    # 最新バージョン取得
-	$(eval V := $(shell curl --max-time 3 -Lsk https://www.kernel.org/pub/software/scm/git/ | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | sort -V | tail -n1))
-
-    # ホストの情報収集
-	$(eval T := $(shell echo $${OSTYPE}_$$(id -un)_$$(/usr/local/bin/git --version 2>/dev/null)_$$(head -1 /etc/issue 2>/dev/null)_$$(cat /etc/redhat-release)))
+    # gitの最新バージョン取得
+	@$(eval V := $(shell curl --max-time 3 -Lsk https://www.kernel.org/pub/software/scm/git/ | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | sort -V | tail -n1))
 
     # 続行判定
-	egrep -v $(V) <<<"$(T)"
-	egrep "cygwin|root" <<<"$(T)"
+	egrep -v $(V) <<<"$(GIT_VERSION)"
 
     # 前準備
-	-egrep -q 'cygwin' <<<"$(T)" && [ ! -e /usr/local/perl/bin/perl ] && make perl
-	-egrep -iq 'centos|red hat' <<<"$(T)" && { rpm --quiet -q $(PKG) || yum --disablerepo=updates install -y $(PKG); }
-	-egrep -q 'Ubuntu' <<<"$(T)" && aptitude install -y gettext autoconf gettext asciidoc libcurl4-openssl-dev
+	@-egrep -qi 'cygwin' <<<"$(HOST)" && [ ! -e /usr/local/perl/bin/perl ] && make perl
+	@-egrep -qi 'centos|red hat' <<<"$(T)" && { rpm --quiet -q $(PKG) || yum --disablerepo=updates install -y $(PKG); }
+	@-egrep -qi 'Ubuntu' <<<"$(T)" && aptitude install -y gettext autoconf gettext asciidoc libcurl4-openssl-dev
+	/bin/rm -rf $$HOME/git-*/
 
     # コンパイル
-	/bin/rm -rf /tmp/git-*/
-	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O /tmp/git.tar.gz; tar zxf /tmp/git.tar.gz -C /tmp
-	export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl); cd /tmp/git-*; ./configure --prefix=/usr/local/git-$(V) --without-tcltk && make && make install
-	ln -snf /usr/local/git-$(V) /usr/local/git
+	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O $${HOME}/git.tar.gz; tar zxf $$HOME/git.tar.gz -C $${HOME}
+	export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl); cd $${HOME}/git-*; \
+		./configure --prefix=${PREFIX}/git-$(V) --without-tcltk && \
+		make && make install
+	ln -snf ${PREFIX}/git-$(V) ${PREFIX}/git
 
     # diff-highlight
-	make -C /tmp/git-*/contrib/diff-highlight
-	/bin/mv /tmp/git-*/contrib/diff-highlight/diff-highlight /usr/local/bin
+	make -C $$HOME/git-*/contrib/diff-highlight
+	/bin/mv $$HOME/git-*/contrib/diff-highlight/diff-highlight /usr/local/bin
 	git config --global pager.log  'diff-highlight | less'
 	git config --global pager.show 'diff-highlight | less'
 	git config --global pager.diff 'diff-highlight | less'
@@ -83,6 +92,9 @@ git:
 	git config --global http.sslVerify false
 	git config --global core.quotepath false
 	git config --global status.showuntrackedfiles all
+
+    # Clean up
+	/bin/rm -rf $$HOME/git-*/
 
 diff-so-fancy:
 	cd /usr/local/share/git-core/contrib && git clone "https://github.com/so-fancy/diff-so-fancy.git" 2>/dev/null
@@ -236,7 +248,3 @@ email_local:
 	git clone "https://github.com/deanproxy/eMail.git" $$HOME/tmp/eMail
 	git clone "https://github.com/deanproxy/dlib.git" $$HOME/tmp/eMail/dlib
 	cd ~/tmp/eMail && ./configure --prefix=$$HOME/local && make && make install
-
-test:
-	$(eval T := $(shell echo $${OSTYPE}_$$(id -un)_$$(emacs --version 2>/dev/null | head -n1)))
-	echo $(T)
