@@ -23,7 +23,6 @@ test:
 	@echo $(USER)
 	@echo $(PREFIX)
 	@echo $(GIT_VERSION)
-	#if [[ ${USER} == "root" ]]; then echo "/usr/local"; else echo "$$HOME/local"; fi
 
 .PHONY: cygwin
 cygwin:
@@ -76,7 +75,7 @@ git:
 
     # diff-highlight
 	make -C $$HOME/git-*/contrib/diff-highlight
-	/bin/mv $$HOME/git-*/contrib/diff-highlight/diff-highlight /usr/local/bin
+	/bin/mv $$HOME/git-*/contrib/diff-highlight/diff-highlight ${PREFIX}/git/bin
 	git config --global pager.log  'diff-highlight | less'
 	git config --global pager.show 'diff-highlight | less'
 	git config --global pager.diff 'diff-highlight | less'
