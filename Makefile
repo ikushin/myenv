@@ -2,21 +2,35 @@
 SHELL := /bin/bash
 HOST := $(shell echo $$(uname -s)_$$EUID )
 USER := $(shell if egrep -qi 'cygwin|_0$$' <<<$(HOST); then echo "root"; else echo "non_root"; fi )
-PREFIX := $(shell if [[ ${USER} == "root" ]]; then echo "/usr/local"; else echo "$$HOME/local"; fi )
+PREFIX := $(shell if [[ ${USER} == "root" ]]; then echo "/usr/local"; else echo $(HOME)/local; fi )
 GIT_VERSION := $(shell git --version 2>/dev/null )
+OS := $(shell python -mplatform)
+
+DOTFILES =  zlogin
+DOTFILES += zshrc
+DOTFILES += inputrc
+DOTFILES += screenrc
+DOTFILES += vimrc
+DOTFILES += zshrc.alias
+DOTFILES += zshrc.git
+DOTFILES += zshrc.func
+DOTFILES += emacs.d
 
 cp:
-	for i in zlogin zshrc inputrc screenrc vimrc zshrc.alias zshrc.git zshrc.func emacs.d; do /bin/cp -T -a ~/.myenv/$$i ~/.$$i; done
-	test -d /cygdrive/c && /bin/cp -a zshrc.cygwin ~/.zshrc.cygwin || true
-	[ -e ~/.zshrc.local ] || /bin/cp zshrc.local ~/.zshrc.local
-	install -m 700 -d ~/.ssh
-	[ -e ~/.ssh/config ] || /bin/cp ssh_config ~/.ssh/config; chmod 600 ~/.ssh/config
-	cmp -s ssh_config_my ~/.ssh/config_my || cp ssh_config_my ~/.ssh/config_my
-	uname -a | grep -qi 'ubuntu' && /bin/cp zshrc.ubuntu ~/.zshrc.ubuntu || true
-	wget -q -nc "https://raw.githubusercontent.com/maskedw/dotfiles/master/.gdbinit" -P $$HOME || true
-	uname -a |& grep -qi "linux" && /bin/cp -a zshrc.linux ~/.zshrc.linux || true
-	grep -q 'release 7' /etc/redhat-release 2>/dev/null && /bin/cp -a zshrc.centos7 ~/.zshrc.centos7 || true
-	grep -q 'release 5' /etc/redhat-release 2>/dev/null && /bin/cp -a zshrc.centos5 ~/.zshrc.centos5 || true
+	for i in $(DOTFILES); do /bin/cp -T -avu $(HOME)/.myenv/$$i $(HOME)/.$$i; done
+	[ -e $(HOME)/.zshrc.local ] || /bin/cp -av zshrc.local $(HOME)/.zshrc.local
+	install -v -m 700 -d $(HOME)/.ssh
+	[ -e $(HOME)/.ssh/config ] || install -v -m 600 ssh_config $(HOME)/.ssh/config
+	cmp -s ssh_config_my $(HOME)/.ssh/config_my || cp ssh_config_my $(HOME)/.ssh/config_my
+	case $(OS) in \
+		CYGWIN* )    /bin/cp -avu zshrc.cygwin  $(HOME)/.zshrc.cygwin   ;;  \
+		Linux* )     /bin/cp -avu zshrc.linux   $(HOME)/.zshrc.linux    ;;& \
+		*centos-5* | *redhat-5* ) /bin/cp -avu zshrc.centos5 $(HOME)/.zshrc.centos5  ;;  \
+		*centos-7* | *redhat-7* ) /bin/cp -avu zshrc.centos7 $(HOME)/.zshrc.centos7  ;;  \
+	esac
+
+old:
+	-wget -q -nc "https://raw.githubusercontent.com/maskedw/dotfiles/master/.gdbinit" -P $(HOME)
 
 test:
 	@echo $(HOST)
@@ -34,8 +48,12 @@ ssh:
 	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config
 
 package:
-	grep -q "Ubuntu" /etc/lsb-release; [ $$? -eq 0 ] && sudo aptitude install -y git autoconf zsh make gcc ncurses-dev gettext jq ncdu pssh libcurl4-openssl-dev emacs-goodies-el; true
-	[ -x /usr/bin/yum ] && sudo yum install -y zsh make gcc ncurses-devel zlib-devel curl-devel expat-devel gettext-devel openssl-devel autoconf epel-release; true
+	-grep -q "Ubuntu" /etc/lsb-release 2>/dev/null; [[ $$? -eq 0 ]] && \
+		sudo aptitude install -y \
+		git autoconf zsh make gcc ncurses-dev gettext jq ncdu pssh libcurl4-openssl-dev emacs-goodies-el
+	-[[ -x /usr/bin/yum ]] && \
+		sudo yum --disablerepo=updates install -y \
+		zsh make gcc ncurses-devel zlib-devel curl-devel expat-devel gettext-devel openssl-devel autoconf epel-release
 
 apt_conf:
 	sudo /bin/sed -ri.org 's@http://[^ ]+ubuntu@http://ftp.jaist.ac.jp/ubuntu@' /etc/apt/sources.list
@@ -50,12 +68,15 @@ date:
 	sudo ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 dstat:
-	[ -d $$HOME/bin ] && git -C $$HOME/bin/dstat pull || { mkdir -p $$HOME/bin; git clone "https://github.com/dagwieers/dstat.git" $$HOME/bin/dstat; }
+	$(eval DIR := $(HOME)/local/dstat)
+	if [[ -d $(DIR) ]]; then git -C $(DIR) pull;\
+	else mkdir -p $(HOME)/local; git clone "https://github.com/dagwieers/dstat.git" $(DIR); fi
 
 PKG=libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker wget gcc
 git:
     # gitの最新バージョン取得
-	@$(eval V := $(shell curl --max-time 3 -Lsk https://www.kernel.org/pub/software/scm/git/ | grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | sort -V | tail -n1))
+	@$(eval V := $(shell curl --max-time 3 -Lsk https://www.kernel.org/pub/software/scm/git/ \
+		| grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | sort -V | tail -n1))
 
     # 続行判定
 	egrep -v $(V) <<<"$(GIT_VERSION)"
@@ -64,18 +85,19 @@ git:
 	@-egrep -qi 'cygwin' <<<"$(HOST)" && [ ! -e /usr/local/perl/bin/perl ] && make perl
 	@-egrep -qi 'centos|red hat' <<<"$(T)" && { rpm --quiet -q $(PKG) || yum --disablerepo=updates install -y $(PKG); }
 	@-egrep -qi 'Ubuntu' <<<"$(T)" && aptitude install -y gettext autoconf gettext asciidoc libcurl4-openssl-dev
-	/bin/rm -rf $$HOME/git-*/
+	/bin/rm -rf $(HOME)/git-*/
 
     # コンパイル
-	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O $${HOME}/git.tar.gz; tar zxf $$HOME/git.tar.gz -C $${HOME}
-	export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl); cd $${HOME}/git-*; \
+	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O $(HOME)/git.tar.gz
+	tar zxf $(HOME)/git.tar.gz -C $(HOME)
+	export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl); cd $(HOME)/git-*; \
 		./configure --prefix=${PREFIX}/git-$(V) --without-tcltk && \
 		make && make install
 	ln -snf ${PREFIX}/git-$(V) ${PREFIX}/git
 
     # diff-highlight
-	make -C $$HOME/git-*/contrib/diff-highlight
-	/bin/mv $$HOME/git-*/contrib/diff-highlight/diff-highlight ${PREFIX}/git/bin
+	make -C $(HOME)/git-*/contrib/diff-highlight
+	/bin/mv $(HOME)/git-*/contrib/diff-highlight/diff-highlight ${PREFIX}/git/bin
 	git config --global pager.log  'diff-highlight | less'
 	git config --global pager.show 'diff-highlight | less'
 	git config --global pager.diff 'diff-highlight | less'
@@ -93,7 +115,7 @@ git:
 	git config --global status.showuntrackedfiles all
 
     # Clean up
-	/bin/rm -rf $$HOME/git-*/
+	/bin/rm -rf $(HOME)/git-*/
 
 diff-so-fancy:
 	cd /usr/local/share/git-core/contrib && git clone "https://github.com/so-fancy/diff-so-fancy.git" 2>/dev/null
@@ -244,6 +266,6 @@ email:
 	cd /tmp/eMail && ./configure && make && make install
 
 email_local:
-	git clone "https://github.com/deanproxy/eMail.git" $$HOME/tmp/eMail
-	git clone "https://github.com/deanproxy/dlib.git" $$HOME/tmp/eMail/dlib
-	cd ~/tmp/eMail && ./configure --prefix=$$HOME/local && make && make install
+	git clone "https://github.com/deanproxy/eMail.git" $(HOME)/tmp/eMail
+	git clone "https://github.com/deanproxy/dlib.git" $(HOME)/tmp/eMail/dlib
+	cd ~/tmp/eMail && ./configure --prefix=$(HOME)/local && make && make install
