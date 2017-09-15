@@ -76,6 +76,7 @@ dstat:
 	else mkdir -p $(HOME)/local; git clone "https://github.com/dagwieers/dstat.git" $(DIR); fi
 
 PKG=libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker wget gcc
+.PHONY : git
 git:
     # gitの最新バージョン取得
 	@$(eval V := $(shell curl --max-time 3 -Lsk https://www.kernel.org/pub/software/scm/git/ \
@@ -86,7 +87,7 @@ git:
 
     # 前準備
 	case $(OS) in \
-		CYGWIN* ) [[ ! -e /usr/local/perl/bin/perl ]] && make perl     ;; \
+		CYGWIN* ) [[ ! -e /usr/local/perl/bin/perl ]] && make perl ;; \
 		Linux*  ) rpm --quiet -q $(PKG) || yum --disablerepo=updates install -y $(PKG) ;; \
 	esac
 	/bin/rm -rf $(HOME)/git-*/
