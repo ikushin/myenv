@@ -1,10 +1,13 @@
 #
 SHELL := /bin/bash
-HOST := $(shell echo $$(uname -s)_$$EUID )
-USER := $(shell if egrep -qi 'cygwin|_0$$' <<<$(HOST); then echo "root"; else echo "non_root"; fi )
-PREFIX := $(shell if [[ ${USER} == "root" ]]; then echo "/usr/local"; else echo $(HOME)/local; fi )
 GIT_VERSION := $(shell git --version 2>/dev/null )
 OS := $(shell python -mplatform)
+PREFIX := $(shell \
+	if [[ $(OS) =~ "CYGWIN" || $${EUID} == "0" ]]; then \
+		echo "/usr/local"; \
+	else \
+		echo $(HOME)/local; \
+	fi )
 
 DOTFILES =  zlogin
 DOTFILES += zshrc
@@ -33,10 +36,10 @@ old:
 	-wget -q -nc "https://raw.githubusercontent.com/maskedw/dotfiles/master/.gdbinit" -P $(HOME)
 
 test:
-	@echo $(HOST)
-	@echo $(USER)
+	@echo $${USER}
+	@echo $(OS)
 	@echo $(PREFIX)
-	@echo $(GIT_VERSION)
+	#@echo $(GIT_VERSION)
 
 .PHONY: cygwin
 cygwin:
@@ -82,9 +85,10 @@ git:
 	egrep -v $(V) <<<"$(GIT_VERSION)"
 
     # 前準備
-	@-egrep -qi 'cygwin' <<<"$(HOST)" && [ ! -e /usr/local/perl/bin/perl ] && make perl
-	@-egrep -qi 'centos|red hat' <<<"$(T)" && { rpm --quiet -q $(PKG) || yum --disablerepo=updates install -y $(PKG); }
-	@-egrep -qi 'Ubuntu' <<<"$(T)" && aptitude install -y gettext autoconf gettext asciidoc libcurl4-openssl-dev
+	case $(OS) in \
+		CYGWIN* ) [[ ! -e /usr/local/perl/bin/perl ]] && make perl     ;; \
+		Linux*  ) rpm --quiet -q $(PKG) || yum --disablerepo=updates install -y $(PKG) ;; \
+	esac
 	/bin/rm -rf $(HOME)/git-*/
 
     # コンパイル
