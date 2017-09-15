@@ -2,12 +2,12 @@
 SHELL := /bin/bash
 GIT_VERSION := $(shell git --version 2>/dev/null )
 OS := $(shell python -mplatform)
-PREFIX := $(shell \
-	if [[ $(OS) =~ "CYGWIN" || $${EUID} == "0" ]]; then \
-		echo "/usr/local"; \
-	else \
-		echo $(HOME)/local; \
-	fi )
+USER := $(shell echo $(OS)_$$(id -nu) | egrep -qi 'cygwin|root$$' && echo "root" || echo "non_root" )
+ifeq ($(USER),root)
+	PREFIX := /usr/local
+else
+	PREFIX := $(HOME)/local
+endif
 
 DOTFILES =  zlogin
 DOTFILES += zshrc
