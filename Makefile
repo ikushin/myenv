@@ -1,7 +1,7 @@
 #
 SHELL := /bin/bash
 GIT_VERSION := $(shell git --version 2>/dev/null )
-EMACS_VERSION := $(shell emacs --version | head -1 )
+EMACS_VERSION := $(shell emacs --version 2>/dev/null | head -1 )
 OS := $(shell python -mplatform)
 USER := $(shell echo $(OS)_$$(id -nu) | egrep -qi 'cygwin|root$$' && echo "root" || echo "non_root" )
 ifeq ($(USER),root)
@@ -51,12 +51,11 @@ ssh:
 	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config
 
 PKG =  libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker wget gcc
-PKG += zsh make gcc ncurses-devel zlib-devel curl-devel expat-devel gettext-devel openssl-devel autoconf epel-release
-
+PKG += zsh make gcc ncurses-devel zlib-devel expat-devel gettext-devel openssl-devel autoconf epel-release
 install_package:
 	@-case $(OS) in \
 		CYGWIN* ) [[ ! -e /usr/local/perl/bin/perl ]] && make perl ;; \
-		Linux*  ) rpm --quiet -q $(PKG) || yum --disablerepo=updates install -y $(PKG) ;; esac
+		Linux*  ) rpm --quiet -q $(PKG) || sudo yum --disablerepo=updates install -y $(PKG) ;; esac
 
 apt_conf:
 	sudo /bin/sed -ri.org 's@http://[^ ]+ubuntu@http://ftp.jaist.ac.jp/ubuntu@' /etc/apt/sources.list
@@ -86,7 +85,7 @@ git:
 
     # 前準備
 	make install_package
-	/bin/rm -rf $(HOME)/git-*/
+	/bin/rm -rf $(HOME)/git*
 
     # コンパイル
 	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O $(HOME)/git.tar.gz
@@ -117,7 +116,7 @@ git:
 	git config --global status.showuntrackedfiles all
 
     # Clean up
-	/bin/rm -rf $(HOME)/git-*/
+	/bin/rm -rf $(HOME)/git*
 
 diff-so-fancy:
 	cd /usr/local/share/git-core/contrib && git clone "https://github.com/so-fancy/diff-so-fancy.git" 2>/dev/null
@@ -141,7 +140,7 @@ zsh:
 	wget --no-check-certificate "https://sourceforge.net/projects/zsh/files/latest/download?source=files" -O $(HOME)/zsh.tar.gz
 	tar zxf $(HOME)/zsh.tar.gz -C $(HOME)
 	cd $(HOME)/zsh-* && ./configure --prefix=${PREFIX}/zsh && make && make install
-	sed -i 's/^clear/#&/' /etc/*/zlogout 2>/dev/null; true
+	#sed -i 's/^clear/#&/' /etc/*/zlogout 2>/dev/null; true
 	/bin/rm -rf $(HOME)/zsh*
 
 user_zsh:
@@ -195,13 +194,13 @@ emacs:
 
     # 前準備
 	make install_package
-	/bin/rm -rf $(HOME)/emacs-*/
+	/bin/rm -rf $(HOME)/emacs*
 
     # コンパイル
 	wget --no-check-certificate "https://mirror.jre655.com/GNU/emacs/emacs-$(V).tar.gz" -O $(HOME)/emacs.tar.gz
 	tar zxf $(HOME)/emacs.tar.gz -C $(HOME)
 	cd $(HOME)/emacs-* && ./configure --prefix=${PREFIX}/emacs-$(V) --without-x && LANG=C make && make install
-	/bin/rm -rf $(HOME)/emacs-*
+	/bin/rm -rf $(HOME)/emacs*
 	ln -snf ${PREFIX}/emacs-$(V) ${PREFIX}/emacs
 	make emacs_lisp
 emacs_lisp:
@@ -258,7 +257,7 @@ man:
 	yum install -y man man-pages man-pages-ja
 
 make:
-	@{ echo 'cat <<\EOF | base64 -di | tar zxvf -'; tar zcf - Makefile  | base64 -w120; echo EOF; } | tee /dev/clipboard
+	@{ echo ' cat <<\EOF | base64 -di | tar zxvf -'; tar zcf - Makefile  | base64 ; echo EOF; } | tee /dev/clipboard
 
 email:
 	git clone "https://github.com/deanproxy/eMail.git" /tmp/eMail
