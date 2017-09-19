@@ -1,6 +1,7 @@
 #
 SHELL := /bin/bash
 GIT_VERSION := $(shell git --version 2>/dev/null )
+EMACS_VERSION := $(shell emacs --version | head -1 )
 OS := $(shell python -mplatform)
 USER := $(shell echo $(OS)_$$(id -nu) | egrep -qi 'cygwin|root$$' && echo "root" || echo "non_root" )
 ifeq ($(USER),root)
@@ -21,15 +22,14 @@ DOTFILES += emacs.d
 
 cp:
 	for i in $(DOTFILES); do /bin/cp -T -avu $(HOME)/.myenv/$$i $(HOME)/.$$i; done
-	[ -e $(HOME)/.zshrc.local ] || /bin/cp -av zshrc.local $(HOME)/.zshrc.local
-	install -v -m 700 -d $(HOME)/.ssh
-	[ -e $(HOME)/.ssh/config ] || install -v -m 600 ssh_config $(HOME)/.ssh/config
-	cmp -s ssh_config_my $(HOME)/.ssh/config_my || cp ssh_config_my $(HOME)/.ssh/config_my
+	/bin/cp -avn zshrc.local $(HOME)/.zshrc.local
+	[[ -e $(HOME)/.ssh ]]        || install -v -m 700 -d $(HOME)/.ssh
+	[[ -e $(HOME)/.ssh/config ]] || install -v -m 600 ssh_config $(HOME)/.ssh/config
 	case $(OS) in \
 		CYGWIN* )    /bin/cp -avu zshrc.cygwin  $(HOME)/.zshrc.cygwin   ;;  \
 		Linux* )     /bin/cp -avu zshrc.linux   $(HOME)/.zshrc.linux    ;;& \
-		*centos-5* | *redhat-5* ) /bin/cp -avu zshrc.centos5 $(HOME)/.zshrc.centos5  ;;  \
-		*centos-7* | *redhat-7* ) /bin/cp -avu zshrc.centos7 $(HOME)/.zshrc.centos7  ;;  \
+		*centos-5* | *redhat-5* ) /bin/cp -avu zshrc.centos5 $(HOME)/.zshrc.centos5 ;; \
+		*centos-7* | *redhat-7* ) /bin/cp -avu zshrc.centos7 $(HOME)/.zshrc.centos7 ;; \
 	esac
 
 old:
@@ -50,13 +50,13 @@ cygwin:
 ssh:
 	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config
 
-package:
-	-grep -q "Ubuntu" /etc/lsb-release 2>/dev/null; [[ $$? -eq 0 ]] && \
-		sudo aptitude install -y \
-		git autoconf zsh make gcc ncurses-dev gettext jq ncdu pssh libcurl4-openssl-dev emacs-goodies-el
-	-[[ -x /usr/bin/yum ]] && \
-		sudo yum --disablerepo=updates install -y \
-		zsh make gcc ncurses-devel zlib-devel curl-devel expat-devel gettext-devel openssl-devel autoconf epel-release
+PKG =  libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker wget gcc
+PKG += zsh make gcc ncurses-devel zlib-devel curl-devel expat-devel gettext-devel openssl-devel autoconf epel-release
+
+install_package:
+	@-case $(OS) in \
+		CYGWIN* ) [[ ! -e /usr/local/perl/bin/perl ]] && make perl ;; \
+		Linux*  ) rpm --quiet -q $(PKG) || yum --disablerepo=updates install -y $(PKG) ;; esac
 
 apt_conf:
 	sudo /bin/sed -ri.org 's@http://[^ ]+ubuntu@http://ftp.jaist.ac.jp/ubuntu@' /etc/apt/sources.list
@@ -75,27 +75,24 @@ dstat:
 	if [[ -d $(DIR) ]]; then git -C $(DIR) pull;\
 	else mkdir -p $(HOME)/local; git clone "https://github.com/dagwieers/dstat.git" $(DIR); fi
 
-PKG=libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker wget gcc
 .PHONY : git
 git:
     # gitの最新バージョン取得
-	@$(eval V := $(shell curl --max-time 3 -Lsk https://www.kernel.org/pub/software/scm/git/ \
-		| grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | sort -V | tail -n1))
+	@$(eval V := $(shell curl --max-time 3 -Lsk https://www.kernel.org/pub/software/scm/git/ | \
+		grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | sort -V | tail -n1))
 
     # 続行判定
 	egrep -v $(V) <<<"$(GIT_VERSION)"
 
     # 前準備
-	case $(OS) in \
-		CYGWIN* ) [[ ! -e /usr/local/perl/bin/perl ]] && make perl ;; \
-		Linux*  ) rpm --quiet -q $(PKG) || yum --disablerepo=updates install -y $(PKG) ;; \
-	esac
+	make install_package
 	/bin/rm -rf $(HOME)/git-*/
 
     # コンパイル
 	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O $(HOME)/git.tar.gz
 	tar zxf $(HOME)/git.tar.gz -C $(HOME)
-	export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl); cd $(HOME)/git-*; \
+	export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl); \
+		cd $(HOME)/git-*; \
 		./configure --prefix=${PREFIX}/git-$(V) --without-tcltk && \
 		make && make install
 	ln -snf ${PREFIX}/git-$(V) ${PREFIX}/git
@@ -139,15 +136,13 @@ openssh:
 	/bin/rm -rf /tmp/openssh*
 
 zsh:
-	if [ ! -e /etc/issue ]; then true; else if [ `id -u` -eq 0 ]; then true; else false; fi; fi
-	/bin/rm -rf /tmp/zsh*
-	rpm --quiet -q ncurses-devel || sudo yum -y --disablerepo=updates install ncurses-devel; true
-	wget --no-check-certificate "https://sourceforge.net/projects/zsh/files/latest/download?source=files" -O /tmp/zsh.tar.gz
-	tar zxf /tmp/zsh.tar.gz -C /tmp
-	cd /tmp/zsh-* && ./configure && make && make install
+	/bin/rm -rf $(HOME)/zsh*
+	make install_package
+	wget --no-check-certificate "https://sourceforge.net/projects/zsh/files/latest/download?source=files" -O $(HOME)/zsh.tar.gz
+	tar zxf $(HOME)/zsh.tar.gz -C $(HOME)
+	cd $(HOME)/zsh-* && ./configure --prefix=${PREFIX}/zsh && make && make install
 	sed -i 's/^clear/#&/' /etc/*/zlogout 2>/dev/null; true
-	/bin/rm -rf /tmp/zsh*
-	usermod -s /usr/local/bin/zsh root
+	/bin/rm -rf $(HOME)/zsh*
 
 user_zsh:
 	[ -e /etc/issue ] && sudo /usr/sbin/usermod -s /usr/local/bin/zsh $(shell id -un) || true
@@ -192,22 +187,22 @@ git_clone:
 .PHONY : emacs
 emacs:
     # 最新バージョン取得
-	$(eval V := $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | /bin/grep -Po '(?<=emacs-)25\.\d+' | tail -n1))
-
-    # ホストの情報収集
-	$(eval T := $(shell echo $${OSTYPE}_$$(id -un)_$$(emacs --version 2>/dev/null | head -n1)))
+	$(eval V := $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | \
+		/bin/grep -Po '(?<=emacs-)\d+\.\d+' | tail -n1))
 
     # 続行判定
-	egrep -v $(V) <<<"$(T)"
-	egrep "cygwin|root" <<<"$(T)"
-	/bin/rm -rf /tmp/emacs-*
-	make _emacs
-_emacs:
-	make package
-	$(eval V := $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | /bin/grep -Po '(?<=emacs-)25\.\d+' | tail -n1))
-	wget --no-check-certificate "https://mirror.jre655.com/GNU/emacs/emacs-$(V).tar.gz" -O /tmp/emacs.tar.gz; tar zxf /tmp/emacs.tar.gz -C /tmp
-	cd /tmp/emacs-* && ./configure --without-x && LANG=C make && make install
-	/bin/rm -rf /tmp/emacs-*
+	egrep -v $(V) <<<"$(EMACS_VERSION)"
+
+    # 前準備
+	make install_package
+	/bin/rm -rf $(HOME)/emacs-*/
+
+    # コンパイル
+	wget --no-check-certificate "https://mirror.jre655.com/GNU/emacs/emacs-$(V).tar.gz" -O $(HOME)/emacs.tar.gz
+	tar zxf $(HOME)/emacs.tar.gz -C $(HOME)
+	cd $(HOME)/emacs-* && ./configure --prefix=${PREFIX}/emacs-$(V) --without-x && LANG=C make && make install
+	/bin/rm -rf $(HOME)/emacs-*
+	ln -snf ${PREFIX}/emacs-$(V) ${PREFIX}/emacs
 	make emacs_lisp
 emacs_lisp:
 	mkdir -p ~/.lisp

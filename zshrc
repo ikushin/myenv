@@ -134,7 +134,7 @@ export PAGER=less
 export LESSCHARSET=utf-8
 
 # path
-path=( $HOME/bin $HOME/local/git/bin $HOME/local/*/bin(N-/) /usr/local/git/bin /usr{/local,}/bin(N-/) /opt/*/*bin(N-/) /opt/*/*/*bin(N-/) \
+path=( $HOME/bin $HOME/local/git/bin $HOME/local/*/bin(N-/) /usr/local/*/bin /usr{/local,}/bin(N-/) /opt/*/*bin(N-/) /opt/*/*/*bin(N-/) \
     /usr/local/*bin(N-/) /usr/*bin(N-/) /*bin(N-/) /usr/ucb(N-/) )
 
 # cdpath
