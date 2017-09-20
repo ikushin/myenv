@@ -4,11 +4,14 @@ GIT_VERSION := $(shell git --version 2>/dev/null )
 EMACS_VERSION := $(shell emacs --version 2>/dev/null | head -1 )
 OS := $(shell python -mplatform)
 USER := $(shell echo $(OS)_$$(id -nu) | egrep -qi 'cygwin|root$$' && echo "root" || echo "non_root" )
+DSTAT_D := $(HOME)/local/dstat
 ifeq ($(USER),root)
 	PREFIX := /usr/local
 else
 	PREFIX := $(HOME)/local
 endif
+
+.PHONY: cygwin git emacs
 
 DOTFILES =  zlogin
 DOTFILES += zshrc
@@ -32,24 +35,6 @@ cp:
 		*centos-7* | *redhat-7* ) /bin/cp -avu zshrc.centos7 $(HOME)/.zshrc.centos7 ;; \
 	esac
 
-old:
-	-wget -q -nc "https://raw.githubusercontent.com/maskedw/dotfiles/master/.gdbinit" -P $(HOME)
-
-test:
-	@echo $${USER}
-	@echo $(OS)
-	@echo $(PREFIX)
-	#@echo $(GIT_VERSION)
-
-.PHONY: cygwin
-cygwin:
-	mkdir -p ~/bin
-	/bin/cp ./scripts/*_archive.sh ~/bin/
-	if [[ ! -e /usr/local/bin/perl ]]; then make perl; fi
-
-ssh:
-	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config
-
 PKG =  libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker wget gcc
 PKG += zsh make gcc ncurses-devel zlib-devel expat-devel gettext-devel openssl-devel autoconf epel-release libbsd-devel
 install_package:
@@ -57,22 +42,13 @@ install_package:
 		CYGWIN* ) [[ ! -e /usr/local/perl/bin/perl ]] && make perl ;; \
 		Linux*  ) rpm --quiet -q $(PKG) || yum --disablerepo=updates install -y $(PKG) ;; esac
 
-apt_conf:
-	/bin/sed -ri.org 's@http://[^ ]+ubuntu@http://ftp.jaist.ac.jp/ubuntu@' /etc/apt/sources.list
-	apt-get update && apt-get -y upgrade
-
-sudo:
-	echo 'Defaults:ikushin !requiretty' > /etc/sudoers.d/ikushin
-	echo 'ikushin ALL = (root) NOPASSWD:ALL' >>/etc/sudoers.d/ikushin
-	chmod 0440 /etc/sudoers.d/ikushin
-
-date:
-	ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-
 dstat:
-	$(eval DIR := $(HOME)/local/dstat)
-	if [[ -d $(DIR) ]]; then git -C $(DIR) pull;\
-	else mkdir -p $(HOME)/local; git clone "https://github.com/dagwieers/dstat.git" $(DIR); fi
+	if [[ -d $(DSTAT_D) ]]; then \
+		git -C $(DSTAT_D) pull; \
+	else \
+		mkdir -p $(HOME)/local; \
+		git clone "https://github.com/dagwieers/dstat.git" $(DSTAT_D); \
+	fi
 
 curl:
     # 最新バージョン取得
@@ -89,8 +65,19 @@ curl:
 	cd $(HOME)/$@-*; ./configure --prefix=${PREFIX}/$@ && make && make install
 	/bin/rm -rf $(HOME)/$@*
 
+perl:
+    # 最新バージョン取得
+	$(eval V := $(shell curl --max-time 3 -Ls http://www.cpan.org/src/5.0/ | \
+		grep -Po '(?<=perl-)5\.26\.\d+(?=\.tar\.gz)' | sort -V | tail -n1))
 
-.PHONY : git
+    # コンパイル
+	/bin/rm -rf $(HOME)/$@*
+	wget --no-check-certificate "http://www.cpan.org/src/5.0/perl-$(V).tar.gz" -O $(HOME)/$@.tar.gz
+	tar zxf $(HOME)/$@.tar.gz -C $(HOME)
+	cd $(HOME)/$@-*; ./Configure -des -Dprefix=${PREFIX}/perl-$(V) && make && make install
+	ln -snf ${PREFIX}/$@-$(V) ${PREFIX}/$@
+	/bin/rm -rf $(HOME)/$@*
+
 git:
 	export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl)
 
@@ -103,20 +90,20 @@ git:
 
     # 前準備
 	make install_package
-	/bin/rm -rf $(HOME)/git*
+	/bin/rm -rf $(HOME)/$@*
 
     # コンパイル
-	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O $(HOME)/git.tar.gz
-	tar zxf $(HOME)/git.tar.gz -C $(HOME)
-	cd $(HOME)/git-*; ./configure --prefix=${PREFIX}/git-$(V) --with-curl=$(HOME)/local/curl/ --without-tcltk | \
+	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O $(HOME)/$@.tar.gz
+	tar zxf $(HOME)/$@.tar.gz -C $(HOME)
+	cd $(HOME)/$@-*; ./configure --prefix=${PREFIX}/$@-$(V) --with-curl=$(HOME)/local/curl/ --without-tcltk | \
 		tee configure.log
-	grep --color=always 'supports SSL... yes' $(HOME)/git-*/configure.log
-	cd $(HOME)/git-*; make && make install
-	ln -snf ${PREFIX}/git-$(V) ${PREFIX}/git
+	grep --color=always 'supports SSL... yes' $(HOME)/$@-*/configure.log
+	cd $(HOME)/$@-*; make && make install
+	ln -snf ${PREFIX}/$@-$(V) ${PREFIX}/$@
 
     # diff-highlight
 	make -C $(HOME)/git-*/contrib/diff-highlight
-	/bin/mv $(HOME)/git-*/contrib/diff-highlight/diff-highlight ${PREFIX}/git/bin
+	/bin/mv $(HOME)/git-*/contrib/diff-highlight/diff-highlight ${PREFIX}/$@/bin
 	git config --global pager.log  'diff-highlight | less'
 	git config --global pager.show 'diff-highlight | less'
 	git config --global pager.diff 'diff-highlight | less'
@@ -134,18 +121,96 @@ git:
 	git config --global status.showuntrackedfiles all
 
     # Clean up
-	/bin/rm -rf $(HOME)/git*
-
-diff-so-fancy:
-	cd /usr/local/share/git-core/contrib && git clone "https://github.com/so-fancy/diff-so-fancy.git" 2>/dev/null
-	test -d /cygdrive/c && sed -i '1i #!/usr/local/perl/bin/perl' /usr/local/share/git-core/contrib/diff-so-fancy/libexec/diff-so-fancy.pl || true
-	git config --global alias.dsf '!f() { [ -z "$$GIT_PREFIX" ] || cd "$$GIT_PREFIX" && git --no-pager diff -b -w --ignore-blank-lines --ignore-space-at-eol --color "$$@" | /usr/local/share/git-core/contrib/diff-so-fancy/diff-so-fancy; }; f'
+	/bin/rm -rf $(HOME)/$@*
 
 metastore:
 	case $(OS) in Linux*  ) \
 		git clone https://github.com/przemoc/metastore.git $(HOME)/$@; \
 		cd $(HOME)/$@ && make && make install PREFIX=${PREFIX}/$@; \
-		rm -rf $(HOME)/$@ ;; esac
+		rm -rf $(HOME)/$@ ;; \
+	esac
+
+zsh:
+	/bin/rm -rf $(HOME)/$@*
+	make install_package
+	wget --no-check-certificate "https://sourceforge.net/projects/zsh/files/latest/download?source=files" -O $(HOME)/$@.tar.gz
+	tar zxf $(HOME)/$@.tar.gz -C $(HOME)
+	cd $(HOME)/$@-* && ./configure --prefix=${PREFIX}/$@ && make && make install
+	/bin/rm -rf $(HOME)/$@*
+
+emacs:
+    # 最新バージョン取得
+	$(eval V := $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | \
+		/bin/grep -Po '(?<=emacs-)\d+\.\d+' | tail -n1))
+
+    # 続行判定
+	egrep -v $(V) <<<"$(EMACS_VERSION)"
+
+    # 前準備
+	make install_package
+	/bin/rm -rf $(HOME)/$@*
+
+    # コンパイル
+	wget --no-check-certificate "https://mirror.jre655.com/GNU/emacs/emacs-$(V).tar.gz" -O $(HOME)/$@.tar.gz
+	tar zxf $(HOME)/$@.tar.gz -C $(HOME)
+	cd $(HOME)/$@-* && ./configure --prefix=${PREFIX}/$@-$(V) --without-x && LANG=C make && make install
+	/bin/rm -rf $(HOME)/$@*
+	ln -snf ${PREFIX}/$@-$(V) ${PREFIX}/$@
+
+m:
+	@{ echo ' cat <<\EOF | base64 -di | tar zxvf -'; tar zcf - Makefile  | base64 ; echo EOF; } | tee /dev/clipboard
+
+term:
+	if /bin/grep -q '^#.*putty_067.exe' /bin/cygterm.cfg; then \
+		/bin/sed -i -e '3s/^#T/T/' -e '4s/^T/#T/' /bin/cygterm.cfg; \
+	else \
+		/bin/sed -i -e '3s/^T/#T/' -e '4s/^#//' /bin/cygterm.cfg; \
+	fi
+
+sudo:
+	[[ -n "$(user)" ]]
+	echo 'Defaults:$(user)    !requiretty'     > /etc/sudoers.d/$(user)
+	echo '$(user)	ALL=(root)	NOPASSWD: ALL' >>/etc/sudoers.d/$(user)
+	chmod 0440 /etc/sudoers.d/$(user)
+
+cygwin:
+	mkdir -p $(HOME)/local/cygwin
+	/bin/cp -avu ./scripts/*_archive.sh $(HOME)/local/cygwin
+	[[ ! -e /usr/local/bin/perl ]] || make perl
+
+emacs_lisp:
+	mkdir -p ~/.lisp
+	-wget -q -nc --no-check-certificate -O ~/.lisp/minibuffer-complete-cycle.el  https://raw.githubusercontent.com/knu/minibuffer-complete-cycle/master/minibuffer-complete-cycle.el
+	-wget -q -nc --no-check-certificate -O ~/.lisp/browse-kill-ring.el           https://raw.githubusercontent.com/T-J-Teru/browse-kill-ring/master/browse-kill-ring.el
+	-wget -q -nc --no-check-certificate -O ~/.lisp/redo+.el                      http://www.emacswiki.org/emacs/download/redo%2b.el
+	-wget -q -nc --no-check-certificate -O ~/.lisp/point-undo.el                 https://www.emacswiki.org/emacs/download/point-undo.el
+	-wget -q -nc --no-check-certificate -O ~/.lisp/recentf-ext.el                https://www.emacswiki.org/emacs/download/recentf-ext.el
+
+old:
+	-wget -q -nc "https://raw.githubusercontent.com/maskedw/dotfiles/master/.gdbinit" -P $(HOME)
+
+test:
+	echo $(user)
+	# @echo $${USER}
+	# @echo $(OS)
+	# @echo $(PREFIX)
+	# @echo $(GIT_VERSION)
+
+
+ssh:
+	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config
+
+apt_conf:
+	/bin/sed -ri.org 's@http://[^ ]+ubuntu@http://ftp.jaist.ac.jp/ubuntu@' /etc/apt/sources.list
+	apt-get update && apt-get -y upgrade
+
+date:
+	ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+
+diff-so-fancy:
+	cd /usr/local/share/git-core/contrib && git clone "https://github.com/so-fancy/diff-so-fancy.git" 2>/dev/null
+	test -d /cygdrive/c && sed -i '1i #!/usr/local/perl/bin/perl' /usr/local/share/git-core/contrib/diff-so-fancy/libexec/diff-so-fancy.pl || true
+	git config --global alias.dsf '!f() { [ -z "$$GIT_PREFIX" ] || cd "$$GIT_PREFIX" && git --no-pager diff -b -w --ignore-blank-lines --ignore-space-at-eol --color "$$@" | /usr/local/share/git-core/contrib/diff-so-fancy/diff-so-fancy; }; f'
 
 openssh:
 	SSH_PKG="bash"
@@ -157,15 +222,6 @@ openssh:
 	tar zxf /tmp/openssh.tar.gz -C /tmp
 	{ cd /tmp/openssh-*; ./configure && make && make install; } || true
 	/bin/rm -rf /tmp/openssh*
-
-zsh:
-	/bin/rm -rf $(HOME)/zsh*
-	make install_package
-	wget --no-check-certificate "https://sourceforge.net/projects/zsh/files/latest/download?source=files" -O $(HOME)/zsh.tar.gz
-	tar zxf $(HOME)/zsh.tar.gz -C $(HOME)
-	cd $(HOME)/zsh-* && ./configure --prefix=${PREFIX}/zsh && make && make install
-	#sed -i 's/^clear/#&/' /etc/*/zlogout 2>/dev/null; true
-	/bin/rm -rf $(HOME)/zsh*
 
 user_zsh:
 	[ -e /etc/issue ] && /usr/sbin/usermod -s /usr/local/bin/zsh $(shell id -un) || true
@@ -207,43 +263,11 @@ git_clone:
 	rm -f ~/.ssh/config ~/Makefile
 	cd ~/.myenv && git config --global push.default simple && make cp
 
-.PHONY : emacs
-emacs:
-    # 最新バージョン取得
-	$(eval V := $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | \
-		/bin/grep -Po '(?<=emacs-)\d+\.\d+' | tail -n1))
-
-    # 続行判定
-	egrep -v $(V) <<<"$(EMACS_VERSION)"
-
-    # 前準備
-	make install_package
-	/bin/rm -rf $(HOME)/emacs*
-
-    # コンパイル
-	wget --no-check-certificate "https://mirror.jre655.com/GNU/emacs/emacs-$(V).tar.gz" -O $(HOME)/emacs.tar.gz
-	tar zxf $(HOME)/emacs.tar.gz -C $(HOME)
-	cd $(HOME)/emacs-* && ./configure --prefix=${PREFIX}/emacs-$(V) --without-x && LANG=C make && make install
-	/bin/rm -rf $(HOME)/emacs*
-	ln -snf ${PREFIX}/emacs-$(V) ${PREFIX}/emacs
-	make emacs_lisp
-emacs_lisp:
-	mkdir -p ~/.lisp
-	-wget -q -nc --no-check-certificate -O ~/.lisp/minibuffer-complete-cycle.el  https://raw.githubusercontent.com/knu/minibuffer-complete-cycle/master/minibuffer-complete-cycle.el
-	-wget -q -nc --no-check-certificate -O ~/.lisp/browse-kill-ring.el           https://raw.githubusercontent.com/T-J-Teru/browse-kill-ring/master/browse-kill-ring.el
-	-wget -q -nc --no-check-certificate -O ~/.lisp/redo+.el                      http://www.emacswiki.org/emacs/download/redo%2b.el
-	-wget -q -nc --no-check-certificate -O ~/.lisp/point-undo.el                 https://www.emacswiki.org/emacs/download/point-undo.el
-	-wget -q -nc --no-check-certificate -O ~/.lisp/recentf-ext.el                https://www.emacswiki.org/emacs/download/recentf-ext.el
-
 clone:
 	mkdir -p ~/.ssh; chmod 700 ~/.ssh
 	git clone "https://github.com/ikushin/myenv.git" ~/.myenv
 	cd ~/.myenv && git config --global push.default simple && make cp
 
-perl:
-	wget "http://www.cpan.org/src/5.0/perl-5.22.1.tar.gz" -O /tmp/perl.tar.gz && tar zxf /tmp/perl.tar.gz -C /tmp
-	cd /tmp/perl-5.22.1 && ./Configure -des -Dprefix=/usr/local/perl && make && make install
-	/bin/rm -r /tmp/perl*.gz /tmp/perl-*
 
 autoconf:
 	rpm --quiet -q texinfo || yum -y --disablerepo=updates install texinfo
@@ -274,14 +298,9 @@ route:
 net:
 	/usr/bin/cygstart ncpa.cpl
 
-term:
-	if /bin/grep -q '^#.*putty_067.exe' /bin/cygterm.cfg; then /bin/sed -i -e '3s/^#T/T/' -e '4s/^T/#T/' /bin/cygterm.cfg; else /bin/sed -i -e '3s/^T/#T/' -e '4s/^#//' /bin/cygterm.cfg; fi
-
 man:
 	yum install -y man man-pages man-pages-ja
 
-m:
-	@{ echo ' cat <<\EOF | base64 -di | tar zxvf -'; tar zcf - Makefile  | base64 ; echo EOF; } | tee /dev/clipboard
 
 email:
 	git clone "https://github.com/deanproxy/eMail.git" /tmp/eMail
