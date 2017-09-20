@@ -1,10 +1,7 @@
 #
 SHELL := /bin/bash
-GIT_VERSION := $(shell git --version 2>/dev/null )
-EMACS_VERSION := $(shell emacs --version 2>/dev/null | head -1 )
 OS := $(shell python -mplatform)
 USER := $(shell echo $(OS)_$$(id -nu) | egrep -qi 'cygwin|root$$' && echo "root" || echo "non_root" )
-DSTAT_D := $(HOME)/local/dstat
 ifeq ($(USER),root)
 	PREFIX := /usr/local
 else
@@ -13,16 +10,7 @@ endif
 
 .PHONY: cygwin git emacs
 
-DOTFILES =  zlogin
-DOTFILES += zshrc
-DOTFILES += inputrc
-DOTFILES += screenrc
-DOTFILES += vimrc
-DOTFILES += zshrc.alias
-DOTFILES += zshrc.git
-DOTFILES += zshrc.func
-DOTFILES += emacs.d
-
+DOTFILES = zlogin zshrc inputrc screenrc vimrc zshrc.alias zshrc.git zshrc.func emacs.d
 cp:
 	for i in $(DOTFILES); do /bin/cp -T -avu $(HOME)/.myenv/$$i $(HOME)/.$$i; done
 	/bin/cp -avn zshrc.local $(HOME)/.zshrc.local
@@ -35,13 +23,15 @@ cp:
 		*centos-7* | *redhat-7* ) /bin/cp -avu zshrc.centos7 $(HOME)/.zshrc.centos7 ;; \
 	esac
 
-PKG =  libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker wget gcc
-PKG += zsh make gcc ncurses-devel zlib-devel expat-devel gettext-devel openssl-devel autoconf epel-release libbsd-devel
+PKG =  wget zsh make gcc  autoconf epel-release perl-ExtUtils-MakeMaker
+PKG += libbsd-devel libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel ncurses-devel
 install_package:
 	@-case $(OS) in \
 		CYGWIN* ) [[ ! -e /usr/local/perl/bin/perl ]] && make perl ;; \
-		Linux*  ) rpm --quiet -q $(PKG) || yum --disablerepo=updates install -y $(PKG) ;; esac
+		Linux*  ) rpm --quiet -q $(PKG) || yum --disablerepo=updates install -y $(PKG) ;; \
+	esac
 
+DSTAT_D := $(HOME)/local/dstat
 dstat:
 	if [[ -d $(DSTAT_D) ]]; then \
 		git -C $(DSTAT_D) pull; \
@@ -78,6 +68,7 @@ perl:
 	ln -snf ${PREFIX}/$@-$(V) ${PREFIX}/$@
 	/bin/rm -rf $(HOME)/$@*
 
+GIT_VERSION := $(shell git --version 2>/dev/null )
 git:
 	export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl)
 
@@ -138,6 +129,7 @@ zsh:
 	cd $(HOME)/$@-* && ./configure --prefix=${PREFIX}/$@ && make && make install
 	/bin/rm -rf $(HOME)/$@*
 
+EMACS_VERSION := $(shell emacs --version 2>/dev/null | head -1 )
 emacs:
     # 最新バージョン取得
 	$(eval V := $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | \
@@ -301,13 +293,9 @@ net:
 man:
 	yum install -y man man-pages man-pages-ja
 
-
 email:
-	git clone "https://github.com/deanproxy/eMail.git" /tmp/eMail
-	git clone "https://github.com/deanproxy/dlib.git" /tmp/eMail/dlib
-	cd /tmp/eMail && ./configure && make && make install
-
-email_local:
-	git clone "https://github.com/deanproxy/eMail.git" $(HOME)/tmp/eMail
-	git clone "https://github.com/deanproxy/dlib.git" $(HOME)/tmp/eMail/dlib
-	cd ~/tmp/eMail && ./configure --prefix=$(HOME)/local && make && make install
+	rm -rf $(HOME)/eMail
+	git clone "https://github.com/deanproxy/eMail.git" $(HOME)/eMail
+	git clone "https://github.com/deanproxy/dlib.git"  $(HOME)/eMail/dlib
+	cd $(HOME)/eMail && ./configure --prefix=$(PREFIX)/eMail && make && make install
+	rm -rf $(HOME)/eMail
