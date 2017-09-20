@@ -51,14 +51,14 @@ ssh:
 	/bin/cp config ~/.ssh/config && chmod 600 ~/.ssh/config
 
 PKG =  libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker wget gcc
-PKG += zsh make gcc ncurses-devel zlib-devel expat-devel gettext-devel openssl-devel autoconf epel-release
+PKG += zsh make gcc ncurses-devel zlib-devel expat-devel gettext-devel openssl-devel autoconf epel-release libbsd-devel
 install_package:
 	@-case $(OS) in \
 		CYGWIN* ) [[ ! -e /usr/local/perl/bin/perl ]] && make perl ;; \
-		Linux*  ) rpm --quiet -q $(PKG) || sudo yum --disablerepo=updates install -y $(PKG) ;; esac
+		Linux*  ) rpm --quiet -q $(PKG) || yum --disablerepo=updates install -y $(PKG) ;; esac
 
 apt_conf:
-	sudo /bin/sed -ri.org 's@http://[^ ]+ubuntu@http://ftp.jaist.ac.jp/ubuntu@' /etc/apt/sources.list
+	/bin/sed -ri.org 's@http://[^ ]+ubuntu@http://ftp.jaist.ac.jp/ubuntu@' /etc/apt/sources.list
 	apt-get update && apt-get -y upgrade
 
 sudo:
@@ -67,15 +67,33 @@ sudo:
 	chmod 0440 /etc/sudoers.d/ikushin
 
 date:
-	sudo ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+	ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 dstat:
 	$(eval DIR := $(HOME)/local/dstat)
 	if [[ -d $(DIR) ]]; then git -C $(DIR) pull;\
 	else mkdir -p $(HOME)/local; git clone "https://github.com/dagwieers/dstat.git" $(DIR); fi
 
+curl:
+    # 最新バージョン取得
+	@$(eval V := $(shell curl --max-time 3 -Lsk https://curl.haxx.se/download/ | \
+		grep -Po 'curl-\d+\.\d+\.\d+.tar.gz' | sort -V | tail -n1))
+
+    # 前準備
+	make install_package
+	/bin/rm -rf $(HOME)/$@*
+
+    # コンパイル
+	wget --no-check-certificate "https://curl.haxx.se/download/$(V)" -O $(HOME)/$@.tar.gz
+	tar zxf $(HOME)/$@.tar.gz -C $(HOME)
+	cd $(HOME)/$@-*; ./configure --prefix=${PREFIX}/$@ && make && make install
+	/bin/rm -rf $(HOME)/$@*
+
+
 .PHONY : git
 git:
+	export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl)
+
     # gitの最新バージョン取得
 	@$(eval V := $(shell curl --max-time 3 -Lsk https://www.kernel.org/pub/software/scm/git/ | \
 		grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | sort -V | tail -n1))
@@ -90,10 +108,10 @@ git:
     # コンパイル
 	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O $(HOME)/git.tar.gz
 	tar zxf $(HOME)/git.tar.gz -C $(HOME)
-	export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl); \
-		cd $(HOME)/git-*; \
-		./configure --prefix=${PREFIX}/git-$(V) --without-tcltk && \
-		make && make install
+	cd $(HOME)/git-*; ./configure --prefix=${PREFIX}/git-$(V) --with-curl=$(HOME)/local/curl/ --without-tcltk | \
+		tee configure.log
+	grep --color=always 'supports SSL... yes' $(HOME)/git-*/configure.log
+	cd $(HOME)/git-*; make && make install
 	ln -snf ${PREFIX}/git-$(V) ${PREFIX}/git
 
     # diff-highlight
@@ -123,12 +141,18 @@ diff-so-fancy:
 	test -d /cygdrive/c && sed -i '1i #!/usr/local/perl/bin/perl' /usr/local/share/git-core/contrib/diff-so-fancy/libexec/diff-so-fancy.pl || true
 	git config --global alias.dsf '!f() { [ -z "$$GIT_PREFIX" ] || cd "$$GIT_PREFIX" && git --no-pager diff -b -w --ignore-blank-lines --ignore-space-at-eol --color "$$@" | /usr/local/share/git-core/contrib/diff-so-fancy/diff-so-fancy; }; f'
 
+metastore:
+	case $(OS) in Linux*  ) \
+		git clone https://github.com/przemoc/metastore.git $(HOME)/$@; \
+		cd $(HOME)/$@ && make && make install PREFIX=${PREFIX}/$@; \
+		rm -rf $(HOME)/$@ ;; esac
+
 openssh:
 	SSH_PKG="bash"
 	if [ ! -e /etc/issue ]; then true; else if [ `id -u` -eq 0 ]; then true; else false; fi; fi
 	/bin/rm -rf /tmp/openssh*
 	if ssh -V 2>&1 | /bin/grep -q $(shell curl --max-time 3 -Ls http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/ | /bin/grep -Po '(?<=openssh-)\d+.*?(?=.tar.gz)' | tail -n1); then false; fi
-	/bin/egrep -q 'CentOS' /etc/issue 2>/dev/null  &&  { rpm --quiet -q $(SSH_PKG)  ||  sudo yum --disablerepo=updates install -y $(SSH_PKG); } || true
+	/bin/egrep -q 'CentOS' /etc/issue 2>/dev/null  &&  { rpm --quiet -q $(SSH_PKG)  ||  yum --disablerepo=updates install -y $(SSH_PKG); } || true
 	wget --no-check-certificate "http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/$(shell curl -Ls http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/" | /bin/grep -Po 'openssh-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/openssh.tar.gz
 	tar zxf /tmp/openssh.tar.gz -C /tmp
 	{ cd /tmp/openssh-*; ./configure && make && make install; } || true
@@ -144,16 +168,16 @@ zsh:
 	/bin/rm -rf $(HOME)/zsh*
 
 user_zsh:
-	[ -e /etc/issue ] && sudo /usr/sbin/usermod -s /usr/local/bin/zsh $(shell id -un) || true
+	[ -e /etc/issue ] && /usr/sbin/usermod -s /usr/local/bin/zsh $(shell id -un) || true
 
 epel:
 	-grep -q 'release 6' /etc/issue && rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 	-grep -q 'release 5' /etc/issue && rpm -Uvh http://dl.fedoraproject.org/pub/epel/5/x86_64/epel-release-5-4.noarch.rpm
 
 apt_proxy:
-	echo 'Acquire::ftp::proxy   "ftp://example.com:8080/"  ;' | sudo tee -a /etc/apt/apt.conf
-	echo 'Acquire::http::proxy  "http://example.com:8080/" ;' | sudo tee -a /etc/apt/apt.conf
-	echo 'Acquire::https::proxy "https://example.com:8080/";' | sudo tee -a /etc/apt/apt.conf
+	echo 'Acquire::ftp::proxy   "ftp://example.com:8080/"  ;' | tee -a /etc/apt/apt.conf
+	echo 'Acquire::http::proxy  "http://example.com:8080/" ;' | tee -a /etc/apt/apt.conf
+	echo 'Acquire::https::proxy "https://example.com:8080/";' | tee -a /etc/apt/apt.conf
 
 wget_proxy:
 	echo 'http_proxy = http://example.com:8080/' >>/etc/wgetrc
@@ -172,10 +196,10 @@ parallel:
 	cd /tmp/parallel-20150422/; ./configure && make && make install
 
 fuck_dpkg:
-	sudo aptitude install -y python-pip python2.7-dev && sudo pip install thefuck
+	aptitude install -y python-pip python2.7-dev && pip install thefuck
 
 ansible:
-	sudo aptitude install -y ansible
+	aptitude install -y ansible
 
 git_clone:
 	echo 'IdentityFile=~/.ssh/ikushin.id_rsa' >.ssh/config
@@ -222,10 +246,10 @@ perl:
 	/bin/rm -r /tmp/perl*.gz /tmp/perl-*
 
 autoconf:
-	rpm --quiet -q texinfo || sudo yum -y --disablerepo=updates install texinfo
+	rpm --quiet -q texinfo || yum -y --disablerepo=updates install texinfo
 	git clone "http://git.sv.gnu.org/r/autoconf.git" /tmp/autoconf
 	cd /tmp/autoconf && git checkout -b 100f26c
-	cd /tmp/autoconf && ./configure && make && sudo make install
+	cd /tmp/autoconf && ./configure && make && make install
 	which autoconf
 	autoconf --version
 
@@ -256,7 +280,7 @@ term:
 man:
 	yum install -y man man-pages man-pages-ja
 
-make:
+m:
 	@{ echo ' cat <<\EOF | base64 -di | tar zxvf -'; tar zcf - Makefile  | base64 ; echo EOF; } | tee /dev/clipboard
 
 email:
