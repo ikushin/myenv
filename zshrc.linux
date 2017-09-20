@@ -1,3 +1,6 @@
+#
+# path
+path=( $HOME/bin $HOME/local/*/bin(OnN-/) /usr/local/{*/,}*bin(OnN-/) $path )
 
 # ps
 alias ps_full='ps -eo "user,pid,ppid,pgid,pcpu,pmem,vsz,rss,stat,min_flt,maj_flt,lstart,command"'

@@ -1,3 +1,6 @@
+#
+# path
+path=( $HOME/bin $HOME/local/*/bin(onN-/) /usr/local/{*/,}*bin(onN-/) $path )
 
 # 名前付きディレクトリ
 hash -d llog=/cygdrive/c/Users/ikushin/Documents/LimeChatLog
@@ -129,4 +132,3 @@ test -e $HOME/bin/dsp_archive.sh      && bash $_
 # rc
 [ `pwd` = "/usr/bin" ] && cd $HOME
 chcp 437 >/dev/null
-
