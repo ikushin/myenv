@@ -51,7 +51,7 @@ curl:
 
     # コンパイル
 	wget --no-check-certificate "https://curl.haxx.se/download/$(V)" -O $(HOME)/$@.tar.gz
-	tar zxf $(HOME)/$@.tar.gz -C $(HOME)
+	tar xf $(HOME)/$@.tar.gz -C $(HOME)
 	cd $(HOME)/$@-*; ./configure --prefix=${PREFIX}/$@ && make && make install
 	/bin/rm -rf $(HOME)/$@*
 
@@ -63,7 +63,7 @@ perl:
     # コンパイル
 	/bin/rm -rf $(HOME)/$@*
 	wget --no-check-certificate "http://www.cpan.org/src/5.0/perl-$(V).tar.gz" -O $(HOME)/$@.tar.gz
-	tar zxf $(HOME)/$@.tar.gz -C $(HOME)
+	tar xf $(HOME)/$@.tar.gz -C $(HOME)
 	cd $(HOME)/$@-*; ./Configure -des -Dprefix=${PREFIX}/perl-$(V) && make && make install
 	ln -snf ${PREFIX}/$@-$(V) ${PREFIX}/$@
 	/bin/rm -rf $(HOME)/$@*
@@ -85,7 +85,7 @@ git:
 
     # コンパイル
 	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O $(HOME)/$@.tar.gz
-	tar zxf $(HOME)/$@.tar.gz -C $(HOME)
+	tar xf $(HOME)/$@.tar.gz -C $(HOME)
 	cd $(HOME)/$@-*; ./configure --prefix=${PREFIX}/$@-$(V) --with-curl=$(HOME)/local/curl/ --without-tcltk | \
 		tee configure.log
 	grep --color=always 'supports SSL... yes' $(HOME)/$@-*/configure.log
@@ -125,14 +125,14 @@ zsh:
 	/bin/rm -rf $(HOME)/$@*
 	make install_package
 	wget --no-check-certificate "https://sourceforge.net/projects/zsh/files/latest/download?source=files" -O $(HOME)/$@.tar.gz
-	tar zxf $(HOME)/$@.tar.gz -C $(HOME)
+	tar xf $(HOME)/$@.tar.gz -C $(HOME)
 	cd $(HOME)/$@-* && ./configure --prefix=${PREFIX}/$@ && make && make install
 	/bin/rm -rf $(HOME)/$@*
 
 EMACS_VERSION := $(shell emacs --version 2>/dev/null | head -1 )
 emacs:
     # 最新バージョン取得
-	$(eval V := $(shell curl --max-time 10 -Ls https://mirror.jre655.com/GNU/emacs/ | \
+	$(eval V := $(shell curl --max-time 10 -Ls http://ftp.jaist.ac.jp/pub/GNU/emacs/ | \
 		/bin/grep -Po '(?<=emacs-)\d+\.\d+' | tail -n1))
 
     # 続行判定
@@ -143,8 +143,8 @@ emacs:
 	/bin/rm -rf $(HOME)/$@*
 
     # コンパイル
-	wget --no-check-certificate "https://mirror.jre655.com/GNU/emacs/emacs-$(V).tar.gz" -O $(HOME)/$@.tar.gz
-	tar zxf $(HOME)/$@.tar.gz -C $(HOME)
+	wget --no-check-certificate "http://ftp.jaist.ac.jp/pub/GNU/emacs/emacs-$(V).tar.gz" -O $(HOME)/$@.tar.gz
+	tar xf $(HOME)/$@.tar.gz -C $(HOME)
 	cd $(HOME)/$@-* && ./configure --prefix=${PREFIX}/$@-$(V) --without-x && LANG=C make && make install
 	/bin/rm -rf $(HOME)/$@*
 	ln -snf ${PREFIX}/$@-$(V) ${PREFIX}/$@
@@ -211,7 +211,7 @@ openssh:
 	if ssh -V 2>&1 | /bin/grep -q $(shell curl --max-time 10 -Ls http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/ | /bin/grep -Po '(?<=openssh-)\d+.*?(?=.tar.gz)' | tail -n1); then false; fi
 	/bin/egrep -q 'CentOS' /etc/issue 2>/dev/null  &&  { rpm --quiet -q $(SSH_PKG)  ||  yum --disablerepo=updates install -y $(SSH_PKG); } || true
 	wget --no-check-certificate "http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/$(shell curl -Ls http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/" | /bin/grep -Po 'openssh-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/openssh.tar.gz
-	tar zxf /tmp/openssh.tar.gz -C /tmp
+	tar xf /tmp/openssh.tar.gz -C /tmp
 	{ cd /tmp/openssh-*; ./configure && make && make install; } || true
 	/bin/rm -rf /tmp/openssh*
 
