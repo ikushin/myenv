@@ -42,7 +42,7 @@ dstat:
 
 curl:
     # 最新バージョン取得
-	@$(eval V := $(shell curl --max-time 3 -Lsk https://curl.haxx.se/download/ | \
+	@$(eval V := $(shell curl --max-time 10 -Lsk https://curl.haxx.se/download/ | \
 		grep -Po 'curl-\d+\.\d+\.\d+.tar.gz' | sort -V | tail -n1))
 
     # 前準備
@@ -57,7 +57,7 @@ curl:
 
 perl:
     # 最新バージョン取得
-	$(eval V := $(shell curl --max-time 3 -Ls http://www.cpan.org/src/5.0/ | \
+	$(eval V := $(shell curl --max-time 10 -Ls http://www.cpan.org/src/5.0/ | \
 		grep -Po '(?<=perl-)5\.26\.\d+(?=\.tar\.gz)' | sort -V | tail -n1))
 
     # コンパイル
@@ -73,7 +73,7 @@ git:
 	export PERL_PATH=$(shell PATH='/usr/local/perl/bin:/usr/bin:bin' type -p perl)
 
     # gitの最新バージョン取得
-	@$(eval V := $(shell curl --max-time 3 -Lsk https://www.kernel.org/pub/software/scm/git/ | \
+	@$(eval V := $(shell curl --max-time 10 -Lsk https://www.kernel.org/pub/software/scm/git/ | \
 		grep -Po '(?<=git-)\d+.*?(?=.tar.gz)' | sort -V | tail -n1))
 
     # 続行判定
@@ -132,7 +132,7 @@ zsh:
 EMACS_VERSION := $(shell emacs --version 2>/dev/null | head -1 )
 emacs:
     # 最新バージョン取得
-	$(eval V := $(shell curl --max-time 3 -Ls https://mirror.jre655.com/GNU/emacs/ | \
+	$(eval V := $(shell curl --max-time 10 -Ls https://mirror.jre655.com/GNU/emacs/ | \
 		/bin/grep -Po '(?<=emacs-)\d+\.\d+' | tail -n1))
 
     # 続行判定
@@ -208,7 +208,7 @@ openssh:
 	SSH_PKG="bash"
 	if [ ! -e /etc/issue ]; then true; else if [ `id -u` -eq 0 ]; then true; else false; fi; fi
 	/bin/rm -rf /tmp/openssh*
-	if ssh -V 2>&1 | /bin/grep -q $(shell curl --max-time 3 -Ls http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/ | /bin/grep -Po '(?<=openssh-)\d+.*?(?=.tar.gz)' | tail -n1); then false; fi
+	if ssh -V 2>&1 | /bin/grep -q $(shell curl --max-time 10 -Ls http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/ | /bin/grep -Po '(?<=openssh-)\d+.*?(?=.tar.gz)' | tail -n1); then false; fi
 	/bin/egrep -q 'CentOS' /etc/issue 2>/dev/null  &&  { rpm --quiet -q $(SSH_PKG)  ||  yum --disablerepo=updates install -y $(SSH_PKG); } || true
 	wget --no-check-certificate "http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/$(shell curl -Ls http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/" | /bin/grep -Po 'openssh-\d+\..*?\.tar\.gz' | tail -n1) -O /tmp/openssh.tar.gz
 	tar zxf /tmp/openssh.tar.gz -C /tmp
