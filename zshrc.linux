@@ -3,9 +3,12 @@
 path=( $HOME/bin $HOME/local/*/bin(OnN-/) /usr/local/{*/,}*bin(OnN-/) $path )
 
 # ps
-alias ps_full='ps -eo "user,pid,ppid,pgid,pcpu,pmem,vsz,rss,stat,min_flt,maj_flt,lstart,command"'
-alias ps_full_cpu='ps_full --sort -pcpu'
-alias ps_full_mem='ps_full --sort -pmem'
+alias _ps='ps --headers -eo "user,pid,ppid,pgid,pcpu,pmem,vsz,rss,stat,min_flt,maj_flt,lstart,command"'
+alias ps_full='_ps --forest'
+alias ps_cpu='_ps --sort pcpu'
+alias ps_mem='_ps --sort pmem'
+alias ps_vsz='_ps --sort vsz'
+alias ps_rss='_ps --sort rss'
 alias pstree='pstree -p'
 alias free='free -m'
 alias locate='locate -r'
