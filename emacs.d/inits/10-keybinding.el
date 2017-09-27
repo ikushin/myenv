@@ -12,15 +12,17 @@
 ;; 鉄板
 (global-set-key "\C-h" 'delete-backward-char)
 (global-set-key "\M-g" 'goto-line)
-
+;
 (define-key global-map "\C-x\C-o" 'other-window)
 (define-key global-map "\M-w" 'kill-region)
 (define-key global-map "\C-s" 'isearch-forward-regexp)
 (define-key global-map "\C-r" 'isearch-backward-regexp)
+(define-key global-map (kbd "C-c C-l") 'toggle-truncate-lines)
+(define-key global-map (kbd "C-t") 'smart-tab)
 (define-key global-map "\M-h" 'backward-kill-word)
 (define-key global-map "\C-\M-z" 'scroll-up-line)
 (define-key global-map "\C-\M-v" 'scroll-down-line)
-
+;
 (define-key global-map [f1] 'woman)
 (define-key global-map [f3] 'previous-error)
 (define-key global-map [f4] 'next-error)
@@ -118,13 +120,13 @@
 ; (global-set-key (kbd "C-t") 'other-window-or-split)
 
 ;; 1行コピーをおこなう
-(defun copy-line (&optional arg)
-  (interactive "p")
-  (copy-region-as-kill
-   (line-beginning-position)
-   (line-beginning-position (1+ (or arg 1))))
-  (message "Line copied"))
-(global-set-key (kbd "C-t") 'copy-line)
+;; (defun copy-line (&optional arg)
+;;   (interactive "p")
+;;   (copy-region-as-kill
+;;    (line-beginning-position)
+;;    (line-beginning-position (1+ (or arg 1))))
+;;   (message "Line copied"))
+;; (global-set-key global-map (kbd "C-t C-t") 'copy-line)
 
 ;; 単語ごとの削除をコピーなしに変更
 ;; M-hに前の単語を削除を割り当て
