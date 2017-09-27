@@ -83,12 +83,14 @@ is-at-least 5.2 && setopt glob_star_short  # **.c で **/*.c と同じ展開を�
 
 # key binds
 bindkey -e
+bindkey -s '^X^F' '**/*(.) '
+## Ctrl
 bindkey '^O'   accept-line-and-down-history
-bindkey "^[H"  backward-kill-word
-bindkey "^[h"  backward-kill-word
+bindkey '^W'   copy-region-as-kill
+bindkey "^T"   expand-or-complete
+## Meta
+bindkey '^[h'  backward-kill-word
 bindkey '^[w'  kill-region
-bindkey -s "^X^F" '**/*(.) '
-
 
 # 単語区切り文字指定
 WORDCHARS='*?[]~&;!#$%{}<>|'
