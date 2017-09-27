@@ -19,3 +19,4 @@ fg_color=white
 
 #PROMPT='[%n@%{$bg['$bg_color']%}%m%{$reset_color%}]%(#.#.$) '
 PROMPT='[%n@%{$fg['$fg_color']$bg['$bg_color']%}%m%{$reset_color%}]%(#.#.$) '
+#PROMPT='[%n@%{$fg['$fg_color']$bg['$bg_color']%}%m%{$reset_color%} (%*) ]%(#.#.$) '
