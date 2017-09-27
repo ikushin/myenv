@@ -28,6 +28,7 @@ alias rpmq='rpm -q'
 alias rpmql='rpm -ql'
 alias rpmqf='rpm -qf'
 alias rpmqi='rpm -qi'
+alias rpmq_scripts='rpm -q --scripts'
 alias rpmqlp='rpm -qlp'
 alias rpmqip='rpm -qip'
 
