@@ -178,6 +178,12 @@ emacs_lisp:
 	-wget -q -nc --no-check-certificate -O ~/.lisp/point-undo.el                 https://www.emacswiki.org/emacs/download/point-undo.el
 	-wget -q -nc --no-check-certificate -O ~/.lisp/recentf-ext.el                https://www.emacswiki.org/emacs/download/recentf-ext.el
 
+win_net:
+	/usr/bin/cygstart ncpa.cpl
+
+win_proxy:
+	/usr/bin/cygstart control.exe inetcpl.cpl,,4
+
 old:
 	-wget -q -nc "https://raw.githubusercontent.com/maskedw/dotfiles/master/.gdbinit" -P $(HOME)
 
@@ -286,9 +292,6 @@ static:
 
 route:
 	route add 192.168.0.1 MASK 255.255.255.0 10.0.0.254
-
-net:
-	/usr/bin/cygstart ncpa.cpl
 
 man:
 	yum install -y man man-pages man-pages-ja
