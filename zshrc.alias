@@ -23,6 +23,8 @@ alias -g GV='G -v'
 alias -g Gv='GV'
 alias -g GVV='|& /bin/grep -Pv "^\s*(#|$|;)"'
 alias -g Gw='GI -w'
+alias -g GVW='GV -w'
+alias -g GVw='GVW'
 
 alias -g FG='|& fgrep -a'
 alias -g FGV='FG -v'
