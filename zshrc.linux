@@ -43,44 +43,45 @@ alias ipn='ip_neighbour'
 alias arp='ipn'
 
 # netstat
-#alias netstat='/bin/netstat  --numeric --tcp --inet --listen --program'
-#alias net='netstat'
-#alias netstat_tcp='/bin/netstat -tlnp --inet'
-#alias netstat_udp='/bin/netstat -ulnp --inet'
-
 function netstat_tcp4
 {
     {
         echo "Proto RQ SQ L_Addr Port F_Addr Stat PID Prog"
-        /bin/netstat -tlnp4 T -n+3 PE "s/:/ /" PE "s@/@ @"  S -k5n,5
+        /bin/netstat -tlnp -A inet 2>/dev/null |tail -n+3 PE "s/:/ /" PE "s@/@ @"  S -k5n,5
     } Col
 }
 alias n='netstat_tcp4'
 
-function netstat_tcp46
+function netstat_tcp6
 {
     {
         echo "Proto RQ SQ L_Addr Port F_Addr Stat PID Prog"
-        /bin/netstat -tlnp T -n+3 PE 's/:(\d+)/ $1/' PE "s@/@ @" S -k5n,5
+        /bin/netstat -tlnp -A inet6 2>/dev/null |tail -n+3 PE 's/:(\d+)\s/ $1 /' PE "s@/@ @" S -k5n,5
     } Col
 }
-alias nn='netstat_tcp46'
 
 function netstat_udp4
 {
     {
         echo "Proto RQ SQ L_Addr Port F_Addr PID Prog"
-        netstat -ulnp4 T -n+3 PE "s/:/ /" PE "s@/@ @" S -k5n,5
+        netstat -ulnp -A inet -A inet6 2>/dev/null |tail -n+3 PE 's/:(\d+)\s/ $1 /' PE "s@/@ @" S -V-k1,1 -k5n,5 -k4,4
     } Col
 }
 
-function nnn
+function nn
 {
     printf "=== TCP ===\n"
-    netstat_tcp46
+    netstat_tcp4
+    printf "\n=== TCP6 ===\n"
+    netstat_tcp6
     printf "\n=== UDP ===\n"
     netstat_udp4
 }
+
+#alias netstat='/bin/netstat  --numeric --tcp --inet --listen --program'
+#alias net='netstat'
+#alias netstat_tcp='/bin/netstat -tlnp --inet'
+#alias netstat_udp='/bin/netstat -ulnp --inet'
 
 #alias n='netstat_tcp | tail -n+3 PE "s/:/ /" | sort -k5n,5 Col'
 #alias nn="netstat_tcp --inet6 |tail -n+2 PE 's/l Address/_Address Port/' PE 's/ Address/_Address/' PE 's/ name/_name/' PE 's/:(\d+\s)/ \$1/' PE 's/\s+/ /g' S -k5n,5 Col"

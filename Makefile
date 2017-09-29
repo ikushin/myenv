@@ -37,7 +37,7 @@ install_package:
 DSTAT_D := $(HOME)/local/dstat
 dstat:
 	if [[ -d $(DSTAT_D) ]]; then \
-		git -C $(DSTAT_D) pull; \
+		git -C $(DSTAT_D)/bin pull; \
 	else \
 		mkdir -p $(DSTAT_D); \
 		git clone "https://github.com/dagwieers/dstat.git" $(DSTAT_D)/bin; \
