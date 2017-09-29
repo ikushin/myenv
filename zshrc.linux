@@ -16,9 +16,10 @@ alias pgrep='pgrep -lf'
 
 # dstat
 if which dstat >&/dev/null; then
-   alias dstat='dstat --load --cpu --disk --net --page --sys --proc --mem --swap --bits'
+   alias dstat='dstat --nocolor --noupdate --bit'
+   alias _dstat='dstat --load --cpu --disk --net --page --sys --proc --mem --swap --bits'
    alias dstat_cpu='dstat --load --cpu --cpu-use --float'
-   alias dstat_full='dstat --nocolor --full'
+   alias dstat_full='dstat --full'
 fi
 
 # RPM

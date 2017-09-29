@@ -4,6 +4,7 @@ path=( $HOME/bin $HOME/local/*/bin(onN-/) /usr/local/{*/,}*bin(onN-/) $path )
 
 # 名前付きディレクトリ
 hash -d llog=/cygdrive/c/Users/ikushin/Documents/LimeChatLog
+hash -d clog=/cygdrive/c/Users/ikushin/Documents/LimeChatLog
 hash -d plog=/cygdrive/c/Users/ikushin/Documents/putty_log
 hash -d tlog=/cygdrive/c/Users/ikushin/Documents/teraterm_log
 hash -d desktop=/cygdrive/c/Users/ikushin/Desktop

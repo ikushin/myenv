@@ -39,8 +39,8 @@ dstat:
 	if [[ -d $(DSTAT_D) ]]; then \
 		git -C $(DSTAT_D) pull; \
 	else \
-		mkdir -p $(HOME)/local; \
-		git clone "https://github.com/dagwieers/dstat.git" $(DSTAT_D); \
+		mkdir -p $(DSTAT_D); \
+		git clone "https://github.com/dagwieers/dstat.git" $(DSTAT_D)/bin; \
 	fi
 
 curl:
