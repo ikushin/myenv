@@ -45,6 +45,10 @@
 (setq undo-limit 600000)
 (setq undo-strong-limit 900000)
 
+;; elscreen
+(require 'elscreen)
+(elscreen-start)
+
 ;; コンパイルに成功したら *compilation* バッファを閉じる
 ; 指定したバッファに警告の文字列があるか
 ; (defun my-compilation-warning-bufferp (buf)
@@ -69,5 +73,3 @@
 ;             '(my-close-compilation-buffer-if-succeeded))
 ;   (setq compilation-finish-functions
 ;         '(my-close-compilation-buffer-if-succeeded)))
-
-

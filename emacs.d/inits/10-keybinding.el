@@ -9,6 +9,7 @@
 ;(define-key global-map "\M-oS" 'next-error)
 ;(global-set-key (kbd "C-x C-b") 'bs-show)
 
+
 ;; 鉄板
 (global-set-key "\C-h" 'delete-backward-char)
 (global-set-key "\M-g" 'goto-line)
@@ -38,6 +39,10 @@
 (setq bs-cycle-configuration-name "files-and-scratch")
 
 ;; 使うかどうか判定中
+(require 'point-undo)
+(define-key global-map (kbd "M-[") 'point-undo)
+(define-key global-map (kbd "M-]") 'point-redo)
+
 (global-set-key (kbd "C-c C-c") 'comment-or-uncomment-region)
 (define-key global-map "\C-w" 'kill-ring-save)
 (define-key global-map "\M-s\M-s" 'isearch-forward)

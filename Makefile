@@ -20,9 +20,11 @@ cp:
 		*centos-5* | *redhat-5* ) /bin/ln -sfnv $(HOME)/.myenv/zshrc.centos5 $(HOME)/.zshrc.centos5 ;; \
 		*centos-7* | *redhat-7* ) /bin/ln -sfnv $(HOME)/.myenv/zshrc.centos7 $(HOME)/.zshrc.centos7 ;; \
 	esac
-	/bin/cp -T -avu $(HOME)/.myenv/emacs.d/ $(HOME)/.emacs.d
 	[[ -e $(HOME)/.ssh ]]        || install -v -m 700 -d $(HOME)/.ssh
 	[[ -e $(HOME)/.ssh/config ]] || install -v -m 600 ssh_config $(HOME)/.ssh/config
+	make cp_emacs
+cp_emacs:
+	/bin/cp -T -avu $(HOME)/.myenv/emacs.d/ $(HOME)/.emacs.d
 
 PKG =  wget zsh make gcc  autoconf epel-release perl-ExtUtils-MakeMaker
 PKG += libbsd-devel libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel ncurses-devel
