@@ -10,18 +10,19 @@ endif
 
 .PHONY: cygwin git emacs
 
-DOTFILES = zlogin zshrc inputrc screenrc vimrc zshrc.alias zshrc.git zshrc.func emacs.d
+DOTFILES = zlogin zshrc inputrc screenrc vimrc zshrc.alias zshrc.git zshrc.func
 cp:
-	for i in $(DOTFILES); do /bin/cp -T -avu $(HOME)/.myenv/$$i $(HOME)/.$$i; done
-	/bin/cp -avn zshrc.local $(HOME)/.zshrc.local
+	for i in $(DOTFILES); do /bin/ln -sfnv $(HOME)/.myenv/$$i $(HOME)/.$$i; done
+	/bin/cp -av --no-clobber zshrc.local $(HOME)/.zshrc.local
+	case $(OS) in \
+		CYGWIN* )    /bin/ln -sfnv $(HOME)/.myenv/zshrc.cygwin  $(HOME)/.zshrc.cygwin   ;;  \
+		Linux* )     /bin/ln -sfnv $(HOME)/.myenv/zshrc.linux   $(HOME)/.zshrc.linux    ;;& \
+		*centos-5* | *redhat-5* ) /bin/ln -sfnv $(HOME)/.myenv/zshrc.centos5 $(HOME)/.zshrc.centos5 ;; \
+		*centos-7* | *redhat-7* ) /bin/ln -sfnv $(HOME)/.myenv/zshrc.centos7 $(HOME)/.zshrc.centos7 ;; \
+	esac
+	/bin/cp -T -avu $(HOME)/.myenv/emacs.d/ $(HOME)/.emacs.d
 	[[ -e $(HOME)/.ssh ]]        || install -v -m 700 -d $(HOME)/.ssh
 	[[ -e $(HOME)/.ssh/config ]] || install -v -m 600 ssh_config $(HOME)/.ssh/config
-	case $(OS) in \
-		CYGWIN* )    /bin/cp -avu zshrc.cygwin  $(HOME)/.zshrc.cygwin   ;;  \
-		Linux* )     /bin/cp -avu zshrc.linux   $(HOME)/.zshrc.linux    ;;& \
-		*centos-5* | *redhat-5* ) /bin/cp -avu zshrc.centos5 $(HOME)/.zshrc.centos5 ;; \
-		*centos-7* | *redhat-7* ) /bin/cp -avu zshrc.centos7 $(HOME)/.zshrc.centos7 ;; \
-	esac
 
 PKG =  wget zsh make gcc  autoconf epel-release perl-ExtUtils-MakeMaker
 PKG += libbsd-devel libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel ncurses-devel
