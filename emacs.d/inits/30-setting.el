@@ -46,8 +46,8 @@
 (setq undo-strong-limit 900000)
 
 ;; elscreen
-(require 'elscreen)
-(elscreen-start)
+;(require 'elscreen)
+;(elscreen-start)
 
 ;; コンパイルに成功したら *compilation* バッファを閉じる
 ; 指定したバッファに警告の文字列があるか

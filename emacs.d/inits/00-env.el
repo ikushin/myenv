@@ -41,7 +41,7 @@
 ;; リージョンに色を付ける
 (setq transient-mark-mode t)
 (set-face-foreground 'region "black")
-(set-face-background 'region "white")
+(set-face-background 'region "green")
 
 ;; ミニバッファでの補完を TAB だけで行う
 (setq minibuffer-complete-cycle t)
