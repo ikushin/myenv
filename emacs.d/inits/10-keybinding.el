@@ -39,9 +39,9 @@
 (setq bs-cycle-configuration-name "files-and-scratch")
 
 ;; 使うかどうか判定中
-(require 'point-undo)
-(define-key global-map (kbd "M-[") 'point-undo)
-(define-key global-map (kbd "M-]") 'point-redo)
+;(require 'point-undo)
+;(define-key global-map (kbd "M-[") 'point-undo)
+;(define-key global-map (kbd "M-]") 'point-redo)
 
 (global-set-key (kbd "C-c C-c") 'comment-or-uncomment-region)
 (define-key global-map "\C-w" 'kill-ring-save)

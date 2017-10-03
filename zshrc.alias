@@ -7,7 +7,6 @@ alias fgrep='/bin/fgrep --color'
 alias g='xgrep'
 alias go='xgrep -o'
 alias igrep='g -i'
-alias rgrep='g -v "^#|^$"'
 
 # ipgrep
 alias ipgrep='xgrep "(\d+\.){3}\d+"'
@@ -180,6 +179,7 @@ alias tailf='tail -F'
 # misc
 alias .='source'
 alias ..='cd ..'
+alias dc='cd'
 alias h='history 0 | tail -n 100 | perl -pe "s/^\d+\*? +//"'
 alias \$=';'
 alias \#=';'

@@ -64,7 +64,7 @@ function netstat_udp4
 {
     {
         echo "Proto RQ SQ L_Addr Port F_Addr PID Prog"
-        netstat -ulnp -A inet -A inet6 2>/dev/null |tail -n+3 PE 's/:(\d+)\s/ $1 /' PE "s@/@ @" S -V-k1,1 -k5n,5 -k4,4
+        netstat -ulnp -A inet -A inet6 2>/dev/null |tail -n+3 PE 's/:(\d+)\s/ $1 /' PE "s@/@ @" S -V -k1,1 -k5n,5 -k4,4
     } Col
 }
 
