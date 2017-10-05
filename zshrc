@@ -138,6 +138,7 @@ export EDITOR=vim
 export PAGER=less
 export LESSCHARSET=utf-8
 export LESS='-iMRj3'
+export LESSKEY=$HOME/.lesskey
 
 # cdpath
 cdpath=( .. $HOME )

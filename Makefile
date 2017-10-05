@@ -22,6 +22,7 @@ cp:
 	esac
 	[[ -e $(HOME)/.ssh ]]        || install -v -m 700 -d $(HOME)/.ssh
 	[[ -e $(HOME)/.ssh/config ]] || install -v -m 600 ssh_config $(HOME)/.ssh/config
+	[[ -e $(HOME)/.lesskey ]] || lesskey -o $(HOME)/.lesskey lesskey
 	make cp_emacs
 cp_emacs:
 	/bin/cp -T -avu $(HOME)/.myenv/emacs.d/ $(HOME)/.emacs.d
