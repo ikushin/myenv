@@ -33,11 +33,11 @@ function cidr2subnet ()
 }
 
 function org() {
-    cp -a $1{,.org}
+    /bin/cp -avi $1{,.org}
 }
 
 function bak() {
-    cp $1{,.bak}
+    /bin/cp -avi $1{,.$(date +%Y%m%d)a}
 }
 
 function day_bak() {
