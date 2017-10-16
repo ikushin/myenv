@@ -1,6 +1,6 @@
 #
 # path
-path=( /usr/*bin /*bin )
+path=( $HOME/local/bin /usr/*bin /*bin )
 
 # autoload
 # -z を付けないと KSH_AUTOLOAD の設定の影響を受けるそうなので、 基本的には -z を明示的に付けるのがおすすめのようです。
@@ -137,7 +137,7 @@ LANG="C"
 export EDITOR=vim
 export PAGER=less
 export LESSCHARSET=utf-8
-export LESS='-iMRj3'
+export LESS='-FiMRj3'
 export LESSKEY=$HOME/.lesskey
 
 # cdpath
