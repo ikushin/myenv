@@ -165,9 +165,39 @@ nc='\033[0m'
 red='\033[0;31m'
 green='\033[0;32m'
 
-######
-# rc #
-######
+# less color
+# -----------
+#
+# Color       #define       Value       RGB
+# black     COLOR_BLACK       0     0, 0, 0
+# red       COLOR_RED         1     max,0,0
+# green     COLOR_GREEN       2     0,max,0
+# yellow    COLOR_YELLOW      3     max,max,0
+# blue      COLOR_BLUE        4     0,0,max
+# magenta   COLOR_MAGENTA     5     max,0,max
+# cyan      COLOR_CYAN        6     0,max,max
+# white     COLOR_WHITE       7     max,max,max
+#
+
+# 点滅
+export LESS_TERMCAP_mb=$(tput bold)
+
+# 太字
+export LESS_TERMCAP_md=$(tput bold; tput setaf 6)
+export LESS_TERMCAP_me=$(tput sgr0)
+
+# 強調
+#export LESS_TERMCAP_so=$(tput bold; tput setaf 0 ; tput setab 7)
+#export LESS_TERMCAP_so=$(tput bold; tput setab 7)
+#export LESS_TERMCAP_se=$(tput sgr0)
+
+# 下線
+export LESS_TERMCAP_us=$(tput smul; tput setaf 5)
+export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
+
+
+# run command
+# -----------
 TERM=linux
 
 # 名前付きdir
@@ -193,12 +223,3 @@ if [[ -n $EMACS ]] ;then
   PROMPT='[(zsh)%~]%(#.#.$) '
   source=true
 fi
-
-export LESS_TERMCAP_mb=$(tput bold)
-export LESS_TERMCAP_md=$(tput bold; tput setaf 4)
-export LESS_TERMCAP_me=$(tput sgr0)
-export LESS_TERMCAP_se=$(tput sgr0)
-export LESS_TERMCAP_so=$(tput bold; tput setaf 0 ; tput setab 3)
-export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
-export LESS_TERMCAP_us=$(tput smul; tput setaf 2)
-

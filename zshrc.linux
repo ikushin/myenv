@@ -16,10 +16,11 @@ alias pgrep='pgrep -lf'
 
 # dstat
 if which dstat >&/dev/null; then
-   alias dstat='dstat --nocolor --noupdate --bit'
-   alias _dstat='dstat --load --cpu --disk --net --page --sys --proc --mem --swap --bits'
-   alias dstat_cpu='dstat --load --cpu --cpu-use --float'
-   alias dstat_full='dstat --full'
+   #alias dstat='dstat --nocolor --noupdate --bit'
+   #alias _dstat='dstat --load --cpu --disk --net --page --sys --proc --mem --swap --bits'
+   #alias dstat_cpu='dstat --load --cpu --cpu-use --float'
+   #alias dstat_full='dstat --full'
+   alias dstat='dstat -tlc -m -d -n --tcp --top-cpu --top-io --top-mem --bit --noupdate 5'
 fi
 
 # RPM
@@ -34,7 +35,7 @@ alias rpmqlp='rpm -qlp'
 alias rpmqip='rpm -qip'
 
 # ip, iproute, arp
-alias ip_addr='/sbin/ip -4 -s addr PE "s@/@ /@" Key "(?<=inet\s)[\d.]+|(?<=\d: )\w+"'
+alias ip_addr='/sbin/ip -4 -s addr PE "s@/@ /@" Key "(?<=inet\s)[\d.]+|(?<=\d: )\S+"'
 alias ipa='ip_addr'
 alias ip_route='/sbin/ip r list scope global SV Col'
 alias ipr='ip_route'

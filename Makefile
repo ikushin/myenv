@@ -32,7 +32,7 @@ PKG += libbsd-devel libcurl-devel expat-devel gettext-devel openssl-devel zlib-d
 install_package:
 	@-case $(OS) in \
 		CYGWIN* ) [[ ! -e /usr/local/perl/bin/perl ]] && make perl ;; \
-		Linux*  ) rpm --quiet -q $(PKG) || yum --disablerepo=updates install -y $(PKG) ;; \
+		Linux*  ) rpm --quiet -q $(PKG) || yum install -y $(PKG) ;; \
 	esac
 
 DSTAT_D := $(HOME)/local/dstat

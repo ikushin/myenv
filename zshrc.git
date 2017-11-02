@@ -1,4 +1,4 @@
-
+#
 # Git key binds
 if git --version |& grep -Pq "1.[7]"; then
     bindkey -s '^G^S' "git status --short . "
@@ -47,30 +47,41 @@ alias gcm='git checkout master'
 alias gl='git log --color=always --name-status --no-merges'
 alias gp='git push origin master'
 alias ga='git add '
+alias git_add_hunk='git add -p'
 
-#alias git_unstage='git reset HEAD'
-alias git_unstage='git rm --cached'
-alias git_modify_message='git commit --amend'
-alias git_rename_branch='git branch -m'
-alias git_clean_dryrun='git clean -nd'
-alias git_clean_force='git clean -fd'
-alias git_reference_log='git reflog'
-alias git_cat_object='git cat-file -p'
-alias git_config_list='git config --list'
-alias git_config_edit='git config -ef ~/.gitconfig'
+# stash
 alias git_stash_save='git stash save'
 alias git_stash_list='git stash list'
 alias git_stash_pop='git stash pop'
-alias git_squash_commit='git rebase -i HEAD~~~~~~~~~~'
-alias git_add_hunk='git add -p'
-alias git_untrack='git update-index --skip-worktree'
+
+# clean
+alias git_clean_dryrun='git clean -nd'
+alias git_clean_force='git clean -fd'
+
+# config
+alias git_config_list='git config --list'
+alias git_config_edit='git config -ef ~/.gitconfig'
 alias git_config_init='git config --global user.name "First-name Family-name"; git config --global user.email "username@example.com"'
+
+# branch
+alias git_branch='git branch --all'
+alias git_branch_rename='git branch -m'
+
+# misc
+alias git_unstage='git rm --cached'
+alias git_reference_log='git reflog'
+alias git_cat_object='git cat-file -p'
+alias git_modify_message='git commit --amend'
+alias git_squash_commit='git rebase -i HEAD~~~~~~~~~~'
+alias git_untrack='git update-index --skip-worktree'
 
 # あまり使わないもの
 #alias gs='git status --short --branch .'
 #alias wgd='gitdiff --word-diff'
 #alias gb='git branch --verbose --all'
+#alias git_unstage='git reset HEAD'
 
+# functions
 alias _gdiff='gitdiff --no-index'
 function d() {
     a=${1:-"a"}
