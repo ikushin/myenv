@@ -1,8 +1,12 @@
 #!/bin/bash
+set -eu
+set -x
 
 PASSFILE="$HOME/local/bin/.sshpass"
+[[ -d "$HOME/local/bin" ]] || exit
+
 echo 'password' >$PASSFILE
-ssh="sshpass -f $PASSFILE ssh -l root"
+ssh="sshpass -f $PASSFILE ssh -lroot \$@"
 ssh_d="$HOME/local/bin"
 hosts=(
     "10.0.0.1,host1,alias1"
