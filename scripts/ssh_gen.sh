@@ -17,7 +17,7 @@ hosts=(
 # ------------
 ssh_d="$HOME/local/bin"
 pass_file="$HOME/local/bin/.sshpass"
-ssh="sshpass -f $PASSFILE ssh -l$user \$@"
+ssh="sshpass -f $pass_file ssh -l$user \$@"
 
 # main
 # ----
