@@ -1,20 +1,28 @@
 #!/bin/bash
-set -eu
+set -e
+set -u
 set -x
 
-PASSFILE="$HOME/local/bin/.sshpass"
-[[ -d "$HOME/local/bin" ]] || exit
-
-echo 'password' >$PASSFILE
-ssh="sshpass -f $PASSFILE ssh -lroot \$@"
-ssh_d="$HOME/local/bin"
+# 変更する変数
+# ------------
+user="root"
+pass="password"
 hosts=(
     "10.0.0.1,host1,alias1"
     "10.0.0.2,host2,alias2"
     "10.0.0.3,host3"
 )
 
+# 変更しない変数
+# ------------
+ssh_d="$HOME/local/bin"
+pass_file="$HOME/local/bin/.sshpass"
+ssh="sshpass -f $PASSFILE ssh -l$user \$@"
+
+# main
+# ----
 mkdir -p $ssh_d
+echo $pass >$pass_file
 for f in ${hosts[*]}
 do
     ip=$(cut -d, -f1 <<<$f)
