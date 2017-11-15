@@ -6,7 +6,7 @@ set -x
 # 変更する変数
 # ------------
 user="root"
-pass="password"
+pass='password'
 hosts=(
     "10.0.0.1,host1,alias1"
     "10.0.0.2,host2,alias2"
