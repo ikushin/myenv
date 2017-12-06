@@ -4,13 +4,17 @@ alias grep='/bin/grep --color -a'
 alias egrep='/bin/grep -E --color -a'
 alias xgrep='grep -P'
 alias fgrep='/bin/fgrep --color'
-alias g='xgrep'
-alias go='xgrep -o'
 alias igrep='g -i'
+
+alias g='xgrep'
+alias go='g -o'
+alias gh='g -h'
+alias goh='g -oh'
+alias gho='goh'
 
 # ipgrep
 alias ipgrep='xgrep "(\d+\.){3}\d+"'
-alias ipgrep2='xgrep "(\d+\.){3}\d+" **/*~*.db(.) GV "127.0.0.1|0.0.0.0|\.hint|\.zone" Key "(\d+\.){3}\d+|^.*?:"'
+alias ipgrep2='xgrep "(\d+\.){4}\d+" **/*~*.db(.) GV "127.0.0.1|0.0.0.0|\.hint|\.zone" Key "(\d+\.){3}\d+|^.*?:"'
 alias -g IP='|& ipgrep'
 alias -g IPO='IP -o'
 alias -g IPo='IPO'
@@ -87,6 +91,8 @@ alias -g A9='A 9'
 # 紛らわしいもの
 alias -g Cut='|& cut -c -$(($COLUMNS-10))'
 alias -g Col='|& LANG=ja_JP.UTF8 column -t'
+alias -g Colc='|& LANG=ja_JP.UTF8 column -t -s,'
+alias -g Colt="|& LANG=ja_JP.UTF8 column -t -s $'\t'"
 alias -g Cat='|& cat -An'
 alias -g Tee='|&tee'
 

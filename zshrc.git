@@ -66,6 +66,7 @@ alias git_config_init='git config --global user.name "First-name Family-name"; g
 # branch
 alias git_branch='git branch --all'
 alias git_branch_rename='git branch -m'
+alias gb='git branch'
 
 # misc
 alias git_unstage='git rm --cached'
