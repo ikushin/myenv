@@ -49,10 +49,17 @@ alias gp='git push origin master'
 alias ga='git add '
 alias git_add_hunk='git add -p'
 
+# tag
+alias git_tag='git tag -ln --sort=-v:refname'
+
 # stash
 alias git_stash_save='git stash save'
+alias git_stash_push='git_stash_save'
 alias git_stash_list='git stash list'
 alias git_stash_pop='git stash pop'
+
+alias gsp='git_stash_save'
+alias gspop='git_stash_pop'
 
 # clean
 alias git_clean_dryrun='git clean -nd'
@@ -66,10 +73,11 @@ alias git_config_init='git config --global user.name "First-name Family-name"; g
 # branch
 alias git_branch='git branch --all'
 alias git_branch_rename='git branch -m'
+alias gbl='git branch --verbose --all'
 alias gb='git branch'
 
 # misc
-alias git_unstage='git rm --cached'
+alias git_unstage='git reset HEAD'
 alias git_reference_log='git reflog'
 alias git_cat_object='git cat-file -p'
 alias git_modify_message='git commit --amend'
@@ -79,7 +87,6 @@ alias git_untrack='git update-index --skip-worktree'
 # あまり使わないもの
 #alias gs='git status --short --branch .'
 #alias wgd='gitdiff --word-diff'
-#alias gb='git branch --verbose --all'
 #alias git_unstage='git reset HEAD'
 
 # functions
