@@ -24,8 +24,8 @@ bindkey -s "^[c"    'git checkout '
 bindkey -s "^[c^[c" 'git commit -m "Update" '
 bindkey -s "^[v"    "git checkout "
 
-bindkey -s "^[l"    'git log --color=always --oneline --decorate --no-merges -$((LINES-10)) '
-bindkey -s "^G^L"   'git log --color=always --name-status --no-merges '
+bindkey -s "^[l"    'git log --color=always --oneline --decorate -$((LINES-10)) '
+#bindkey -s "^G^L"   'git log --color=always --name-status --no-merges '
 
 # git diff
 if git --version |& grep -Pq "1.[78]"; then
