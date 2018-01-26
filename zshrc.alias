@@ -198,6 +198,8 @@ alias pyser='ipa; python -m CGIHTTPServer'
 alias curl_my='curl --location --silent --show-error --max-time 3'
 alias path='readlink -f'
 alias delete_mailq='mailq Go "^\w+"|postsuper -d -'
+alias unset_proxy='unset {HTTP{,S}_PROXY,http{,s}_proxy}'
+alias set_proxy='. /etc/profile.d/proxy.sh'
 
 # a b c ファイル用
 alias via='vi -c startinsert a'
