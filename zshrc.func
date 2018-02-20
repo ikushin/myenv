@@ -12,7 +12,9 @@ function echo_green
 #echo aaa | perl -MTerm::ANSIColor -ne 'print colored($_,"red")'
 
 function col {
-    awk -v col=$1 '{print $col}'
+    local fs
+    [[ -n $2 ]] && fs="-F$2"
+    awk $fs -v col=$1 '{print $col}'
 }
 
 function subnet2cidr ()
