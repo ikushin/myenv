@@ -1,6 +1,6 @@
 #
 SHELL := /bin/bash
-OS := $(shell python -mplatform)
+OS := $(shell { python -mplatform || python3 -mplatform; } 2>/dev/null )
 USER := $(shell echo $(OS)_$$(id -nu) | egrep -qi 'cygwin|root$$' && echo "root" || echo "non_root" )
 ifeq ($(USER),root)
 	PREFIX := /usr/local
