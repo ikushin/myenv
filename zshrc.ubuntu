@@ -8,3 +8,5 @@ alias rpmqlp='dpkg -c'
 alias rpmqip='dpkg -I'
 alias free='free -h'
 alias netstat='/bin/netstat  --numeric --tcp -4 --listen --program'
+alias chkconfig="systemctl --no-pager list-unit-files -t service --state=enabled --state=disabled"
+alias pgrep="pgrep -af"
