@@ -1,22 +1,16 @@
+#
+local -A colors=(
+      bl black
+      b  blue
+      c  cyan
+      g  green
+      m  magenta
+      r  red
+      w  white
+      y  yellow
+)
 
-#bg_color=black
-#bg_color=red
-#bg_color=green
-#bg_color=yellow
-bg_color=blue
-#bg_color=magenta
-#bg_color=cyan
-#bg_color=white
+bg_color=$colors[b]
+fg_color=$colors[w]
 
-#fg_color=black
-#fg_color=red
-#fg_color=green
-#fg_color=yellow
-#fg_color=blue
-#fg_color=magenta
-#fg_color=cyan
-fg_color=white
-
-#PROMPT='[%n@%{$bg['$bg_color']%}%m%{$reset_color%}]%(#.#.$) '
 PROMPT='[%n@%{$fg['$fg_color']$bg['$bg_color']%}%m%{$reset_color%}]%(#.#.$) '
-#PROMPT='[%n@%{$fg['$fg_color']$bg['$bg_color']%}%m%{$reset_color%} (%*) ]%(#.#.$) '
