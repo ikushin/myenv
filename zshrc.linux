@@ -37,6 +37,7 @@ alias rpmqip='rpm -qip'
 # ip, iproute, arp
 alias ip_addr='/sbin/ip -4 -s addr PE "s@/@ /@" Key "(?<=inet\s)[\d.]+|(?<=\d: )\S+"'
 alias ipa='ip_addr'
+alias ipl='/sbin/ip l | /bin/grep -w "state UP"'
 alias ip_route='/sbin/ip r list scope global SV Col'
 alias ipr='ip_route'
 alias ip_neighbour='/sbin/ip n S -V Col'
