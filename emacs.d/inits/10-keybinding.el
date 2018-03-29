@@ -23,6 +23,7 @@
 (define-key global-map "\M-h" 'backward-kill-word)
 (define-key global-map "\C-\M-z" 'scroll-up-line)
 (define-key global-map "\C-\M-v" 'scroll-down-line)
+(define-key global-map "\C-w" 'kill-ring-save)
 ;
 (define-key global-map [f1] 'woman)
 (define-key global-map [f3] 'previous-error)
@@ -44,7 +45,6 @@
 ;(define-key global-map (kbd "M-]") 'point-redo)
 
 (global-set-key (kbd "C-c C-c") 'comment-or-uncomment-region)
-(define-key global-map "\C-w" 'kill-ring-save)
 (define-key global-map "\M-s\M-s" 'isearch-forward)
 (define-key global-map "\M-s\M-r" 'isearch-backward)
 (global-set-key "\C-\M-b" 'scroll-other-window-down)
