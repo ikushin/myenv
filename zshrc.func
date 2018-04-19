@@ -125,3 +125,13 @@ function su_file() {
     cat ./.trash/$@ |&/bin/egrep -av '^(#|$)' |&sort |uniq | tee $@
 }
 #alias su_file='sufile'
+
+function tc() {
+    [[ $# < 1 ]] && return
+
+    cat <<-_EOF_
+	 cat <<\EOF | base64 -di | tar zxvf -
+	$(tar zcf - $@  | base64 -w120)
+	EOF
+_EOF_
+}

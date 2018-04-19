@@ -1,16 +1,16 @@
 #
 local -A colors=(
-      bl black
-      b  blue
-      c  cyan
-      g  green
-      m  magenta
-      r  red
-      w  white
-      y  yellow
+      "bl" "black"
+      "b"  "blue"
+      "c"  "cyan"
+      "g"  "green"
+      "m"  "magenta"
+      "r"  "red"
+      "w"  "white"
+      "y"  "yellow"
 )
 
-bg_color=$colors[b]
-fg_color=$colors[w]
+bg_color=$colors["b"]
+fg_color=$colors["w"]
 
 PROMPT='[%n@%{$fg['$fg_color']$bg['$bg_color']%}%m%{$reset_color%}]%(#.#.$) '
