@@ -145,7 +145,7 @@ alias lsstat='stat_my'
 alias stat_my2='stat -c "%A %a %u %g %N"'
 
 # df
-alias df='df -PTh'
+alias df='df -PTh -t xfs -t ext2 -t ext3 -t ext4'
 alias df.='df .'
 alias dfx='df -x tmpfs -x devtmpfs'
 alias dfxx='dfx GV "/boot"'
@@ -201,6 +201,7 @@ alias path='readlink -f'
 alias delete_mailq='mailq Go "^\w+"|postsuper -d -'
 alias unset_proxy='unset {HTTP{,S}_PROXY,http{,s}_proxy}'
 alias set_proxy='. /etc/profile.d/proxy.sh'
+alias parallel='parallel --no-notice'
 
 # a b c ファイル用
 alias via='vi -c startinsert a'

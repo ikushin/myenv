@@ -154,6 +154,12 @@ emacs:
 	/bin/rm -rf $(HOME)/$@*
 	ln -snf ${PREFIX}/$@-$(V) ${PREFIX}/$@
 
+parallel:
+	wget --no-check-certificate "http://ftp.gnu.org/gnu/parallel/parallel-latest.tar.bz2" -O $(HOME)/$@.tar.bz2
+	tar xf $(HOME)/$@.tar.bz2 -C $(HOME)
+	cd $(HOME)/$@-* && ./configure && LANG=C make && make install
+	/bin/rm -rf $(HOME)/$@*
+
 m:
 	@{ echo ' cat <<\EOF | base64 -di | tar zxvf -'; tar zcf - Makefile  | base64 ; echo EOF; } | tee /dev/clipboard
 
@@ -248,11 +254,6 @@ yum_proxy:
 git_proxy:
 	git config --global http.proxy  "http://example.com:8080"
 	git config --global https.proxy "http://example.com:8080"
-
-parallel:
-	wget --no-check-certificate "http://ftp.gnu.org/gnu/parallel/parallel-20150422.tar.bz2" -O /tmp/parallel-20150422.tar.bz2
-	tar jxf /tmp/parallel-20150422.tar.bz2 -C /tmp
-	cd /tmp/parallel-20150422/; ./configure && make && make install
 
 fuck_dpkg:
 	aptitude install -y python-pip python2.7-dev && pip install thefuck
