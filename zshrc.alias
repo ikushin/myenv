@@ -145,7 +145,7 @@ alias lsstat='stat_my'
 alias stat_my2='stat -c "%A %a %u %g %N"'
 
 # df
-alias df='df -PTh -t xfs -t ext2 -t ext3 -t ext4'
+alias df='df -PTh -t xfs -t ext2 -t ext3 -t ext4 -t ntfs -t vfat'
 alias df.='df .'
 alias dfx='df -x tmpfs -x devtmpfs'
 alias dfxx='dfx GV "/boot"'
