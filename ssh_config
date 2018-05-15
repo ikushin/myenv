@@ -6,7 +6,7 @@ Compression=yes
 LogLevel=ERROR
 ConnectTimeout=5
 ServerAliveInterval 60
-KexAlgorithms diffie-hellman-group1-sha1
+#KexAlgorithms diffie-hellman-group1-sha1
 
 Host host01
         ProxyCommand ssh proxy@proxy nc %h %p
