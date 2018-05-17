@@ -25,7 +25,8 @@
 (define-key global-map "\C-\M-v" 'scroll-down-line)
 (define-key global-map "\C-w" 'kill-ring-save)
 ;
-(define-key global-map [f1] 'woman)
+(bind-key "M-o p" 'woman)                   ;; F1
+(bind-key "M-o q" 'swap-screen-with-cursor) ;; F2
 (define-key global-map [f3] 'previous-error)
 (define-key global-map [f4] 'next-error)
 (bind-key "M-o r" 'previous-error)
@@ -34,8 +35,8 @@
 (define-key global-map [f8] 'YaCompile)
 
 ;; バッファ切替
-(global-set-key [(f9)]   'bs-cycle-previous)
-(global-set-key [(f7)]  'bs-cycle-next)
+;; (global-set-key [(f9)]   'bs-cycle-previous)
+;; (global-set-key [(f7)]  'bs-cycle-next)
 ;;;; *scratch*バッファを表示候補に入れる
 (setq bs-cycle-configuration-name "files-and-scratch")
 
@@ -87,8 +88,8 @@
     (other-window 1)
     (set-window-buffer thiswin (window-buffer))
     (set-window-buffer (selected-window) thisbuf)))
-(global-set-key [S-f2] 'swap-screen)
-(global-set-key [f2] 'swap-screen-with-cursor)
+;; (global-set-key [S-f7] 'swap-screen)
+;; (global-set-key [f7] 'swap-screen-with-cursor)
 
 
 ;; YaTeX like compile
