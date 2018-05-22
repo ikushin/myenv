@@ -9,4 +9,5 @@ set noswapfile
 set hlsearch
 set paste
 nnoremap <ESC><ESC> :noh<CR>
+syntax off
 
