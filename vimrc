@@ -1,4 +1,3 @@
-
 set encoding=utf-8
 set ignorecase
 set smartcase
@@ -10,4 +9,4 @@ set hlsearch
 set paste
 nnoremap <ESC><ESC> :noh<CR>
 syntax off
-
+set t_ti= t_te=
