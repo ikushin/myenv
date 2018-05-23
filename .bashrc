@@ -9,7 +9,7 @@ fi
 
 #
 # grep
-alias grep='/bin/grep --color -a'
+alias grep='/bin/grep --color -a -P'
 alias egrep='/bin/grep -E --color -a'
 alias xgrep='grep -P'
 alias fgrep='/bin/fgrep --color'
