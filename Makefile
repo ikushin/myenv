@@ -191,10 +191,10 @@ emacs:
 	/bin/rm -rf $(HOME)/$@*
 
     # コンパイル
-	wget --no-check-certificate "http://ftp.jaist.ac.jp/pub/GNU/emacs/emacs-$(V).tar.gz" -O $(HOME)/$@.tar.gz
-	tar xf $(HOME)/$@.tar.gz -C $(HOME)
-	cd $(HOME)/$@-* && ./configure --prefix=${PREFIX}/$@-$(V) --without-x && LANG=C make && make install
-	/bin/rm -rf $(HOME)/$@*
+	wget --no-check-certificate "http://ftp.jaist.ac.jp/pub/GNU/emacs/emacs-$(V).tar.gz" -O $(HOME)/local/tmp/$@.tar.gz
+	tar xf $(HOME)/local/tmp/$@.tar.gz -C $(HOME)/local/tmp/
+	cd $(HOME)/local/tmp/$@-* && ./configure --prefix=${PREFIX}/$@-$(V) --without-x && LANG=C make && make install
+	/bin/rm -rf $(HOME)/local/tmp/$@*
 	ln -snf ${PREFIX}/$@-$(V) ${PREFIX}/$@
 
 parallel:
