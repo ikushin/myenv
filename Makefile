@@ -52,43 +52,43 @@ curl:
 
     # 前準備
 	make install_package
-	/bin/rm -rf $(HOME)/$@*
+	/bin/rm -rf ${PREFIX}/tmp/$@*
 
     # コンパイル
-	wget --no-check-certificate "https://curl.haxx.se/download/$(V)" -O $(HOME)/$@.tar.gz
-	tar xf $(HOME)/$@.tar.gz -C $(HOME)
-	cd $(HOME)/$@-*; ./configure --prefix=${PREFIX}/$@ && make && make install
-	/bin/rm -rf $(HOME)/$@*
+	wget --no-check-certificate "https://curl.haxx.se/download/$(V)" -O ${PREFIX}/tmp/$@.tar.gz
+	tar xf ${PREFIX}/tmp/$@.tar.gz -C ${PREFIX}/tmp/
+	cd ${PREFIX}/tmp/$@-*; ./configure --prefix=${PREFIX}/ && make && make install
+	/bin/rm -rf ${PREFIX}/tmp/$@*
 
 ncurses:
     # コンパイル
-	wget --no-check-certificate "http://ftp.iij.ad.jp/pub/gnu/ncurses/ncurses-5.9.tar.gz" -O $(HOME)/$@.tar.gz
-	tar xf $(HOME)/$@.tar.gz -C $(HOME)
-	cd $(HOME)/$@-*; CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=${PREFIX}/$@ && make && make install
-	/bin/rm -rf $(HOME)/$@*
+	wget --no-check-certificate "http://ftp.iij.ad.jp/pub/gnu/ncurses/ncurses-5.9.tar.gz" -O ${PREFIX}/tmp/$@.tar.gz
+	tar xf ${PREFIX}/tmp/$@.tar.gz -C ${PREFIX}/tmp/
+	cd ${PREFIX}/tmp/$@-*; CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=${PREFIX}/ && make && make install
+	/bin/rm -rf ${PREFIX}/tmp/$@*
 
 zlib:
     # コンパイル
-	wget --no-check-certificate "http://www.zlib.net/zlib-1.2.11.tar.gz" -O $(HOME)/$@.tar.gz
-	tar xf $(HOME)/$@.tar.gz -C $(HOME)
-	cd $(HOME)/$@-*; ./configure --prefix=${PREFIX}/$@ && make && make install
-	/bin/rm -rf $(HOME)/$@*
+	wget --no-check-certificate "http://www.zlib.net/zlib-1.2.11.tar.gz" -O ${PREFIX}/tmp/$@.tar.gz
+	tar xf ${PREFIX}/tmp/$@.tar.gz -C ${PREFIX}/tmp/
+	cd ${PREFIX}/tmp/$@-*; ./configure --prefix=${PREFIX}/ && make && make install
+	/bin/rm -rf ${PREFIX}/tmp/$@*
 
 openssl:
     # コンパイル
-	wget --no-check-certificate "https://www.openssl.org/source/openssl-1.0.2o.tar.gz" -O $(HOME)/$@.tar.gz
-	tar xf $(HOME)/$@.tar.gz -C $(HOME)
-	cd $(HOME)/$@-*; ./configure --prefix=${PREFIX}/$@ && make && make install
-	/bin/rm -rf $(HOME)/$@*
+	wget --no-check-certificate "https://www.openssl.org/source/openssl-1.0.2o.tar.gz" -O ${PREFIX}/tmp/$@.tar.gz
+	tar xf ${PREFIX}/tmp/$@.tar.gz -C ${PREFIX}/tmp/
+	cd ${PREFIX}/tmp/$@-*; ./configure --prefix=${PREFIX}/ && make && make install
+	/bin/rm -rf ${PREFIX}/tmp/$@*
 
 zsh_with_lib:
-	/bin/rm -rf $(HOME)/zsh*
-	wget --no-check-certificate "https://sourceforge.net/projects/zsh/files/latest/download?source=files" -O $(HOME)/zsh.tar.gz
-	tar xf $(HOME)/zsh.tar.gz -C $(HOME)
-	cd $(HOME)/zsh-* && \
+	/bin/rm -rf ${PREFIX}/tmp/zsh*
+	wget --no-check-certificate "https://sourceforge.net/projects/zsh/files/latest/download?source=files" -O ${PREFIX}/tmp/zsh.tar.gz
+	tar xf ${PREFIX}/tmp/zsh.tar.gz -C ${PREFIX}/tmp/
+	cd ${PREFIX}/tmp/zsh-* && \
 		CPPFLAGS=-I${PREFIX}/ncurses/include LDFLAGS=-L${PREFIX}/ncurses/lib ./configure --prefix=${PREFIX}/zsh && \
 		make && make install
-	/bin/rm -rf $(HOME)/zsh*
+	/bin/rm -rf ${PREFIX}/tmp/zsh*
 
 perl:
     # 最新バージョン取得
@@ -133,12 +133,18 @@ git:
 	/bin/rm -rf $(HOME)/$@*
 
 git_with_lib:
-	./configure --prefix=/home/iijdev/work/ikushin/local/git-2.17.0 --with-curl=/home/iijdev/work/ikushin/local/curl/ --without-tcltk --with-zlib=/home/iijdev/work/ikushin/local/zlib/
+	/bin/rm -rf ${PREFIX}/tmp/git*
+	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-2.17.0.tar.gz" -O ${PREFIX}/tmp/git.tar.gz
+	tar xf ${PREFIX}/tmp/git.tar.gz -C ${PREFIX}/tmp/
+	cd ${PREFIX}/tmp/git-* && \
+		./configure --prefix=${PREFIX}/ --without-tcltk --with-zlib=${PREFIX}   && make && make install
+	make git_conf
+	/bin/rm -rf ${PREFIX}/tmp/git*
 
 git_conf:
-    # diff-highlight
-	make -C $(HOME)/git-*/contrib/diff-highlight
-	/bin/mv $(HOME)/git-*/contrib/diff-highlight/diff-highlight ${PREFIX}/$@/bin
+	# diff-highlight
+	make -C $(HOME)/local/tmp/git-*/contrib/diff-highlight
+	/bin/mv $(HOME)/local/tmp/git-*/contrib/diff-highlight/diff-highlight ${PREFIX}/bin
 	git config --global pager.log  'diff-highlight | less'
 	git config --global pager.show 'diff-highlight | less'
 	git config --global pager.diff 'diff-highlight | less'
@@ -148,7 +154,7 @@ git_conf:
 	git config --global color.diff-highlight.newNormal    "green bold"
 	git config --global color.diff-highlight.newHighlight "green bold 22"
 
-    # Config
+	# Config
 	git config --global user.email "you@example.com"
 	git config --global user.name "ikushin"
 	git config --global http.sslVerify false
