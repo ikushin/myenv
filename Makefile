@@ -60,6 +60,23 @@ curl:
 	cd $(HOME)/$@-*; ./configure --prefix=${PREFIX}/$@ && make && make install
 	/bin/rm -rf $(HOME)/$@*
 
+ncurses:
+    # コンパイル
+	wget --no-check-certificate "http://ftp.iij.ad.jp/pub/gnu/ncurses/ncurses-6.1.tar.gz" -O $(HOME)/$@.tar.gz
+	tar xf $(HOME)/$@.tar.gz -C $(HOME)
+	cd $(HOME)/$@-*; CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=${PREFIX}/$@ && make && make install
+	/bin/rm -rf $(HOME)/$@*
+
+zsh_ncurses:
+	/bin/rm -rf $(HOME)/$@*
+	make install_package
+	wget --no-check-certificate "https://sourceforge.net/projects/zsh/files/latest/download?source=files" -O $(HOME)/zsh.tar.gz
+	tar xf $(HOME)/$@.tar.gz -C $(HOME)
+	cd $(HOME)/zsh-* && \
+		CPPFLAGS=-I${PREFIX}/ncurses/include LDFLAGS=-L${PREFIX}/ncurses/lib ./configure --prefix=${PREFIX}/zsh && \
+		make && make install
+	/bin/rm -rf $(HOME)/$@*
+
 perl:
     # 最新バージョン取得
 	$(eval V := $(shell curl --max-time 10 -Ls http://www.cpan.org/src/5.0/ | \

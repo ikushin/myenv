@@ -10,7 +10,12 @@ local -A colors=(
       "y"  "yellow"
 )
 
-bg_color=${colors[m]}
-fg_color=${colors[w]}
+# bg_color=${colors[b]}; fg_color=${colors[w]}  # ブルー
+bg_color=${colors[c]}; fg_color=${colors[bl]}   # シアン
+# bg_color=${colors[g]}; fg_color=${colors[bl]} # グリーン
+# bg_color=${colors[m]}; fg_color=${colors[w]}  # マゼンタ
+# bg_color=${colors[r]}; fg_color=${colors[bl]} # レッド
+# bg_color=${colors[w]}; fg_color=${colors[b]}  # ホワイト
+# bg_color=${colors[y]}; fg_color=${colors[bl]} # イエロー
 
 PROMPT='[%n@%{$fg['$fg_color']$bg['$bg_color']%}%m%{$reset_color%}]%(#.#.$) '
