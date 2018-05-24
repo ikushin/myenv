@@ -67,7 +67,21 @@ ncurses:
 	cd $(HOME)/$@-*; CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=${PREFIX}/$@ && make && make install
 	/bin/rm -rf $(HOME)/$@*
 
-zsh_ncurses:
+zlib:
+    # コンパイル
+	wget --no-check-certificate "http://www.zlib.net/zlib-1.2.11.tar.gz" -O $(HOME)/$@.tar.gz
+	tar xf $(HOME)/$@.tar.gz -C $(HOME)
+	cd $(HOME)/$@-*; ./configure --prefix=${PREFIX}/$@ && make && make install
+	/bin/rm -rf $(HOME)/$@*
+
+openssl:
+    # コンパイル
+	wget --no-check-certificate "https://www.openssl.org/source/openssl-1.0.2o.tar.gz" -O $(HOME)/$@.tar.gz
+	tar xf $(HOME)/$@.tar.gz -C $(HOME)
+	cd $(HOME)/$@-*; ./configure --prefix=${PREFIX}/$@ && make && make install
+	/bin/rm -rf $(HOME)/$@*
+
+zsh_with_lib:
 	/bin/rm -rf $(HOME)/zsh*
 	wget --no-check-certificate "https://sourceforge.net/projects/zsh/files/latest/download?source=files" -O $(HOME)/zsh.tar.gz
 	tar xf $(HOME)/zsh.tar.gz -C $(HOME)
@@ -113,6 +127,15 @@ git:
 	cd $(HOME)/$@-*; make && make install
 	ln -snf ${PREFIX}/$@-$(V) ${PREFIX}/$@
 
+	make git_conf
+
+    # Clean up
+	/bin/rm -rf $(HOME)/$@*
+
+git_with_lib:
+	./configure --prefix=/home/iijdev/work/ikushin/local/git-2.17.0 --with-curl=/home/iijdev/work/ikushin/local/curl/ --without-tcltk --with-zlib=/home/iijdev/work/ikushin/local/zlib/
+
+git_conf:
     # diff-highlight
 	make -C $(HOME)/git-*/contrib/diff-highlight
 	/bin/mv $(HOME)/git-*/contrib/diff-highlight/diff-highlight ${PREFIX}/$@/bin
@@ -132,8 +155,6 @@ git:
 	git config --global core.quotepath false
 	git config --global status.showuntrackedfiles all
 
-    # Clean up
-	/bin/rm -rf $(HOME)/$@*
 
 metastore:
 	case $(OS) in Linux*  ) \
