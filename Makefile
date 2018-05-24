@@ -26,7 +26,7 @@ cp:
 	[[ -e $(HOME)/.lesskey ]] || lesskey -o $(HOME)/.lesskey lesskey
 	make cp_emacs
 cp_emacs:
-	/bin/cp -T -avu $(HOME)/.myenv/emacs.d/ $(HOME)/.emacs.d
+	test -d $(HOME)/.myenv/emacs.d/ && /bin/cp -T -avu $(HOME)/.myenv/emacs.d/ $(HOME)/.emacs.d || true
 
 PKG =  wget zsh make gcc  autoconf epel-release ius-release perl-ExtUtils-MakeMaker
 PKG += libbsd-devel libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel ncurses-devel
@@ -62,20 +62,19 @@ curl:
 
 ncurses:
     # コンパイル
-	wget --no-check-certificate "http://ftp.iij.ad.jp/pub/gnu/ncurses/ncurses-6.1.tar.gz" -O $(HOME)/$@.tar.gz
+	wget --no-check-certificate "http://ftp.iij.ad.jp/pub/gnu/ncurses/ncurses-5.9.tar.gz" -O $(HOME)/$@.tar.gz
 	tar xf $(HOME)/$@.tar.gz -C $(HOME)
 	cd $(HOME)/$@-*; CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=${PREFIX}/$@ && make && make install
 	/bin/rm -rf $(HOME)/$@*
 
 zsh_ncurses:
-	/bin/rm -rf $(HOME)/$@*
-	make install_package
+	/bin/rm -rf $(HOME)/zsh*
 	wget --no-check-certificate "https://sourceforge.net/projects/zsh/files/latest/download?source=files" -O $(HOME)/zsh.tar.gz
-	tar xf $(HOME)/$@.tar.gz -C $(HOME)
+	tar xf $(HOME)/zsh.tar.gz -C $(HOME)
 	cd $(HOME)/zsh-* && \
 		CPPFLAGS=-I${PREFIX}/ncurses/include LDFLAGS=-L${PREFIX}/ncurses/lib ./configure --prefix=${PREFIX}/zsh && \
 		make && make install
-	/bin/rm -rf $(HOME)/$@*
+	/bin/rm -rf $(HOME)/zsh*
 
 perl:
     # 最新バージョン取得
