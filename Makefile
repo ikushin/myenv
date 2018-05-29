@@ -181,7 +181,7 @@ EMACS_VERSION := $(shell emacs --version 2>/dev/null | head -1 )
 emacs:
     # 最新バージョン取得
 	$(eval V := $(shell curl --max-time 10 -Ls http://ftp.jaist.ac.jp/pub/GNU/emacs/ | \
-		/bin/grep -Po '(?<=emacs-)\d+\.\d+' | tail -n1))
+		/bin/grep -Po '(?<=emacs-)25\.\d+' | tail -n1))
 
     # 続行判定
 	egrep -v $(V) <<<"$(EMACS_VERSION)"
