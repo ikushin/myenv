@@ -1,21 +1,10 @@
 #
-local -A colors=(
-      "bl" "black"
-      "b"  "blue"
-      "c"  "cyan"
-      "g"  "green"
-      "m"  "magenta"
-      "r"  "red"
-      "w"  "white"
-      "y"  "yellow"
-)
-
-# bg_color=${colors[b]}; fg_color=${colors[w]}  # ブルー
-bg_color=${colors[c]}; fg_color=${colors[bl]}   # シアン
-# bg_color=${colors[g]}; fg_color=${colors[bl]} # グリーン
-# bg_color=${colors[m]}; fg_color=${colors[w]}  # マゼンタ
-# bg_color=${colors[r]}; fg_color=${colors[bl]} # レッド
-# bg_color=${colors[w]}; fg_color=${colors[b]}  # ホワイト
-# bg_color=${colors[y]}; fg_color=${colors[bl]} # イエロー
+bg_color=cyan;      fg_color=black # シアン
+# bg_color=red;     fg_color=black # レッド
+# bg_color=blue;    fg_color=white # ブルー
+# bg_color=green;   fg_color=black # グリーン
+# bg_color=white;   fg_color=blue  # ホワイト
+# bg_color=yellow;  fg_color=black # イエロー
+# bg_color=magenta; fg_color=white # マゼンタ
 
 PROMPT='[%n@%{$fg['$fg_color']$bg['$bg_color']%}%m%{$reset_color%}]%(#.#.$) '

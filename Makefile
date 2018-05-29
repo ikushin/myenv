@@ -28,7 +28,7 @@ cp:
 cp_emacs:
 	test -d $(HOME)/.myenv/emacs.d/ && /bin/cp -T -avu $(HOME)/.myenv/emacs.d/ $(HOME)/.emacs.d || true
 
-PKG =  wget zsh make gcc  autoconf epel-release ius-release perl-ExtUtils-MakeMaker
+PKG =  wget zsh make gcc  autoconf epel-release perl-ExtUtils-MakeMaker gnutls-devel
 PKG += libbsd-devel libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel ncurses-devel
 install_package:
 	@-case $(OS) in \

@@ -207,6 +207,7 @@ hash -d .s=~/.ssh
 # mkdir
 mkdir -p $HOME/.cache/shell
 mkdir -p $HOME/.{trash,sandbox}
+mkdir -p $HOME/local/tmp
 
 for i in .zshrc.{func,alias,git,linux,cygwin,local,prompt} .proxy
 do
