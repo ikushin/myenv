@@ -187,7 +187,7 @@ emacs:
 
     # 前準備
 	make install_package
-	/bin/rm -rf $(HOME)/$@*
+	/bin/rm -rf $(HOME)/local/tmp/$@*
 
     # コンパイル
 	wget --no-check-certificate "http://ftp.jaist.ac.jp/pub/GNU/emacs/emacs-$(V).tar.gz" -O $(HOME)/local/tmp/$@.tar.gz
