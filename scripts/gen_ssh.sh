@@ -25,9 +25,7 @@ mkdir -p $ssh_d
 echo $pass >$pass_file
 for f in ${hosts[*]}
 do
-    ip=$(cut -d, -f1 <<<$f)
-    host=$(cut -d, -f2 <<<$f)
-    alias=$(cut -d, -f3 <<<$f)
+    IFS=',' read -r ip host alias <<<"$f"
 
     for h in $host $alias
     do
