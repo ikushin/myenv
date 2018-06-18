@@ -14,6 +14,7 @@ DOTFILES = zlogin zshrc inputrc screenrc vimrc zshrc.alias zshrc.git zshrc.func
 cp:
 	for i in $(DOTFILES); do /bin/ln -sfnv $(HOME)/.myenv/$$i $(HOME)/.$$i; done
 	/bin/cp -av --no-clobber zshrc.local $(HOME)/.zshrc.local
+	ln -snf $(HOME)/.zshrc.local $(HOME)/.localrc
 	case $(OS) in \
 		CYGWIN* )    /bin/ln -sfnv $(HOME)/.myenv/zshrc.cygwin  $(HOME)/.zshrc.cygwin   ;;  \
 		Linux* )     /bin/ln -sfnv $(HOME)/.myenv/zshrc.linux   $(HOME)/.zshrc.linux    ;;& \
