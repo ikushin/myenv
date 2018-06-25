@@ -59,7 +59,8 @@ function netstat_tcp4
         /bin/netstat -tlnp -A inet 2>/dev/null |tail -n+3 PE "s/:/ /" PE "s@/@ @"  S -k5n,5
     } Col
 }
-alias n='netstat_tcp4'
+# alias n='netstat_tcp4'
+alias n='lsof -Pn -iTCP -sTCP:LISTEN -a -i4'
 
 function netstat_tcp6
 {
@@ -80,11 +81,11 @@ function netstat_udp4
 function nn
 {
     printf "=== TCP ===\n"
-    netstat_tcp4
+    lsof -Pn -i4 -sTCP:LISTEN
     printf "\n=== TCP6 ===\n"
-    netstat_tcp6
+    lsof -Pn -i6 -sTCP:LISTEN
     printf "\n=== UDP ===\n"
-    netstat_udp4
+    lsof -Pn  -i udp
 }
 
 #alias netstat='/bin/netstat  --numeric --tcp --inet --listen --program'
