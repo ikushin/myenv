@@ -10,3 +10,4 @@ set paste
 nnoremap <ESC><ESC> :noh<CR>
 syntax off
 set t_ti= t_te=
+set tabstop=4

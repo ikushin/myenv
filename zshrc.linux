@@ -107,7 +107,8 @@ alias yum_group_list_ja='LANG=ja_JP.UTF8 yum group list'
 alias yum_group_list_hidden_ja='LANG=ja_JP.UTF8 yum group list hidden'
 alias yum_group_info='yum group info'
 alias yum_group_install='yum group install'
-alias yum_repolist='yum repolist all'
+alias yum_repolist='yum repolist'
+alias yum_repolist_all='yum repolist all'
 
 for i in .zshrc.{ubuntu,centos{5,7}}
 do
