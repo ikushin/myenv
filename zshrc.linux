@@ -27,7 +27,8 @@ if which dstat >&/dev/null; then
    #alias _dstat='dstat --load --cpu --disk --net --page --sys --proc --mem --swap --bits'
    #alias dstat_cpu='dstat --load --cpu --cpu-use --float'
    #alias dstat_full='dstat --full'
-   alias dstat='dstat -tlc -m -d -n --tcp --top-cpu --top-io --top-mem --bit --noupdate 5'
+   alias dstat='dstat -lc -m -d -n --bit --noupdate 3'
+   alias dstat_long='dstat -tlc -m -d -n --tcp --top-cpu --top-io --top-mem --bit --noupdate 3'
 fi
 
 # RPM

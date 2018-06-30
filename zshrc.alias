@@ -190,7 +190,10 @@ alias type='type -a'
 alias wget='wget -c'
 alias which='which -a'
 alias zsh='exec zsh'
-alias tailf='tail -F'
+alias tailf='tail -F -n100'
+alias tailf0='tail -F -n0'
+#alias ttailf='tailff'
+#alias ftailf='tailff'
 
 # misc
 alias .='source'
