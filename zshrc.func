@@ -116,6 +116,25 @@ function my_dig
     dig $@ | /bin/egrep --color '$|.*SECTION.*'
 }
 
+function yum_gropu_search
+{
+    # set -x
+    dir=$HOME/.yum_group_info
+    info=$dir/info
+
+    mkdir -p $dir
+    if [[ ! -f $info ]]; then
+        yum group info '*' >$info
+        (cd $dir; csplit -q $info '/^Group:/' '{*}')
+    fi
+
+
+    [[ $1 ]] || { echo "PACKAGE"; return 0 ;}
+
+    /bin/grep -Pl $1 $dir/xx* | xargs cat Key "$1|Group-Id.*"
+    set +x
+}
+
 function su_file() {
     [[ $# != 1 ]] && return
     [[ ! -f $@ ]] && return

@@ -111,6 +111,9 @@ alias yum_group_install='yum group install'
 alias yum_repolist='yum repolist'
 alias yum_repolist_all='yum repolist all'
 
+# misc
+alias mkpasswd='mkpasswd -l 8 -d 1 -c 1 -C 1 -s 1'
+
 for i in .zshrc.{ubuntu,centos{5,7}}
 do
     test -e ~/$i && source $_

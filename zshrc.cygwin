@@ -44,6 +44,7 @@ alias tt="win_mem"
 alias exp='explorer . &'
 alias open='/usr/bin/cygstart'
 alias sudo=''
+alias mkpasswd=":"
 
 ## rpm
 alias rpmqa='cygcheck -c -d'
