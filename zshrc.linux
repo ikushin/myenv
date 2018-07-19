@@ -82,11 +82,11 @@ function netstat_udp4
 function nn
 {
     printf "=== TCP ===\n"
-    lsof -Pn -i4 -sTCP:LISTEN
+    sudo -n lsof -Pn -i4 -sTCP:LISTEN
     printf "\n=== TCP6 ===\n"
-    lsof -Pn -i6 -sTCP:LISTEN
+    sudo -n lsof -Pn -i6 -sTCP:LISTEN
     printf "\n=== UDP ===\n"
-    lsof -Pn  -i udp
+    sudo -n lsof -Pn  -i udp
 }
 
 #alias netstat='/bin/netstat  --numeric --tcp --inet --listen --program'
