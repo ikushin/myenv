@@ -23,12 +23,14 @@ fi
 
 # dstat
 if which dstat >&/dev/null; then
+   alias dstat='dstat --nocolor -lc -m -d -n --bit --noupdate 3'
+   alias dstat_long='dstat --nocooor -tlc -m -d -n --tcp --top-cpu --top-io --top-mem --bit --noupdate 3'
+
+   # 遺物
    #alias dstat='dstat --nocolor --noupdate --bit'
    #alias _dstat='dstat --load --cpu --disk --net --page --sys --proc --mem --swap --bits'
    #alias dstat_cpu='dstat --load --cpu --cpu-use --float'
    #alias dstat_full='dstat --full'
-   alias dstat='dstat -lc -m -d -n --bit --noupdate 3'
-   alias dstat_long='dstat -tlc -m -d -n --tcp --top-cpu --top-io --top-mem --bit --noupdate 3'
 fi
 
 # RPM

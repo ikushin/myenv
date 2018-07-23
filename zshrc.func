@@ -129,7 +129,7 @@ function yum_gropu_search
     fi
 
 
-    [[ $1 ]] || { echo "PACKAGE"; return 0 ;}
+    [[ -z $1 ]] || { echo "PACKAGE"; return 0 ;}
 
     /bin/grep -Pl $1 $dir/xx* | xargs cat Key "$1|Group-Id.*"
     set +x
