@@ -116,7 +116,7 @@ function my_dig
     dig $@ | /bin/egrep --color '$|.*SECTION.*'
 }
 
-function yum_gropu_search
+function yum_group_search
 {
     # set -x
     dir=$HOME/.yum_group_info
