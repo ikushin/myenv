@@ -1,6 +1,8 @@
 #!/bin/bash
 #!/bin/bash gen_self_crt.sh 127.0.0.1
 # set -x
+# set -u
+# set -e
 
 # LC_ALL を en_US.utf8 にしておく
 unset LANG
@@ -28,12 +30,12 @@ cert=$outdir/$ip.crt
 log=$outdir/$ip.log
 
 # Distinguished Name (DN)
-ct="US"
-st="California"
-ln=""
-on="Super Micro Computer"
-ou="Software"
-cn=$ip
+C="US"                          # Country (国名)
+ST="California"                 # State (都道府県名)
+L=""                            # Locality (市区町村名)
+O="Super Micro Computer"        # Organizational Name (組織名)
+OU="Software"                   # Organizational Unit (部門名)
+CN=$ip                          # Common Name (コモンネーム)
 
 # Step 0: mkdir
 mkdir -p $outdir
@@ -43,7 +45,7 @@ openssl genrsa -passout pass:"PASS" -out $private 2048
 
 # Step 2: Generate a CSR
 openssl req -batch -new -key $private -out $cert -passin pass:"PASS" \
-        -subj "/C=$ct/ST=$st/L=$ln/O=$on/OU=$ou/CN=$cn"
+        -subj "/C=$C/ST=$ST/L=$L/O=$O/OU=$OU/CN=$CN"
 
 # Step 3: Remove Passphrase from Key
 /bin/mv $private $private.org
