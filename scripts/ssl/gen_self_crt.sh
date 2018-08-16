@@ -40,12 +40,10 @@ openssl x509 -req -days 3650 -in $cert -signkey $private -out $cert
 # Step 5: Check and clean
 out=$(openssl x509 -in  $cert -text -noout)
 {
-    echo =====
-    egrep -A1 "Serial Number:" <<<$out | tr -d '\n'
+    egrep -A1 "Serial Number:" <<<"$out" | tr -d '\n'
     echo
-    egrep 'Issuer:|Subject:' <<<$out
-    echo =====
-} | sed -r 's/ +/ /g'
+    egrep 'Issuer:|Subject:' <<<"$out"
+} | sed -r 's/ +/ /g' &>$ip.log
 
 /bin/rm $private.org
 
