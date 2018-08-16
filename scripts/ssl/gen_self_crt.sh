@@ -1,5 +1,15 @@
 #!/bin/bash
+#!/bin/bash gen_self_crt.sh 127.0.0.1
 # set -x
+
+# LC_ALL を en_US.utf8 にしておく
+unset LANG
+unset LANGUAGE
+LC_ALL=en_US.utf8
+export LC_ALL
+
+# スクリプトのディレクトリを保存する
+TOP_DIR=$(cd $(dirname "$0") && pwd)
 
 # usage
 function usage()
@@ -12,8 +22,10 @@ ip=$1
 [[ $ip ]] || usage
 
 # vars
-private=$ip.key
-cert=$ip.crt
+outdir=$TOP_DIR/out
+private=$outdir/$ip.key
+cert=$outdir/$ip.crt
+log=$outdir/$ip.log
 
 # Distinguished Name (DN)
 ct="US"
@@ -22,6 +34,9 @@ ln=""
 on="Super Micro Computer"
 ou="Software"
 cn=$ip
+
+# Step 0: mkdir
+mkdir -p $outdir
 
 # Step 1: Generate a Private Key
 openssl genrsa -passout pass:"PASS" -out $private 2048
@@ -43,7 +58,7 @@ out=$(openssl x509 -in  $cert -text -noout)
     egrep -A1 "Serial Number:" <<<"$out" | tr -d '\n'
     echo
     egrep 'Issuer:|Subject:' <<<"$out"
-} | sed -r 's/ +/ /g' &>$ip.log
+} | sed -r 's/ +/ /g' &>$log
 
 /bin/rm $private.org
 
