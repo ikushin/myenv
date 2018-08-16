@@ -55,13 +55,7 @@ openssl rsa -in $private.org -out $private
 openssl x509 -req -days 3650 -in $cert -signkey $private -out $cert
 
 # Step 5: Check and clean
-out=$(openssl x509 -in  $cert -text -noout)
-{
-    egrep -A1 "Serial Number:" <<<"$out" | tr -d '\n'
-    echo
-    egrep 'Issuer:|Subject:' <<<"$out"
-} | sed -r 's/ +/ /g' &>$log
-
+openssl x509 -in  $cert -noout -serial -issuer -subject -dates >$log
 /bin/rm $private.org
 
 exit 0
