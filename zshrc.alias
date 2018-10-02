@@ -75,8 +75,8 @@ alias -g J='2>/dev/null |jq .'
 alias -g U='PE 's/^\s+$//' | uniq'
 
 # galiases xargs
-alias -g X=' | xargs -L1 -P10'
-alias -g X1='| xargs -L1 -P1'
+alias -g X=' | xargs -rn1 -P10'
+alias -g X1='| xargs -rn1 -P1'
 
 # galiases sort
 alias -g S='GVV PE "s/\s+/ /g" PE "s/^\s*|\s*$//g" |& sort'
