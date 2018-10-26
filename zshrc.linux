@@ -23,8 +23,8 @@ fi
 
 # dstat
 if which dstat >&/dev/null; then
-   alias dstat='dstat --nocolor -lc -m -d -n --bit --noupdate 3'
-   alias dstat_long='dstat --nocooor -tlc -m -d -n --tcp --top-cpu --top-io --top-mem --bit --noupdate 3'
+   alias dstat='dstat --nocolor -tlcmdn --bit --noupdate 3'
+   alias dstat_long='\dstat --nocolor -tlcmdn --tcp --top-cpu --top-io --top-mem --bit --noupdate 3'
 
    # 遺物
    #alias dstat='dstat --nocolor --noupdate --bit'

@@ -156,7 +156,7 @@ alias lsstat='stat_my'
 alias stat_my2='stat -c "%A %a %u %g %N"'
 
 # df
-alias df='df -PTh -t xfs -t ext2 -t ext3 -t ext4 -t ntfs -t vfat -t iso9660 -t cifs'
+alias df='df -PTh -t xfs -t ext2 -t ext3 -t ext4 -t ntfs -t vfat -t iso9660 -t cifs -t nfs4'
 alias df.='/bin/df -PTh .'
 
 # emacs
@@ -220,7 +220,7 @@ alias unset_proxy='unset {HTTP{,S}_PROXY,http{,s}_proxy}'
 alias set_proxy='. /etc/profile.d/proxy.sh'
 alias parallel='parallel --no-notice'
 alias csvtool='csvtool namedcol'
-alias mkd='mkdir $(date_today) && cd $(date_today)'
+alias wdir='mkdir -p $(date_today) && cd $(date_today) && pwd'
 alias csvcut='cut -d, -f '
 
 # a b c ファイル用
