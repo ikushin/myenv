@@ -147,7 +147,7 @@ cdpath=( .. $HOME )
 fpath=(~/.zsh-completions /usr/local/share/zsh/site-functions /usr/local/share/zsh/*/functions $fpath)
 
 # manpath
-manpath=( /usr/local/share/man(N-/) /usr/local/man(N-/) /usr/share/man/ja(N-/) /usr/share/man(N-/) )
+manpath=( $HOME/local/share/man /usr/local/share/man(N-/) /usr/local/man(N-/) /usr/share/man/ja(N-/) /usr/share/man(N-/) )
 export MANPATH
 
 # delete a repeating element automatically
