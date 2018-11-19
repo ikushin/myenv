@@ -124,7 +124,8 @@ alias .viz='source ~/.zshrc'
 alias vie='vi ~/.emacs'
 
 # date
-alias date_heisei='printf "%d: H.%d\n" $(/bin/date +%Y) $(($(/bin/date +%Y)-1988))'
+alias date_wareki='LANG=ja_JP.UTF-8 date +%EY'
+alias wareki='date_wareki'
 alias date_now='/bin/date +%F_%T'
 alias date_full='/bin/date +%F_%T_%N'
 alias date_today='/bin/date +%Y%m%d'
