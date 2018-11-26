@@ -1,0 +1,184 @@
+#!/bin/bash
+
+# -----------------------------------------------------------------------------
+# Log functions
+# -----------------------------------------------------------------------------
+
+fn_log_info()  { echo "$APPNAME: $1"; }
+fn_log_warn()  { echo "$APPNAME: [WARNING] $1" 1>&2; }
+fn_log_error() { echo "$APPNAME: [ERROR] $1" 1>&2; }
+fn_log_info_cmd()  {
+	if [ -n "$SSH_DEST_FOLDER_PREFIX" ]; then
+		echo "$APPNAME: $SSH_CMD '$1'";
+	else
+		echo "$APPNAME: $1";
+	fi
+}
+
+# -----------------------------------------------------------------------------
+# Small utility functions for reducing code duplication
+# -----------------------------------------------------------------------------
+fn_display_usage() {
+	echo "Usage: $(basename $0) [OPTION]... <[USER@HOST:]SOURCE> <[USER@HOST:]DESTINATION> [exclude-pattern-file]"
+	echo ""
+	echo "Options"
+	echo " -p, --port           SSH port."
+	echo " -h, --help           Display this help message."
+	echo " --rsync-get-flags    Display the default rsync flags that are used for backup."
+	echo " --rsync-set-flags    Set the rsync flags that are going to be used for backup."
+	echo " --log-dir            Set the log file directory. If this flag is set, generated files will"
+	echo "                      not be managed by the script - in particular they will not be"
+	echo "                      automatically deleted."
+	echo "                      Default: $LOG_DIR"
+	echo " --strategy           Set the expiration strategy. Default: \"1:1 30:7 365:30\" means after one"
+	echo "                      day, keep one backup per day. After 30 days, keep one backup every 7 days."
+	echo "                      After 365 days keep one backup every 30 days."
+	echo " --no-auto-expire     Disable automatically deleting backups when out of space. Instead an error"
+	echo "                      is logged, and the backup is aborted."
+	echo ""
+	echo "For more detailed help, please see the README file:"
+	echo ""
+	echo "https://github.com/laurent22/rsync-time-backup/blob/master/README.md"
+}
+
+fn_parse_date() {
+	# Converts YYYY-MM-DD to YYYY-MM-DD and then to Unix Epoch.
+    date -d "${1:0:10}" +%s
+}
+
+fn_find_backups() {
+	fn_run_cmd "find "$DEST_FOLDER/" -maxdepth 1 -type d | grep -P \"^$DEST_FOLDER/+\d{4}-\d{2}-\d{2}$\" | sort -r"
+}
+
+fn_expire_backup() {
+	# Double-check that we're on a backup destination to be completely
+	# sure we're deleting the right folder
+	if [ -z "$(fn_find_backup_marker "$(dirname -- "$1")")" ]; then
+		fn_log_error "$1 is not on a backup destination - aborting."
+		exit 1
+	fi
+
+	fn_log_info "Expiring $1"
+	fn_rm_dir "$1"
+}
+
+fn_expire_backups()
+{
+	local current_timestamp=$EPOCH
+	local last_kept_timestamp=9999999999
+
+	# Process each backup dir from most recent to oldest
+	for backup_dir in $(fn_find_backups | sort -r); do
+		local backup_date=$(basename "$backup_dir")
+		local backup_timestamp=$(fn_parse_date "$backup_date")
+
+		# Skip if failed to parse date...
+		if [ -z "$backup_timestamp" ]; then
+			fn_log_warn "Could not parse date: $backup_dir"
+			continue
+		fi
+
+		# Find which strategy token applies to this particular backup
+		for strategy_token in $(echo $EXPIRATION_STRATEGY | tr " " "\n" | sort -r -n); do
+			IFS=':' read -r -a t <<< "$strategy_token"
+
+			# After which date (relative to today) this token applies (X)
+			local cut_off_timestamp=$((current_timestamp - ${t[0]} * 86400))
+
+			# Every how many days should a backup be kept past the cut off date (Y)
+			local cut_off_interval=$((${t[1]} * 86400))
+
+			# If we've found the strategy token that applies to this backup
+			if [ "$backup_timestamp" -le "$cut_off_timestamp" ]; then
+
+				# Special case: if Y is "0" we delete every time
+				if [ $cut_off_interval -eq "0" ]; then
+					fn_expire_backup "$backup_dir"
+					break
+				fi
+
+				# Check if the current backup is in the interval between
+				# the last backup that was kept and Y
+				local interval_since_last_kept=$((last_kept_timestamp - backup_timestamp))
+				if [ "$interval_since_last_kept" -lt "$cut_off_interval" ]; then
+					# Yes: Delete that one
+					fn_expire_backup "$backup_dir"
+				else
+					# No: Keep it
+					last_kept_timestamp=$backup_timestamp
+				fi
+				break
+			fi
+		done
+	done
+}
+
+fn_parse_ssh() {
+	# To keep compatibility with bash version < 3, we use grep
+	if echo "$DEST_FOLDER"|grep -Eq '^[A-Za-z0-9\._%\+\-]+@[A-Za-z0-9.\-]+\:.+$'
+	then
+		SSH_USER=$(echo "$DEST_FOLDER" | sed -E  's/^([A-Za-z0-9\._%\+\-]+)@([A-Za-z0-9.\-]+)\:(.+)$/\1/')
+		SSH_HOST=$(echo "$DEST_FOLDER" | sed -E  's/^([A-Za-z0-9\._%\+\-]+)@([A-Za-z0-9.\-]+)\:(.+)$/\2/')
+		SSH_DEST_FOLDER=$(echo "$DEST_FOLDER" | sed -E  's/^([A-Za-z0-9\._%\+\-]+)@([A-Za-z0-9.\-]+)\:(.+)$/\3/')
+		SSH_CMD="ssh -p $SSH_PORT ${SSH_USER}@${SSH_HOST}"
+		SSH_DEST_FOLDER_PREFIX="${SSH_USER}@${SSH_HOST}:"
+	elif echo "$SRC_FOLDER"|grep -Eq '^[A-Za-z0-9\._%\+\-]+@[A-Za-z0-9.\-]+\:.+$'
+	then
+		SSH_USER=$(echo "$SRC_FOLDER" | sed -E  's/^([A-Za-z0-9\._%\+\-]+)@([A-Za-z0-9.\-]+)\:(.+)$/\1/')
+		SSH_HOST=$(echo "$SRC_FOLDER" | sed -E  's/^([A-Za-z0-9\._%\+\-]+)@([A-Za-z0-9.\-]+)\:(.+)$/\2/')
+		SSH_SRC_FOLDER=$(echo "$SRC_FOLDER" | sed -E  's/^([A-Za-z0-9\._%\+\-]+)@([A-Za-z0-9.\-]+)\:(.+)$/\3/')
+		SSH_CMD="ssh -p $SSH_PORT ${SSH_USER}@${SSH_HOST}"
+		SSH_SRC_FOLDER_PREFIX="${SSH_USER}@${SSH_HOST}:"
+	fi
+}
+
+fn_run_cmd() {
+	if [ -n "$SSH_DEST_FOLDER_PREFIX" ]
+	then
+		eval "$SSH_CMD '$1'"
+	else
+		eval $1
+	fi
+}
+
+fn_find() {
+	fn_run_cmd "find '$1'"  2>/dev/null
+}
+
+fn_get_absolute_path() {
+	fn_run_cmd "cd '$1';pwd"
+}
+
+fn_mkdir() {
+	fn_run_cmd "mkdir -p -- '$1'"
+}
+
+# Removes a file or symlink - not for directories
+fn_rm_file() {
+	fn_run_cmd "rm -f -- '$1'"
+}
+
+fn_rm_dir() {
+	fn_run_cmd "rm -rf -- '$1'"
+}
+
+fn_touch() {
+	fn_run_cmd "touch -- '$1'"
+}
+
+fn_ln() {
+	fn_run_cmd "ln -s -- '$1' '$2'"
+}
+
+fn_backup_marker_path() {
+    echo "$1/.backup.marker"
+}
+
+fn_find_backup_marker() {
+    fn_find "$(fn_backup_marker_path "$1")" 2>/dev/null
+}
+
+fn_terminate_script() {
+	fn_log_info "SIGINT caught."
+	exit 1
+}
