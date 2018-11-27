@@ -97,12 +97,12 @@ perl:
 		grep -Po '(?<=perl-)5\.26\.\d+(?=\.tar\.gz)' | sort -V | tail -n1))
 
     # コンパイル
-	/bin/rm -rf $(HOME)/$@*
+	/bin/rm -rf $(HOME)/local/tmp/$@*
 	wget --no-check-certificate "http://www.cpan.org/src/5.0/perl-$(V).tar.gz" -O $(HOME)/$@.tar.gz
 	tar xf $(HOME)/$@.tar.gz -C $(HOME)
 	cd $(HOME)/$@-*; ./Configure -des -Dprefix=${PREFIX}/perl-$(V) && make && make install
 	ln -snf ${PREFIX}/$@-$(V) ${PREFIX}/$@
-	/bin/rm -rf $(HOME)/$@*
+	/bin/rm -rf $(HOME)/local/tmp/$@*
 
 GIT_VERSION := $(shell git --version 2>/dev/null )
 git:
@@ -117,7 +117,7 @@ git:
 
     # 前準備
 	make install_package
-	/bin/rm -rf $(HOME)/$@*
+	/bin/rm -rf $(HOME)/local/tmp/$@*
 
     # コンパイル
 	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O $(HOME)/local/tmp/$@.tar.gz
@@ -164,18 +164,18 @@ git_conf:
 
 metastore:
 	case $(OS) in Linux*  ) \
-		git clone https://github.com/przemoc/metastore.git $(HOME)/$@; \
-		cd $(HOME)/$@ && make && make install PREFIX=${PREFIX}/$@; \
-		rm -rf $(HOME)/$@ ;; \
+		git clone https://github.com/przemoc/metastore.git $(HOME)/local/tmp/$@; \
+		cd $(HOME)/local/tmp/$@ && make && make install PREFIX=${PREFIX}/$@; \
+		rm -rf $(HOME)/local/tmp/$@ ;; \
 	esac
 
 zsh:
-	/bin/rm -rf $(HOME)/$@*
+	/bin/rm -rf $(HOME)/local/tmp/$@*
 	make install_package
-	wget --no-check-certificate "https://sourceforge.net/projects/zsh/files/latest/download?source=files" -O $(HOME)/$@.tar.gz
-	tar xf $(HOME)/$@.tar.gz -C $(HOME)
-	cd $(HOME)/$@-* && ./configure --prefix=${PREFIX}/$@ && make && make install
-	/bin/rm -rf $(HOME)/$@*
+	wget --no-check-certificate "https://sourceforge.net/projects/zsh/files/latest/download?source=files" -O $(HOME)/local/tmp/$@.tar.gz
+	tar xf $(HOME)/local/tmp/$@.tar.gz -C $(HOME)/local/tmp/
+	cd $(HOME)/local/tmp/$@-* && ./configure --prefix=${PREFIX}/$@ && make && make install
+	/bin/rm -rf $(HOME)/local/tmp/$@*
 
 EMACS_VERSION := $(shell emacs --version 2>/dev/null | head -1 )
 emacs:
@@ -198,10 +198,10 @@ emacs:
 	ln -snf ${PREFIX}/$@-$(V) ${PREFIX}/$@
 
 parallel:
-	wget --no-check-certificate "http://ftp.gnu.org/gnu/parallel/parallel-latest.tar.bz2" -O $(HOME)/$@.tar.bz2
-	tar xf $(HOME)/$@.tar.bz2 -C $(HOME)
-	cd $(HOME)/$@-* && ./configure && LANG=C make && make install
-	/bin/rm -rf $(HOME)/$@*
+	wget --no-check-certificate "http://ftp.gnu.org/gnu/parallel/parallel-latest.tar.bz2" -O $(HOME)/local/tmp/$@.tar.bz2
+	tar xf $(HOME)/local/tmp/$@.tar.bz2 -C $(HOME)/local/tmp/
+	cd $(HOME)/local/tmp/$@-* && ./configure && LANG=C make && make install
+	/bin/rm -rf $(HOME)/local/tmp/$@*
 
 m:
 	@{ echo ' cat <<\EOF | base64 -di | tar zxvf -'; tar zcf - Makefile  | base64 ; echo EOF; } | tee /dev/clipboard
