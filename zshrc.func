@@ -11,12 +11,6 @@ function echo_green
 # こんなのもあり
 #echo aaa | perl -MTerm::ANSIColor -ne 'print colored($_,"red")'
 
-function col {
-    local fs
-    [[ -n $2 ]] && fs="-F$2"
-    awk $fs -v col=$1 '{print $col}'
-}
-
 function subnet2cidr ()
 {
     # Assumes there's no "255." after a non-255 byte in the mask

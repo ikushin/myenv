@@ -89,7 +89,22 @@ alias -g SC='S |uniq -c |sort -n'
 alias -g SU='S |uniq'
 
 # galiases AWK
-alias -g A='| col'
+function col
+{
+    local fs=' '
+
+    while getopts "s:f:d:" OPT; do
+        case $OPT in
+            d|f|s) fs=$OPTARG ;;
+            \?)    return ;;
+        esac
+    done
+    shift $((OPTIND - 1))
+
+    cut -d$fs -f$@
+}
+alias -g A='PE "s/\s+/ /g" | col'
+
 alias -g A1='A 1'
 alias -g A2='A 2'
 alias -g A3='A 3'
