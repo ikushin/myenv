@@ -122,7 +122,7 @@ git:
     # コンパイル
 	wget --no-check-certificate "https://www.kernel.org/pub/software/scm/git/git-$(V).tar.gz" -O $(HOME)/local/tmp/$@.tar.gz
 	tar xf $(HOME)/local/tmp/$@.tar.gz -C $(HOME)/local/tmp
-	cd $(HOME)/local/tmp/$@-*; ./configure --prefix=${PREFIX}/$@-$(V) --with-curl=$(HOME)/local/ --without-tcltk | tee configure.log
+	cd $(HOME)/local/tmp/$@-*; ./configure --prefix=${PREFIX}/$@-$(V) --with-curl=${PREFIX} --without-tcltk | tee configure.log
 	grep --color=always 'supports SSL... yes' $(HOME)/local/tmp/$@-*/configure.log
 	cd $(HOME)/local/tmp/$@-*; make && make install
 	ln -snf ${PREFIX}/$@-$(V) ${PREFIX}/$@

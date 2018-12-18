@@ -13,18 +13,23 @@ import csv
 args = sys.argv
 xlsx = args[1]
 
+# 出力先
 dest_dir = "./out"
 os.makedirs(dest_dir, exist_ok=True)
-
 
 # ブックを読み込み
 book = openpyxl.load_workbook(xlsx, data_only=True)
 
-# シートでループ
+# シート毎にループ
 for sheet in book.worksheets:
-    sheet_name = sheet.title  # シート名を取得
-    dest_path = os.path.join(dest_dir, sheet_name + '.csv')
 
+    # シート名を取得
+    sheet_name = sheet.title
+
+    # 出力先パスの作成
+    dest_path  = os.path.join(dest_dir, sheet_name + '.csv')
+
+    # シートをCSVとして出力する
     with open(dest_path, 'w', encoding='utf-8') as fp:
         writer = csv.writer(fp)
 
