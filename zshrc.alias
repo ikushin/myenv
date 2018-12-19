@@ -240,7 +240,8 @@ alias unset_proxy='unset {HTTP{,S}_PROXY,http{,s}_proxy}'
 alias set_proxy='. /etc/profile.d/proxy.sh'
 alias parallel='parallel --no-notice'
 alias csvtool='csvtool namedcol'
-alias wdir='mkdir -p $(date_today) && cd $(date_today) && pwd'
+alias mkd='mkdir -p $HOME/work/$(date_today) && cd $HOME/work/$(date_today) && pwd'
+alias mkw='mkd'
 alias csvcut='cut -d, -f '
 
 # a b c ファイル用
