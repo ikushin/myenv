@@ -76,9 +76,13 @@ alias -g J='2>/dev/null |jq .'
 alias -g U='PE 's/^\s+$//' | uniq'
 
 # galiases xargs
+alias -g xx=' | xargs --no-run-if-empty --max-args=1 --max-procs=1 -I%'
+alias -g x1='xx'
+
+alias -g xx10=' | xargs --no-run-if-empty --max-args=1 --max-procs=1'
+alias -g x10=' | xargs --no-run-if-empty --max-args=1 --max-procs=1'
+
 alias -g xar='| xargs --no-run-if-empty'
-alias -g xx=' | xargs --no-run-if-empty --max-args=1 --max-procs=10'
-alias -g x1=' | xargs --no-run-if-empty --max-args=1 --max-procs=1'
 # alias -g x1='| xargs --no-run-if-empty --max-args=1'
 
 # galiases sort
