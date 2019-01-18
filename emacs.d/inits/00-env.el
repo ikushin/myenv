@@ -59,12 +59,12 @@
 ;; /etc/hosts とかの設定ファイルを色付けをする
 (require 'generic-x)
 
-;; 最近のファイル50個を保存する
-(setq recentf-max-saved-items 50)
-;;;; 履歴加えないファイルを正規表現で指定する
-(setq recentf-exclude
-      '("/TAGS$" "/var/tmp/"))
-(require 'recentf-ext)
+;; ;; 最近のファイル50個を保存する
+;; (setq recentf-max-saved-items 50)
+;; ;;;; 履歴加えないファイルを正規表現で指定する
+;; (setq recentf-exclude
+;;       '("/TAGS$" "/var/tmp/"))
+;; (require 'recentf-ext)
 
 ;; バッファの同一ファイル名を区別する
 (require 'uniquify)
