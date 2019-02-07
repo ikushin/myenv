@@ -164,7 +164,7 @@ alias mv='/bin/mv -i'
 alias mvf='/bin/mv -f'
 alias rm='/bin/rm -i'
 alias rmf='/bin/rm -rf'
-alias ln='ln -snfv'
+alias ln='ln -snfvr'
 
 # ls, stat
 alias ls='ls --color=auto --group-directories-first'
