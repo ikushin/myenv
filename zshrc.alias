@@ -136,7 +136,7 @@ alias -g s2u='|& lv -Is   -Ou8   | cat'
 alias -g j2u='s2u'
 
 # vi
-which vim  >/dev/null 2>&1  && alias vi=`which vim`
+type vim &>/dev/null && alias vi=$(which vim)
 alias fvi='vi $(mktemp --tmpdir=./ vi.XXXXXXXXXX)'
 alias vv='fvi'
 alias vif='vi -c startinsert f'
@@ -247,6 +247,7 @@ alias parallel='parallel --no-notice'
 alias csvtool='csvtool namedcol'
 alias mkd='mkdir -p $HOME/work/$(date_today) && cd $HOME/work/$(date_today) && pwd'
 alias mkw='mkd'
+alias cdw='mkd'
 alias csvcut='cut -d, -f '
 
 # a b c ファイル用

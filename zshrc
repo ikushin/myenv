@@ -134,7 +134,7 @@ RPROMPT='[%d]'
 # environment variable
 LC_ALL="ja_JP.UTF8"
 LANG="C"
-export EDITOR=vim
+export EDITOR=vi
 export PAGER=less
 export LESSCHARSET=utf-8
 export LESS='-FiMRj3'
