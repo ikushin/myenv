@@ -7,12 +7,6 @@ alias fgrep='/bin/fgrep --color'
 alias igrep='g -i'
 alias grepf='egrep -ff'
 
-alias g='xgrep'
-alias go='g -o'
-alias gh='g -h'
-alias goh='g -oh'
-alias gho='goh'
-
 # ipgrep
 alias ipgrep='xgrep "(\d+\.){3}\d+"'
 alias ipgrep2='xgrep "(\d+\.){4}\d+" **/*~*.db(.) GV "127.0.0.1|0.0.0.0|\.hint|\.zone" Key "(\d+\.){3}\d+|^.*?:"'

@@ -13,8 +13,11 @@ import csv
 args = sys.argv
 xlsx = args[1]
 
+base, extension = os.path.splitext(xlsx)
+
+
 # 出力先
-dest_dir = "./out"
+dest_dir = base
 os.makedirs(dest_dir, exist_ok=True)
 
 # ブックを読み込み
