@@ -70,15 +70,15 @@ alias -g J='2>/dev/null |jq .'
 alias -g U='PE 's/^\s+$//' | uniq'
 
 # galiases xargs
-alias -g X='| xargs --no-run-if-empty'
-alias -g __x='X --max-args=1 -I%'
+alias -g X='| xargs --no-run-if-empty --max-args=1 -I%'
+# alias -g __x='X --max-args=1 -I%'
 
-alias -g xx=' __x -P1'
-alias -g x10='__x -P10'
-alias -g x50='__x -P50'
+# alias -g xx=' __x -P1'
+# alias -g x10='__x -P10'
+# alias -g x50='__x -P50'
 
-alias -g xx10='x10'
-alias -g xx50='x50'
+# alias -g xx10='x10'
+# alias -g xx50='x50'
 
 # galiases sort
 # alias -g S='GVV PE "s/\s+/ /g" PE "s/^\s*|\s*$//g" |& sort'
