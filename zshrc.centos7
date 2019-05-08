@@ -1,4 +1,13 @@
+# systemctl
+alias chkconfig="systemctl --no-pager list-unit-files -t service --state=enabled --state=disabled --state=masked"
 
-alias chkconfig="systemctl --no-pager list-unit-files -t service --state=enabled --state=disabled"
+# firewalld
+alias _fw="firewall-cmd"
+alias fw_active="_fw --get-active-zone"
+alias fw_list_if="_fw --list-interfaces"
+alias fw_list="_fw --list-all"
+alias fw_list_all="_fw --list-all-zones"
+alias fw_list_all_short="fw_list_all | /bin/grep -P '^\w'"
+
+# etc
 alias pgrep="pgrep -af"
-
