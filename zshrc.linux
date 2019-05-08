@@ -83,12 +83,17 @@ function netstat_udp4
 
 function nn
 {
-    printf "=== TCP ===\n"
-    sudo -n lsof -Pn -i4 -sTCP:LISTEN
-    printf "\n=== TCP6 ===\n"
-    sudo -n lsof -Pn -i6 -sTCP:LISTEN
-    printf "\n=== UDP ===\n"
-    sudo -n lsof -Pn  -i udp
+    sudo -n id >/dev/null || return 1
+    type lsof  >/dev/null || return 1
+
+    {
+        printf "=== TCP4 ===\n"
+        sudo lsof -Pn -i4 -sTCP:LISTEN | sort -t: -k2n,2
+        printf "\n=== TCP6 ===\n"
+        sudo lsof -Pn -i6 -sTCP:LISTEN | sort -t: -k2n,2
+        printf "\n=== UDP ===\n" | sort -t: -k2n,2
+        sudo lsof -Pn  -i udp
+    } PE 's/\s+.LISTEN.*//'
 }
 
 #alias netstat='/bin/netstat  --numeric --tcp --inet --listen --program'
