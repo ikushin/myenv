@@ -141,8 +141,8 @@ alias view='vi -R'
 alias vie='vi ~/.emacs'
 
 # date
-alias date_wareki='LANG=ja_JP.UTF-8 date +%EY'
-alias wareki='date_wareki'
+#alias date_wareki='LANG=ja_JP.UTF-8 date +%EY'
+#alias wareki='date_wareki'
 alias date_now='/bin/date +%F_%T'
 alias date_full='/bin/date +%F_%T_%N'
 alias date_today='/bin/date +%Y%m%d'
@@ -150,6 +150,7 @@ alias today='date_today'
 alias date_yesterday='/bin/date --date "1 day ago" +%Y%m%d'
 alias yesterday='date_yesterday'
 alias date_MMDDhhmmYY='/bin/date +%m%d%H%M%y'
+alias date_Unix_time='/bin/date +%s'
 
 # cp, mv
 alias cp='/bin/cp -ia'
@@ -243,6 +244,7 @@ alias mkd='mkdir -p $HOME/work/$(date_today) && cd $HOME/work/$(date_today) && p
 alias mkw='mkd'
 alias cdw='mkd'
 alias csvcut='cut -d, -f '
+alias rand_port="strings /dev/urandom | /bin/grep -Po -m3 '[1-5]\d{4}'"
 
 # a b c ファイル用
 alias via='vi -c startinsert a'
