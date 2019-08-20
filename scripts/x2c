@@ -1,0 +1,9 @@
+#!/bin/bash
+# set -x
+
+for x in "$@"
+do
+    dir=${x%.xlsx}
+    [[ -d "$dir" ]] && /bin/rm -rfv "$dir"
+    $HOME/local/bin/xlsx2csv.py $x
+done

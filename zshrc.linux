@@ -87,19 +87,27 @@ function nn
     type lsof  >/dev/null || return 1
 
     opt="$@"
+    [[ $# -eq 0 ]] && opt="-4 -6 -u"
 
     {
-        printf "=== TCP4 ===\n"
-        sudo lsof -Pn -i4 -sTCP:LISTEN | sort -t: -k2n,2
-        [[ $opt =~ 4 ]] && return
+        if [[ $opt =~ 4 ]]; then
+            printf "=== TCP4 ===\n"
+            sudo lsof -Pn -i4 -sTCP:LISTEN | sort -t: -k2n,2
+        fi
 
-        printf "\n=== TCP6 ===\n"
-        sudo lsof -Pn -i6 -sTCP:LISTEN | sort -t: -k2n,2
-        printf "\n=== UDP ===\n" | sort -t: -k2n,2
-        sudo lsof -Pn  -i udp
+        if [[ $opt =~ 6 ]]; then
+            printf "\n=== TCP6 ===\n"
+            sudo lsof -Pn -i6 -sTCP:LISTEN | sort -t: -k2n,2
+        fi
+
+        if [[ $opt =~ u ]]; then
+            printf "\n=== UDP ===\n" | sort -t: -k2n,2
+            sudo lsof -Pn  -i udp
+        fi
     } PE 's/\s+.LISTEN.*//'
 }
 alias n4='nn -4'
+alias n6='nn -6'
 
 #alias netstat='/bin/netstat  --numeric --tcp --inet --listen --program'
 #alias net='netstat'

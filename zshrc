@@ -202,7 +202,7 @@ TERM=linux
 
 # 名前付きdir
 hash -d mm=~/.myenv
-hash -d .s=~/.ssh
+hash -d .s=~/.ssh/conf.d
 
 # mkdir
 mkdir -p $HOME/.cache/shell

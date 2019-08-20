@@ -245,6 +245,7 @@ alias mkw='mkd'
 alias cdw='mkd'
 alias csvcut='cut -d, -f '
 alias rand_port="strings /dev/urandom | /bin/grep -Po -m3 '[1-5]\d{4}'"
+alias mailx='swaks -4'
 
 # a b c ファイル用
 alias via='vi -c startinsert a'
