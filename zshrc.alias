@@ -174,6 +174,7 @@ alias lld='ll -d'
 alias stat_my='stat -c "%A %a %U:%G %u:%g %N"'
 alias lsstat='stat_my'
 alias stat_my2='stat -c "%A %a %u %g %N"'
+alias stat_my3='stat -c "%A %a %U:%G %N"'
 
 # df
 alias df='df -PTh -t xfs -t ext2 -t ext3 -t ext4 -t ntfs -t vfat -t iso9660 -t cifs -t nfs4'
