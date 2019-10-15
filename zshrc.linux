@@ -11,7 +11,7 @@ alias ps_vsz='_ps --sort -vsz'
 alias ps_rss='_ps --sort -rss'
 alias pstree='pstree -p'
 alias free='free -m'
-alias locate='locate -r'
+alias locate='locate --regex'
 alias pgrep='pgrep -lf'
 
 # free
