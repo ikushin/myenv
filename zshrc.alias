@@ -1,4 +1,4 @@
-
+#
 # grep
 alias grep='/bin/grep --color -a -P'
 alias egrep='/bin/grep -E --color -a'
@@ -70,7 +70,8 @@ alias -g J='2>/dev/null |jq .'
 alias -g U='PE 's/^\s+$//' | uniq'
 
 # galiases xargs
-alias xargs_r_n1_I%_P1='xargs --no-run-if-empty --max-args=1 -I% -P1'
+alias xargs_r_n1_I%_P1=' xargs -r -n1 -I% -P1'
+alias xargs_r_n1_I%_P10='xargs -r -n1 -I% -P10'
 alias -g X='| xargs --no-run-if-empty --max-args=1 -I%'
 # alias -g __x='X --max-args=1 -I%'
 
