@@ -46,7 +46,7 @@ alias gd='git dsf'
 alias gc='git checkout'
 alias gcm='git checkout master'
 alias gl='git log --color=always --name-status --no-merges'
-alias gld="git log --oneline --pretty=format:'%h [%cd] %d %s <%an>' --date=format:'%Y/%m/%d %H:%M:%S'"
+alias gld="git log --oneline --pretty=format:'%h [%cd] %s' --date=format:'%Y/%m/%d %H:%M'"
 alias gp='git push origin master'
 alias ga='git add '
 alias git_add_hunk='git add -p'
