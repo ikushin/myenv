@@ -185,7 +185,7 @@ alias dfx="df $(echo -t\ {xfs,ext{2-4},nfs{,3,4},cifs,ntfs,vfat,iso9660})"
 
 # emacs
 alias emacs='LANG=ja_JP.UTF8 emacs -nw'
-alias tejun='emacs -l ~/.emacs_tejun'
+#alias tejun='emacs -l ~/.emacs_tejun'
 alias femacs='emacs $(mktemp --tmpdir=./ emacs.XXXXXXXXXX)'
 alias em='emacs'
 alias ema='emacs a'
