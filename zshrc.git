@@ -35,6 +35,7 @@ if git --version |& grep -Pq "1.[78]"; then
 else
     bindkey -s "^G^L^L" 'git log --color=always -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges '
     alias gitdiff='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --color=auto -U10'
+    alias gitdiff0='git diff --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --color=auto -U100'
     alias gll='git log --color=auto -p --ignore-space-change --ignore-all-space --ignore-blank-lines --ignore-space-at-eol --break-rewrites -t --no-merges'
 fi
 alias git_diff='gitdiff'
@@ -93,28 +94,36 @@ alias git_untrack='git update-index --skip-worktree'
 
 # functions
 alias _gdiff='gitdiff --no-index'
+
+function _d()
+{
+    if [[ $# -lt 2 ]]; then
+        a=$(/bin/ls -t ./a* | head -n1)
+        b=$(/bin/ls -t ./b* | head -n1)
+    else
+        a=${1}; b=${2}
+    fi
+}
+
 function d() {
-    a=${1:-"a"}
-    b=${2:-"b"}
+    _d $1 $2
+    [[ -z $a || -z $b ]] && return 1
     _gdiff $a $b
 }
-alias myd='d'
+#alias myd='d'
 
 function d0() {
-    a=${1:-"a"}
-    b=${2:-"b"}
+    _d $1 $2
     _gdiff -U100 $a $b
 }
 
 function rd() {
-    a=${1:-"a"}
-    b=${2:-"b"}
+    _d $1 $2
     _gdiff $b $a
 }
 
 function rd0() {
-    a=${1:-"a"}
-    b=${2:-"b"}
+    _d $1 $2
     _gdiff -U100 $b $a
 }
 
