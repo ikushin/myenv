@@ -177,6 +177,7 @@ alias stat_my='stat -c "%A %a %U:%G %u:%g %N"'
 alias lsstat='stat_my'
 alias stat_my2='stat -c "%A %a %u %g %N"'
 alias stat_my3='stat -c "%A %a %U:%G %N"'
+alias stat='tree --dirsfirst -C -pugfi -L 1'
 
 # df
 alias df='df -Ph'
@@ -250,6 +251,7 @@ alias cdw='mkd'
 alias csvcut='cut -d, -f '
 alias rand_port="strings /dev/urandom | /bin/grep -Po -m3 '[1-5]\d{4}'"
 alias mailx='swaks -4'
+alias tree='tree --dirsfirst --prune -C -L 3'
 
 # a b c ファイル用
 alias via='vi -c startinsert a'
