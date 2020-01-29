@@ -42,12 +42,18 @@ alias git_diff='gitdiff'
 alias gitdiff0='gitdiff -U100'
 alias git_diff_stage='gitdiff --cached'
 
+# Git log aliases
+alias gl='git log --color=always --name-status --no-merges'
+alias gld="git log --oneline --pretty=format:'%h [%cd] %s' --date=format:'%Y/%m/%d %H:%M' -$((LINES-10))"
+alias git_log="gl"
+alias git_log_oneline="git log --oneline --decorate -$((LINES-10))"
+alias git_log_patch="gll"
+alias git_log_date="gld"
+
 # Git aliases
 alias gd='git dsf'
 alias gc='git checkout'
 alias gcm='git checkout master'
-alias gl='git log --color=always --name-status --no-merges'
-alias gld="git log --oneline --pretty=format:'%h [%cd] %s' --date=format:'%Y/%m/%d %H:%M'"
 alias gp='git push origin master'
 alias ga='git add '
 alias git_add_hunk='git add -p'
