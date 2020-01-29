@@ -118,9 +118,9 @@ alias -g A9='A 9'
 
 # 紛らわしいもの
 alias -g Cut='|& cut -c -$(($COLUMNS-10))'
-alias -g Col='|& LANG=ja_JP.UTF8 column -t'
-alias -g Colc='|& LANG=ja_JP.UTF8 column -t -s,'
-alias -g Colt="|& LANG=ja_JP.UTF8 column -t -s $'\t'"
+alias -g Col='|& LANG=ja_JP.UTF8 column -t -o" "'
+alias -g Colc='|& LANG=ja_JP.UTF8 column -t -o" " -s,'
+alias -g Colt="|& LANG=ja_JP.UTF8 column -t -o' ' -s $'\t'"
 alias -g Cat='|& cat -An'
 alias -g Tee='|&tee'
 
