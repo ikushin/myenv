@@ -224,3 +224,5 @@ if [[ -n $EMACS ]] ;then
   PROMPT='[(zsh)%~]%(#.#.$) '
   source=true
 fi
+
+find $HOME/.sandbox -maxdepth 1 -type d -mtime +7 | xargs -r rm -rf
