@@ -60,6 +60,13 @@ alias p2u='LANG=ja_JP.UTF8 cygpath -au'
 alias p2w='LANG=ja_JP.UTF8 cygpath -aw'
 #alias path_to_win='p2w'
 
+unalias path
+function path()
+{
+    readlink -f $1
+    p2w $1
+}
+
 # galias
 alias -g CL='>& /dev/clipboard'
 alias -g CLIP='CL'
