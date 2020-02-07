@@ -53,6 +53,7 @@ alias ipr='ip_route'
 alias ip_neighbour='/sbin/ip n S -V Col'
 alias ipn='ip_neighbour'
 alias arp='ipn'
+alias traceroute='traceroute -In'
 
 # netstat
 function netstat_tcp4
