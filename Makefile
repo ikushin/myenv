@@ -20,6 +20,7 @@ cp:
 		Linux* )     /bin/ln -sfnv $(HOME)/.myenv/zshrc.linux   $(HOME)/.zshrc.linux    ;;& \
 		*centos-5* | *redhat-5* ) /bin/ln -sfnv $(HOME)/.myenv/zshrc.centos5 $(HOME)/.zshrc.centos5 ;; \
 		*centos-7* | *redhat-7* ) /bin/ln -sfnv $(HOME)/.myenv/zshrc.centos7 $(HOME)/.zshrc.centos7 ;; \
+		*centos-8* | *redhat-8* ) /bin/ln -sfnv $(HOME)/.myenv/zshrc.centos7 $(HOME)/.zshrc.centos7 ;; \
 		*Ubuntu* ) /bin/ln -sfnv $(HOME)/.myenv/zshrc.ubuntu $(HOME)/.zshrc.ubuntu ;; \
 	esac
 	[[ -e $(HOME)/.ssh ]]        || install -v -m 700 -d $(HOME)/.ssh

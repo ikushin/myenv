@@ -2,6 +2,8 @@
 # path
 path=( $HOME/local/bin /usr/*bin /*bin )
 
+
+
 # autoload
 # -z を付けないと KSH_AUTOLOAD の設定の影響を受けるそうなので、 基本的には -z を明示的に付けるのがおすすめのようです。
 autoload -Uz colors && colors
@@ -150,8 +152,13 @@ fpath=(~/.zsh-completions /usr/local/share/zsh/site-functions /usr/local/share/z
 manpath=( $HOME/local/share/man /usr/local/share/man(N-/) /usr/local/man(N-/) /usr/share/man/ja(N-/) /usr/share/man(N-/) )
 export MANPATH
 
+# ld_library_path
+ld_library_path=( $HOME/local/lib /usr/*lib* /*lib* $ld_library_path  /usr/*lib*)
+
 # delete a repeating element automatically
-typeset -U path cdpath fpath manpath
+typeset -U path cdpath fpath manpath ld_library_path
+
+export LD_LIBRARY_PATH=$(echo ${ld_library_path} | tr ' ' ":")
 
 # 補完候補を色付けする
 eval $(dircolors --bourne-shell)
@@ -225,4 +232,4 @@ if [[ -n $EMACS ]] ;then
   source=true
 fi
 
-find $HOME/.sandbox -maxdepth 1 -type d -mtime +7 | xargs -r rm -rf
+find $HOME/.sandbox -maxdepth 1 -type d -mtime +7 | xargs rm -rf

@@ -99,7 +99,7 @@ function _make
 {
     LANG=C
     echo_green "START: make $@"
-    /usr/bin/make $@
+    make $@
     rc=$?
     [[ $rc != 0 ]] && echo_red "EROOR: make $@" || echo_green "END: make $@"
     return $rc
