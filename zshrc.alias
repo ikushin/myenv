@@ -8,8 +8,9 @@ alias igrep='g -i'
 alias grepf='egrep -ff'
 
 # ipgrep
-alias ipgrep='xgrep "(\d+\.){3}\d+"'
-alias ipgrep2='xgrep "(\d+\.){4}\d+" **/*~*.db(.) GV "127.0.0.1|0.0.0.0|\.hint|\.zone" Key "(\d+\.){3}\d+|^.*?:"'
+octet="(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])"
+ipv4address="($octet\\.){3}$octet"
+alias ipgrep="grep -e '$ipv4address'"
 alias -g IP='|& ipgrep'
 alias -g IPO='IP -o'
 alias -g IPo='IPO'
