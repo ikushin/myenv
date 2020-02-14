@@ -232,4 +232,4 @@ if [[ -n $EMACS ]] ;then
   source=true
 fi
 
-find $HOME/.sandbox -maxdepth 1 -type d -mtime +7 | xargs rm -rf
+find $HOME/.sandbox -maxdepth 1 -type d -mtime +7 | xargs -r rm -rf
