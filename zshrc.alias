@@ -253,6 +253,7 @@ alias csvcut='cut -d, -f '
 alias rand_port="strings /dev/urandom | /bin/grep -Po -m3 '[1-5]\d{4}'"
 alias mailx='swaks -4'
 alias tree='tree --dirsfirst --prune -C -L 3'
+alias sort='sort -b'
 
 # a b c ファイル用
 alias via='vi -c startinsert a'

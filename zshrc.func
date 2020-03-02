@@ -149,3 +149,58 @@ function tc() {
 	EOF
 _EOF_
 }
+
+function _find()
+{
+    local path="."
+    local maxdepth=""
+    local daystart="-daystart"
+    local print=""
+    local _type=""
+    local find="/bin/find"
+    local debug=""
+    local dry_run=""
+    local xargs=""
+    local ls_opts="-ltrhd --time-style=long-iso --color --group-directories-first"
+
+    while :; do
+        case $1 in
+            -p|--path)
+                path=$2
+                shift
+                ;;
+            -m|--maxdepth)
+                maxdepth="-maxdepth $2"
+                shift
+                ;;
+            --nodaystart)
+                daystart=""
+                ;;
+            -t|--type)
+                _type="-type ${2:0:1}"
+                shift
+                ;;
+            -0)
+                print="-print0"
+                ;;
+            -d|--debug)
+                debug=t
+                ;;
+            -r|--dry-run)
+                dry_run=t
+                ;;
+            -l|--ls)
+                ls=t
+                print="-print0"
+                xargs="| /bin/xargs -r -0 /bin/ls $ls_opts"
+                ;;
+            *)
+                break
+        esac
+        shift
+    done
+
+    cmd="$find $path $maxdepth $daystart $_type $print $* $xargs"
+    echo "cmd: $cmd\n"
+    [[ -n $debug ]] || eval "$cmd"
+}
