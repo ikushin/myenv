@@ -111,9 +111,13 @@ function _d()
     fi
 }
 
-function d() {
+function d()
+{
+    local v=""
+    [[ $1 =~ -v ]] && { v=t; shift }
     _d $1 $2
     [[ -z $a || -z $b ]] && return 1
+    [[ -n $v ]] && echo git diff $a $b
     _gdiff $a $b
 }
 #alias myd='d'
