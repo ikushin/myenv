@@ -101,23 +101,25 @@ alias git_untrack='git update-index --skip-worktree'
 # functions
 alias _gdiff='gitdiff --no-index'
 
-function _d()
-{
-    if [[ $# -lt 2 ]]; then
-        a=$(/bin/ls -t ./a* | head -n1)
-        b=$(/bin/ls -t ./b* | head -n1)
-    else
-        a=${1}; b=${2}
-    fi
-}
+# function _d()
+# {
+#     if [[ $# -lt 2 ]]; then
+#         a=$(/bin/ls -t ./a* | head -n1)
+#         b=$(/bin/ls -t ./b* | head -n1)
+#     else
+#         a=${1}; b=${2}
+#     fi
+# }
 
 function d()
 {
-    local v=""
-    [[ $1 =~ -v ]] && { v=t; shift }
-    _d $1 $2
-    [[ -z $a || -z $b ]] && return 1
-    [[ -n $v ]] && echo git diff $a $b
+    local a=${1}; local b=${2}
+
+    if [[ $# -lt 2 ]]; then
+        a=$(/bin/ls -t a* | head -n1)
+        b=$(/bin/ls -t b* | head -n1)
+        [[ ${#a} -ne 1 || ${#b} -ne 1 ]] && echo  git diff $a $b
+    fi
     _gdiff $a $b
 }
 #alias myd='d'
