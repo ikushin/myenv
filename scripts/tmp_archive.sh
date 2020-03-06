@@ -1,5 +1,5 @@
-#!/bin/bash -x tmp_archive.sh
 #!/bin/bash
+#!/bin/bash -x tmp_archive.sh
 #set -x
 set -e
 set -u
@@ -22,7 +22,8 @@ for (( i=1,j=2 ;; i++,j++ )); do
     [[ -z $files ]] && break
 
     mkdir -p $logdir/$start
-    $find -newerat $start ! -newerat $end -and -atime +$lastdate -not -name "202?-??-??" -print0 | xargs -r -0 /bin/mv -t $logdir/$start
+    $find -newerat $start ! -newerat $end -and -atime +$lastdate -not -name "202?-??-??" -print0 |
+        xargs -r -0 /bin/mv -t $logdir/$start
 done
 
 # 整理
