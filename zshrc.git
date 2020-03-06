@@ -24,8 +24,9 @@ bindkey -s "^[c"    'git checkout '
 bindkey -s "^[c^[c" 'git commit -m "Update" '
 bindkey -s "^[v"    "git checkout "
 
-bindkey -s "^[l"    'git log --color=always --oneline --decorate -$((LINES-10)) '
-#bindkey -s "^G^L"   'git log --color=always --name-status --no-merges '
+# bindkey -s "^[l"    'git log --color=always --oneline --decorate -$((LINES-10)) '
+bindkey -s "^[l"    'git log --pretty=reference -$((LINES-10)) '
+# bindkey -s "^G^L"   'git log --color=always --name-status --no-merges '
 
 # git diff
 if git --version |& grep -Pq "1.[78]"; then
@@ -99,44 +100,63 @@ alias git_untrack='git update-index --skip-worktree'
 #alias git_unstage='git reset HEAD'
 
 # functions
-alias _gdiff='gitdiff --no-index'
-
-# function _d()
-# {
-#     if [[ $# -lt 2 ]]; then
-#         a=$(/bin/ls -t ./a* | head -n1)
-#         b=$(/bin/ls -t ./b* | head -n1)
-#     else
-#         a=${1}; b=${2}
-#     fi
-# }
+# alias _gdiff='gitdiff --no-index'
 
 function d()
 {
-    local a=${1}; local b=${2}
+    local opt="-b -w --ignore-blank-lines --ignore-space-at-eol"
+    local a=""; local b=""; local t=""
+    local color="auto"
+    local unified=10
+    local reverse=""
 
-    if [[ $# -lt 2 ]]; then
+    while :
+    do
+        case $1 in
+            -d)
+                set -x
+                ;;
+            -r)
+                reverse=t;
+                ;;
+            -v|--verbose)
+                opt=""
+                ;;
+            -c|--color)
+                color=$2
+                shift
+                ;;
+            -u?*)
+                unified=${1#-u}
+                ;;
+            -U|-u)
+                unified=$2
+                shift
+                ;;
+            *)
+                break
+                ;;
+        esac
+        shift
+    done
+    opt+=" --color=$color -U$unified"
+
+    if [[ $# -ge 2 ]]; then
+        a=$1; b=$2
+    else
         a=$(/bin/ls -t a* | head -n1)
         b=$(/bin/ls -t b* | head -n1)
-        [[ ${#a} -ne 1 || ${#b} -ne 1 ]] && echo  git diff $a $b
     fi
-    _gdiff $a $b
-}
-#alias myd='d'
 
-function d0() {
-    _d $1 $2
-    _gdiff -U100 $a $b
-}
+    if [[ $reverse ]]; then
+        t=$a; a=$b; b=$t
+    fi
 
-function rd() {
-    _d $1 $2
-    _gdiff $b $a
-}
+    cmd="git diff $opt $a $b"
+    echo "COMMAND: $cmd"
+    eval "$cmd"; rc=$?
 
-function rd0() {
-    _d $1 $2
-    _gdiff -U100 $b $a
+    [[ $rc -eq 0 ]] && md5sum $a $b
 }
 
 function git_init_bare() {
