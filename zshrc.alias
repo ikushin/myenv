@@ -174,11 +174,20 @@ alias llll='lll -i --time-style=full-iso'
 alias l4='llll'
 alias la='ll -A'
 alias lld='ll -d'
-alias stat_my='stat -c "%A %a %U:%G %u:%g %N"'
-alias lsstat='stat_my'
-alias stat_my2='stat -c "%A %a %u %g %N"'
-alias stat_my3='stat -c "%A %a %U:%G %N"'
-alias stat='\tree --dirsfirst -C -pugfi -L 1'
+
+
+function stat()
+{
+    local opt="-c '%A %a %U:%G %u:%g %n'"
+    local cmd="/bin/stat $opt $@"
+    echo "COMMAND: $cmd"
+    eval "$cmd"; rc=$?
+}
+
+# alias lsstat='stat_my'
+# alias stat_my2='stat -c "%A %a %u %g %N"'
+# alias stat_my3='stat -c "%A %a %U:%G %N"'
+# alias stat='\tree --dirsfirst -C -pugfi -L 1'
 
 # df
 alias df='df -Ph'

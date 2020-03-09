@@ -104,11 +104,14 @@ alias git_untrack='git update-index --skip-worktree'
 
 function d()
 {
-    local opt="-b -w --ignore-blank-lines --ignore-space-at-eol"
+    local git_opt="-b -w --ignore-blank-lines --ignore-space-at-eol"
+    local diff_opt="-tbwrN"
     local a=""; local b=""; local t=""
     local color="auto"
     local unified=10
     local reverse=""
+    local cmd=""
+    local err=""
 
     while :
     do
@@ -120,7 +123,8 @@ function d()
                 reverse=t;
                 ;;
             -v|--verbose)
-                opt=""
+                git_opt=""
+                diff_opt=""
                 ;;
             -c|--color)
                 color=$2
@@ -139,7 +143,8 @@ function d()
         esac
         shift
     done
-    opt+=" --color=$color -U$unified"
+    git_opt+=" --color=$color"
+    unified="-U$unified"
 
     if [[ $# -ge 2 ]]; then
         a=$1; b=$2
@@ -148,11 +153,18 @@ function d()
         b=$(/bin/ls -t b* | head -n1)
     fi
 
-    if [[ $reverse ]]; then
+    [[ -z $a || -z $b ]] && return 1
+
+    if [[ -n $reverse ]]; then
         t=$a; a=$b; b=$t
     fi
 
-    cmd="git diff $opt $a $b"
+    if git --version |& grep -Pq "1.[78]"; then
+        cmd="diff $diff_opt $unified $a $b"
+    else
+        cmd="git diff $git_opt $unified $a $b"
+    fi
+
     echo "COMMAND: $cmd"
     eval "$cmd"; rc=$?
 
