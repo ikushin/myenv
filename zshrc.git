@@ -55,7 +55,7 @@ alias git_log_date="gld"
 alias gd='git dsf'
 alias gc='git checkout'
 alias gcm='git checkout master'
-alias gp='git push origin master'
+alias gp='git push origin HEAD'
 alias ga='git add '
 alias git_add_hunk='git add -p'
 
