@@ -104,7 +104,7 @@ alias git_untrack='git update-index --skip-worktree'
 
 function d()
 {
-    local git_opt="-b -w --ignore-blank-lines --ignore-space-at-eol"
+    local git_opt="--no-index -b -w --ignore-blank-lines --ignore-space-at-eol"
     local diff_opt="-tbwrN"
     local a=""; local b=""; local t=""
     local color="auto"
