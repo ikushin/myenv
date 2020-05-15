@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # Git key binds
 if git --version |& grep -Pq "1.[7]"; then
@@ -130,10 +131,10 @@ function d()
                 color=$2
                 shift
                 ;;
-            -u?*)
-                unified=${1#-u}
+            -[uU]?*)
+                unified=${1#-[uU]}
                 ;;
-            -U|-u)
+            -[uU])
                 unified=$2
                 shift
                 ;;
