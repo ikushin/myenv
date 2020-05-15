@@ -131,7 +131,7 @@ alias vagrant_snapshot_pop='vagrant snapshot pop'
 #mv -f instances.*(L0,a+1.) ~/Trash 2>/dev/null
 #find ~/sandbox -type f -atime +7 | xargs mv -t ~/sandbox/trash
 #/bin/rm /cygdrive/c/Users/ikushin/Downloads/*(L0,a+7.)
-/bin/ls -d /tmp/*(m+7) 2>/dev/null | xargs -r /bin/rm -r
+#/bin/ls -d /tmp/*(m+7) 2>/dev/null | xargs -r /bin/rm -r
 /bin/ls -d ~/sandbox/*(m+7) 2>/dev/null | xargs -r /bin/mv -t ~/sandbox/.trash
 
 # ログアーカイブ
