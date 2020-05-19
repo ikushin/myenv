@@ -11,7 +11,7 @@ LC_ALL=en_US.utf8
 export LC_ALL
 
 # スクリプトのディレクトリを保存する
-TOP_DIR=$(cd $(dirname "$0") && pwd)
+TOP_DIR=$(cd "$(dirname "$0")" && pwd)
 
 # usage
 function usage()
@@ -21,7 +21,7 @@ function usage()
 }
 
 ip=$1
-[[ $ip ]] || usage
+[[ $ip ]] || usage "$@"
 
 # vars
 outdir=$TOP_DIR/out

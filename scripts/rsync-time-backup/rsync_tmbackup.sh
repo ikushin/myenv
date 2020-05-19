@@ -10,9 +10,9 @@ LC_ALL=en_US.utf8
 export LC_ALL
 
 # スクリプトのディレクトリを保存する
-TOP_DIR=$(cd $(dirname "$0") && pwd)
+TOP_DIR=$(cd "$(dirname "$0")" && pwd)
 
-APPNAME=$(echo ${0%.sh})
+APPNAME="${0%.sh}"
 
 # -----------------------------------------------------------------------------
 # Functions
@@ -27,8 +27,6 @@ trap 'fn_terminate_script' SIGINT
 # -----------------------------------------------------------------------------
 # Source and destination information
 # -----------------------------------------------------------------------------
-SSH_USER=""
-SSH_HOST=""
 SSH_DEST_FOLDER=""
 SSH_SRC_FOLDER=""
 SSH_CMD=""
@@ -42,8 +40,6 @@ EXCLUSION_FILE=""
 LOG_DIR="$TOP_DIR/log"
 AUTO_DELETE_LOG="0"
 
-_N="10"        # 最新を含めて残す数
-EXPIRATION_STRATEGY="${_N}:0"
 AUTO_EXPIRE="1"
 
 RSYNC_FLAGS="-avz"
@@ -66,10 +62,6 @@ while :; do
 		--rsync-set-flags)
 			shift
 			RSYNC_FLAGS="$1"
-			;;
-		--strategy)
-			shift
-			EXPIRATION_STRATEGY="$1"
 			;;
 		--log-dir)
 			shift
@@ -164,9 +156,6 @@ fi
 # Date logic
 # NOW=$(date +"%Y-%m-%d-%H%M%S")
 NOW=$(date +"%Y-%m-%d")
-EPOCH=$(date "+%s")
-KEEP_ALL_DATE=$((EPOCH - 86400))       # 1 day ago
-KEEP_DAILIES_DATE=$((EPOCH - 2678400)) # 31 days ago
 
 export IFS=$'\n' # スペースを含むファイル名対応
 DEST="$DEST_FOLDER/$NOW"
@@ -188,33 +177,10 @@ fi
 # -----------------------------------------------------------------------------
 
 if [ -n "$(fn_find "$INPROGRESS_FILE")" ]; then
-	if [ "$OSTYPE" == "cygwin" ]; then
-		# 1. Grab the PID of previous run from the PID file
-		RUNNINGPID="$(fn_run_cmd "cat $INPROGRESS_FILE")"
-
-		# 2. Get the command for the process currently running under that PID and look for our script name
-		RUNNINGCMD="$(procps -wwfo cmd -p $RUNNINGPID --no-headers | grep "$APPNAME")"
-
-		# 3. Grab the exit code from grep (0=found, 1=not found)
-		GREPCODE=$?
-
-		# 4. if found, assume backup is still running
-		if [ "$GREPCODE" = 0 ]; then
-			fn_log_error "Previous backup task is still active - aborting (command: $RUNNINGCMD)."
-			exit 1
-		fi
-	elif [[ "$OSTYPE" == "netbsd"* ]]; then
-		RUNNINGPID="$(fn_run_cmd "cat $INPROGRESS_FILE")"
-		if ps -axp "$RUNNINGPID" -o "command" | grep "$APPNAME" > /dev/null; then
-                        fn_log_error "Previous backup task is still active - aborting."
-                        exit 1
-                fi
-	else
-		RUNNINGPID="$(fn_run_cmd "cat $INPROGRESS_FILE")"
-		if [ "$RUNNINGPID" = "$(pgrep -o -f "$APPNAME")" ]; then
-			fn_log_error "Previous backup task is still active - aborting."
-			exit 1
-		fi
+	RUNNINGPID="$(fn_run_cmd "cat $INPROGRESS_FILE")"
+	if [ "$RUNNINGPID" = "$(pgrep -o -f "$APPNAME")" ]; then
+		fn_log_error "Previous backup task is still active - aborting."
+		exit 1
 	fi
 
 	if [ -n "$PREVIOUS_DEST" ]; then
@@ -325,9 +291,9 @@ do
 	# -----------------------------------------------------------------------------
 
 	EXIT_CODE="1"
-	if [ -n "$(grep "rsync error:" "$LOG_FILE")" ]; then
+	if grep -q "rsync error:" "$LOG_FILE"; then
 		fn_log_error "Rsync reported an error. Run this command for more details: grep -E 'rsync:|rsync error:' '$LOG_FILE'"
-	elif [ -n "$(grep "rsync:" "$LOG_FILE")" ]; then
+	elif grep -q "rsync:" "$LOG_FILE"; then
 		fn_log_warn "Rsync reported a warning. Run this command for more details: grep -E 'rsync:|rsync error:' '$LOG_FILE'"
 	else
 		fn_log_info "Backup completed without errors."

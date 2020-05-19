@@ -11,12 +11,12 @@ to="^.*@example.com$"
 # シェル関数
 function message()
 {
-    logger -t "$0" $*
-    tty -s && echo $*  # tty が存在すれば message を出力する
+    logger -t "$0" "$*"
+    tty -s && echo "$*"  # tty が存在すれば message を出力する
 }
 
 # 多重起動チェック
-if [ $$ -ne $(pgrep -fo "$0") ]; then
+if [ $$ -ne "$(pgrep -fo "$0")" ]; then
     message "error: Cannot run multiple instance."
     exit 1
 fi

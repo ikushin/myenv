@@ -5,7 +5,7 @@
 
 export PATH="/bin:/usr/bin"
 export LANG=C
-TOP_DIR=$(cd $(dirname "$0") && pwd)
+TOP_DIR=$(cd "$(dirname "$0")" && pwd)
 oIFS=$IFS
 q='\x22'
 
@@ -18,13 +18,13 @@ tsv="$TOP_DIR/ip.tsv"
 # main
 # ----
 IFS=$'\n'
-servers=( $(grep -Pi 'RHEL|CentOS' $tsv | grep -Pv 'STE?P') )
+servers=( $(grep -Pi 'RHEL|CentOS' "$tsv" | grep -Pv 'STE?P') )
 IFS=$oIFS
 
-for i in ${!servers[@]}
+for i in "${!servers[@]}"
 do
     IFS=$'\t' read -ra server <<<"${servers[$i]}"
-    ip=${server[@]:0:4}; ip=${ip// /}
+    ip=${server[*]:0:4}; ip=${ip// /}
     hostname=${server[4]}
     alias=${server[6]}
 

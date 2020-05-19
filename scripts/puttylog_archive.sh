@@ -9,7 +9,7 @@ logs=$(find $logdir/ -maxdepth 1 -mtime +$lastdate -name \*.$extension)
 [[ -z $logs ]] && exit 0
 
 dates=( $(egrep -o '20[0-9]{6}' <<<$logs | sort | uniq) ) # ログファイル名から年月日を抽出
-for date in ${dates[@]}
+for date in "${dates[@]}"
 do
     year=${date:0:4}; month=${date:4:2}; day=${date:6:2}
     archive_dir=$logdir/$year/$month/$day

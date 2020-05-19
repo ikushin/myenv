@@ -27,7 +27,7 @@ do
         |& /bin/grep 'span class="fprice"' |& /bin/egrep -o '[0-9,]+' | tr -d ',')
     if [[ -z $last ]];      then last=$now; continue; fi
     if [[ -z $now ]];       then continue; fi
-    if [[ $now == $last ]]; then continue; fi
+    if [[ $now == "$last" ]]; then continue; fi
 
     # 騰落率の算出
     p=$( bc -l <<< "$now / $last" )
@@ -36,10 +36,10 @@ do
     hyoka_now=$( bc <<< "$hyoka * $p" | sed 's/\..*//' )
 
     # 差額の算出
-    kijun_sa=$(( $now - $last ))
-    hyoka_sa=$( LANG=ja_JP.utf-8 ; printf "%'d\n"  $(( $hyoka_now - $hyoka )) )
-    kyosyutsu_sa=$( LANG=ja_JP.utf-8 ; printf "%'d\n"  $(( $hyoka_now - $kyosyutu )) )
-    kyosyutsu_p=$( printf "%.1f" $(bc -l <<< "$hyoka_now/$kyosyutu * 100") )
+    kijun_sa=$(( now - last ))
+    hyoka_sa=$( LANG=ja_JP.utf-8 ; printf "%'d\n"  $(( hyoka_now - hyoka )) )
+    kyosyutsu_sa=$( LANG=ja_JP.utf-8 ; printf "%'d\n"  $(( hyoka_now - kyosyutu )) )
+    kyosyutsu_p=$( printf "%.1f" "$(bc -l <<< "$hyoka_now/$kyosyutu * 100")" )
 
     # 最新の値の保存
     hyoka=$hyoka_now

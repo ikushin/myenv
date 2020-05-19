@@ -8,16 +8,10 @@
 # set -u
 LANG=C
 
-# スクリプトのディレクトリを保存する
-TOP_DIR=$(cd $(dirname "$0") && pwd)
-
 # OPT
 while :
 do
     case $1 in
-        -d|--debug)
-            debug=true;
-            ;;
         -v|--verbose)
             verbose=$((verbose + 1))
             ;;
@@ -52,12 +46,12 @@ for (( i=1,j=2; ; i++,j++ )); do
     [[ -z $files ]] && break
     [[ $VERBOSE ]] && set -x
 
-    mkdir -p $dir/$start
-    $find -newerat $start ! -newerat $end -and -atime +$lastdate -not -name "202?-??-??" -print0 |
-        xargs -r -0 /bin/mv -t $dir/$start
+    mkdir -p "$dir/$start"
+    $find -newerat "$start" ! -newerat "$end" -and -atime +$lastdate -not -name "202?-??-??" -print0 |
+        xargs -r -0 /bin/mv -t "$dir/$start"
 done
 
 # 整理
-rmdir --ignore-fail-on-non-empty $dir/*/
+rmdir --ignore-fail-on-non-empty "$dir"/*/
 
 exit 0
