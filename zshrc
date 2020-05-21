@@ -233,3 +233,22 @@ if [[ -n $EMACS ]] ;then
 fi
 
 find $HOME/.sandbox -maxdepth 1 -type d -mtime +7 | xargs -r rm -rf
+
+# shellcheck
+if type /bin/shellcheck >/dev/null 2>&1
+then
+    declare -A SCs
+    SCs=(
+        ['Double quote']="SC2086"
+        ['Use $(...)']="SC2006"
+        ['expr is antiquated']="SC2003"
+        ['shebangs']="SC2096"
+        ['unused var']="SC2034"
+        ['not assigned var']="SC2154"
+        ['Expressions do not expand']="SC2016"
+        ['$/${} is unnecessary']="SC2004"
+        # ['Windows style']="SC1017"
+    )
+    oIFS=$IFS; IFS=,; sc_opts="-e ${SCs[*]}"; IFS=$oIFS
+    alias shellcheck="LANG=ja_JP.UTF-8 /bin/shellcheck $sc_opts"
+fi
