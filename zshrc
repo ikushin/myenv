@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # path
 path=( $HOME/local/bin /usr/*bin /*bin )
@@ -237,9 +238,10 @@ find $HOME/.sandbox -maxdepth 1 -type d -mtime +7 | xargs -r rm -rf
 # shellcheck
 if type /bin/shellcheck >/dev/null 2>&1
 then
-    declare -A SCs
+    declare -A SCs SCs_strict
     SCs=(
         ['Double quote']="SC2086"
+        ['Quote the rhs of == in [[ ]] to prevent glob matching']="SC2053"
         ['Use $(...)']="SC2006"
         ['expr is antiquated']="SC2003"
         ['shebangs']="SC2096"
@@ -247,8 +249,19 @@ then
         ['not assigned var']="SC2154"
         ['Expressions do not expand']="SC2016"
         ['$/${} is unnecessary']="SC2004"
-        # ['Windows style']="SC1017"
     )
-    oIFS=$IFS; IFS=,; sc_opts="-e ${SCs[*]}"; IFS=$oIFS
-    alias shellcheck="LANG=ja_JP.UTF-8 /bin/shellcheck $sc_opts"
+    SCs_strict=(
+        ['Quote this to prevent word splitting']="SC2046"
+        ['Windows style']="SC1017"
+    )
+
+    oIFS=$IFS; IFS=,
+    sc_opts="-e ${SCs[*]}"
+    sc_stopts="-e ${SCs_strict[*]}"
+    IFS=$oIFS
+
+    alias sc="LANG=ja_JP.UTF-8 /bin/shellcheck"
+    alias scc="LANG=ja_JP.UTF-8 /bin/shellcheck $sc_opts"
+    alias sccc="LANG=ja_JP.UTF-8 /bin/shellcheck $sc_opts $sc_stopts"
+    alias shellcheck="sc"
 fi
