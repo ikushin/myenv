@@ -1,4 +1,7 @@
 #
+alias yum='apt'
+alias apt-get='apt'
+alias aptitude='apt'
 alias rpmqa='dpkg -l'
 alias rpmql='dpkg -L'
 alias rpmqf='dpkg -S'
