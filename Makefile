@@ -346,6 +346,9 @@ route:
 man:
 	yum install -y man man-pages man-pages-ja
 
+proxy:
+	bash proxy.sh
+
 email:
 	rm -rf $(HOME)/eMail
 	git clone "https://github.com/deanproxy/eMail.git" $(HOME)/eMail
