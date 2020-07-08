@@ -1,6 +1,13 @@
 #
-proxy=http://10.0.0.1:8080
+# proxy
+proxy=http://proxy:8080
 export {HTTP{,S}_PROXY,http{,s}_proxy}=$proxy
-export no_proxy="127.0.0.1,localhost"
-no_proxy+=""
+
+# no_proxy
+no=( localhost 127.0.0.1 )
+no+=( 10.0.0.1 )
+
+oIFS=$IFS; IFS=,
+export no_proxy="${no[*]}"
+IFS=$oIFS
 
