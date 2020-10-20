@@ -249,6 +249,7 @@ then
         ['not assigned var']="SC2154"
         ['Expressions do not expand']="SC2016"
         ['$/${} is unnecessary']="SC2004"
+        ['Remove "exec "']="SC2093"
     )
     SCs_strict=(
         ['Quote this to prevent word splitting']="SC2046"

@@ -10,7 +10,7 @@ endif
 
 .PHONY: cygwin git emacs
 
-DOTFILES = zlogin zshrc inputrc screenrc vimrc zshrc.alias zshrc.git zshrc.func
+DOTFILES = zlogin zshrc inputrc screenrc vimrc zshrc.alias zshrc.git zshrc.func gdbinit
 cp:
 	for i in $(DOTFILES); do /bin/ln -sfnv $(HOME)/.myenv/$$i $(HOME)/.$$i; done
 	/bin/cp -av --no-clobber zshrc.local $(HOME)/.zshrc.local
