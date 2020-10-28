@@ -5,7 +5,8 @@ alias egrep='/bin/grep -E --color -a'
 alias xgrep='grep'
 alias fgrep='/bin/fgrep --color'
 alias igrep='g -i'
-alias grepf='egrep -ff'
+alias grepf='egrep -f'
+alias grepff='egrep -ff'
 
 # ipgrep
 octet="(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])"
@@ -269,12 +270,12 @@ alias tree='tree --dirsfirst --prune -C -L 3'
 alias sort='sort -b'
 
 # a b c ファイル用
-alias via='vi -c startinsert a'
-alias vib='vi -c startinsert b'
-alias vic='vi -c startinsert c'
-alias vix='vi -c startinsert x'
-alias viy='vi -c startinsert y'
-alias viz='vi -c startinsert z'
+alias via=':>a; vi -c startinsert a'
+alias vib=':>b; vi -c startinsert b'
+alias vic=':>c; vi -c startinsert c'
+alias vix=':>x; vi -c startinsert x'
+alias viy=':>y; vi -c startinsert y'
+alias viz=':>z; vi -c startinsert z'
 
 alias viaa='vi -c startinsert aa'
 alias vibb='vi -c startinsert bb'
