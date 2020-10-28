@@ -171,6 +171,7 @@ function d()
 
     [[ $rc -eq 0 ]] && md5sum $a $b
 }
+alias rd="d -r"
 
 function git_init_bare() {
     [[ $# != 1 ]] && {echo "リポジトリ名入れて!"; return;}
