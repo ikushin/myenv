@@ -131,6 +131,9 @@ alias yum_group_install='yum group install'
 alias yum_repolist='yum repolist'
 alias yum_repolist_all='yum repolist all'
 alias yum_epel='yum --enablerepo=epel'
+alias yi='yum -y --enablerepo=epel install'
+alias yc='yum -y --enablerepo=epel check-update'
+alias yup='yum -y --enablerepo=epel update'
 
 # misc
 alias mkpasswd='mkpasswd -l 8 -d 1 -c 1 -C 1 -s 1'
