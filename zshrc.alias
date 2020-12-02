@@ -246,7 +246,7 @@ fi
 alias .='source'
 alias ..='cd ..'
 alias dc='cd'
-alias h='history 0 | tail -n 100 | perl -pe "s/^\s*\d+\s*//" | uniq'
+alias h='history 0 PE "s/^\s*\d+\s*/ /" | uniq'
 alias \$=';'
 alias \#=';'
 alias weeklyreport='em ~/sandbox/WeeklyReport'
