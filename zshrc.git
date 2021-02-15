@@ -109,7 +109,7 @@ function d()
     local diff_opt="-tbwrN"
     local a=""; local b=""; local t=""
     local color="auto"
-    local unified=10
+    local unified=3
     local reverse=""
     local cmd=""
     local err=""
@@ -149,6 +149,8 @@ function d()
 
     if [[ $# -ge 2 ]]; then
         a=$1; b=$2
+    elif [[ -d "a" && -d "b" ]]; then
+        a=a; b=b
     else
         a=$(/bin/ls -t a* | head -n1)
         b=$(/bin/ls -t b* | head -n1)
@@ -174,6 +176,8 @@ function d()
 alias rd="d -r"
 alias dr="d -r"
 alias dv="d -v"
+alias d0="d -u100"
+alias d9="d -u9"
 
 function git_init_bare() {
     [[ $# != 1 ]] && {echo "リポジトリ名入れて!"; return;}
