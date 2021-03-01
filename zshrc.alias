@@ -1,10 +1,10 @@
 #
 # grep
-alias grep='/bin/grep --color -a -P'
-alias egrep='/bin/grep -E --color -a'
+alias grep=' /bin/grep -P --color -a --line-buffered'
+alias egrep='/bin/grep -E --color -a --line-buffered'
 alias xgrep='grep'
 alias fgrep='/bin/fgrep --color'
-alias igrep='g -i'
+alias igrep='grep -i'
 alias grepf='egrep -f'
 alias grepff='egrep -ff'
 
@@ -17,7 +17,7 @@ alias -g IPO='IP -o'
 alias -g IPo='IPO'
 
 # -g grep
-alias -g G='|& grep -aP'
+alias -g G='|& grep'
 alias -g GI='G -i'
 alias -g GV='G -v'
 alias -g Gv='GV'
