@@ -73,3 +73,8 @@
 ;             '(my-close-compilation-buffer-if-succeeded))
 ;   (setq compilation-finish-functions
 ;         '(my-close-compilation-buffer-if-succeeded)))
+
+;; シンボリックリンクの読み込みを許可
+(setq vc-follow-symlinks t)
+;; シンボリックリンク先のVCS内で更新が入った場合にバッファを自動更新
+(setq auto-revert-check-vc-info t)
