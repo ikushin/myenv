@@ -5,7 +5,9 @@ TOP_DIR=$(cd $(dirname "$0") && pwd)
 lst="$TOP_DIR/ssh.lst"
 
 node=$(basename $0)
-ip=$(grep -w "$node" $lst | cut -d, -f2)
+IFS=, read -r node ip user pass <<<"$(grep -w "$node" $lst)"
+[[ -n $pass ]] && echo $pass
+[[ -z $user ]] && user=root
 
 set -x
-ssh -lroot $@ $ip
+ssh -l$user $@ $ip

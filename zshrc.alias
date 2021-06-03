@@ -209,8 +209,8 @@ alias ee='femacs'
 
 # alias
 #alias sar='sar -q'
-alias sed='sed --regexp-extended --follow-symlinks'
-alias sedi='sed -i'
+alias sed='sed -r'
+alias sedi='sed -i --follow-symlinks'
 alias Du='du -sh * .* 2>/dev/null | sort -h'
 alias dux='du -sh /bin /sbin /etc /home /opt /root /srv /tmp /usr /var 2>/dev/null | sort -h'
 alias cata='cat -A'
